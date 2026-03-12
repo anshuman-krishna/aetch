@@ -1,0 +1,273 @@
+import { z } from 'zod';
+
+// ─── Auth ───
+
+export const loginSchema = z.object({
+  email: z.string().email('Invalid email address'),
+});
+
+export const registerSchema = z.object({
+  name: z
+    .string()
+    .min(2, 'Name must be at least 2 characters')
+    .max(100, 'Name must be at most 100 characters')
+    .trim(),
+  email: z.string().email('Invalid email address').toLowerCase(),
+  username: z
+    .string()
+    .min(3, 'Username must be at least 3 characters')
+    .max(30, 'Username must be at most 30 characters')
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      'Username can only contain letters, numbers, hyphens, and underscores',
+    )
+    .toLowerCase(),
+});
+
+// ─── User Profile ───
+
+export const updateProfileSchema = z.object({
+  name: z
+    .string()
+    .min(2, 'Name must be at least 2 characters')
+    .max(100)
+    .trim()
+    .optional(),
+  username: z
+    .string()
+    .min(3)
+    .max(30)
+    .regex(/^[a-zA-Z0-9_-]+$/)
+    .toLowerCase()
+    .optional(),
+  bio: z.string().max(500, 'Bio must be at most 500 characters').trim().optional(),
+  image: z.string().url('Invalid image URL').optional(),
+});
+
+// ─── Reviews ───
+
+export const reviewSchema = z.object({
+  rating: z.number().int().min(1, 'Rating must be at least 1').max(5, 'Rating must be at most 5'),
+  content: z
+    .string()
+    .min(10, 'Review must be at least 10 characters')
+    .max(2000, 'Review must be at most 2000 characters')
+    .trim()
+    .optional(),
+  artistId: z.string().cuid('Invalid artist ID').optional(),
+  shopId: z.string().cuid('Invalid shop ID').optional(),
+});
+
+// ─── Bookings ───
+
+export const bookingSchema = z.object({
+  artistId: z.string().cuid('Invalid artist ID'),
+  shopId: z.string().cuid('Invalid shop ID').optional(),
+  date: z.string().datetime('Invalid date format'),
+  duration: z.number().int().positive('Duration must be positive').max(480, 'Max 8 hours').optional(),
+  description: z
+    .string()
+    .max(2000, 'Description must be at most 2000 characters')
+    .trim()
+    .optional(),
+  reference: z.string().url('Invalid reference URL').optional(),
+});
+
+// ─── Posts ───
+
+export const createPostSchema = z.object({
+  caption: z
+    .string()
+    .max(2000, 'Caption must be at most 2000 characters')
+    .trim()
+    .optional(),
+  imageUrl: z.string().url('Invalid image URL').optional(),
+  tattooId: z.string().cuid('Invalid tattoo ID').optional(),
+});
+
+// ─── Comments ───
+
+export const createCommentSchema = z.object({
+  content: z
+    .string()
+    .min(1, 'Comment cannot be empty')
+    .max(1000, 'Comment must be at most 1000 characters')
+    .trim(),
+  postId: z.string().cuid('Invalid post ID'),
+  parentId: z.string().cuid('Invalid parent comment ID').optional(),
+});
+
+// ─── Artist Profile ───
+
+export const updateArtistSchema = z.object({
+  displayName: z.string().min(2).max(100).trim().optional(),
+  bio: z.string().max(2000).trim().optional(),
+  specialties: z.array(z.string()).max(10).optional(),
+  hourlyRate: z.number().positive().max(10000).optional(),
+  currency: z.string().length(3).optional(),
+  location: z.string().max(200).optional(),
+  website: z.string().url().optional(),
+  instagram: z
+    .string()
+    .max(30)
+    .regex(/^[a-zA-Z0-9_.]+$/, 'Invalid Instagram handle')
+    .optional(),
+});
+
+// ─── Shop ───
+
+export const createShopSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100).trim(),
+  slug: z
+    .string()
+    .min(2)
+    .max(60)
+    .regex(/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens')
+    .toLowerCase(),
+  description: z.string().max(2000).trim().optional(),
+  address: z.string().max(300).optional(),
+  city: z.string().max(100).optional(),
+  state: z.string().max(100).optional(),
+  country: z.string().max(100).optional(),
+  zipCode: z.string().max(20).optional(),
+  phone: z.string().max(20).optional(),
+  email: z.string().email().optional(),
+  website: z.string().url().optional(),
+});
+
+// ─── Tattoo ───
+
+export const TATTOO_STYLES = [
+  'TRADITIONAL',
+  'NEO_TRADITIONAL',
+  'JAPANESE',
+  'BLACKWORK',
+  'FINE_LINE',
+  'MINIMALIST',
+  'REALISM',
+  'TRIBAL',
+  'BIOMECHANICAL',
+  'ABSTRACT',
+  'WATERCOLOR',
+  'GEOMETRIC',
+  'DOTWORK',
+  'CHICANO',
+  'OTHER',
+] as const;
+
+export const BODY_PLACEMENTS = [
+  'arm',
+  'forearm',
+  'upper-arm',
+  'leg',
+  'thigh',
+  'calf',
+  'back',
+  'chest',
+  'neck',
+  'hand',
+  'foot',
+  'shoulder',
+  'ribs',
+  'hip',
+  'wrist',
+  'ankle',
+  'finger',
+  'behind-ear',
+  'full-sleeve',
+  'half-sleeve',
+  'other',
+] as const;
+
+export const COLOR_TYPES = ['COLOR', 'BLACK_AND_GREY', 'MIXED'] as const;
+
+export const STYLE_LABELS: Record<string, string> = {
+  TRADITIONAL: 'Traditional',
+  NEO_TRADITIONAL: 'Neo-Traditional',
+  JAPANESE: 'Japanese',
+  BLACKWORK: 'Blackwork',
+  FINE_LINE: 'Fine Line',
+  MINIMALIST: 'Minimalist',
+  REALISM: 'Realism',
+  TRIBAL: 'Tribal',
+  BIOMECHANICAL: 'Biomechanical',
+  ABSTRACT: 'Abstract',
+  WATERCOLOR: 'Watercolor',
+  GEOMETRIC: 'Geometric',
+  DOTWORK: 'Dotwork',
+  CHICANO: 'Chicano',
+  OTHER: 'Other',
+};
+
+export const PLACEMENT_LABELS: Record<string, string> = {
+  arm: 'Arm',
+  forearm: 'Forearm',
+  'upper-arm': 'Upper Arm',
+  leg: 'Leg',
+  thigh: 'Thigh',
+  calf: 'Calf',
+  back: 'Back',
+  chest: 'Chest',
+  neck: 'Neck',
+  hand: 'Hand',
+  foot: 'Foot',
+  shoulder: 'Shoulder',
+  ribs: 'Ribs',
+  hip: 'Hip',
+  wrist: 'Wrist',
+  ankle: 'Ankle',
+  finger: 'Finger',
+  'behind-ear': 'Behind Ear',
+  'full-sleeve': 'Full Sleeve',
+  'half-sleeve': 'Half Sleeve',
+  other: 'Other',
+};
+
+export const createTattooSchema = z.object({
+  title: z
+    .string()
+    .min(2, 'Title must be at least 2 characters')
+    .max(120, 'Title must be at most 120 characters')
+    .trim(),
+  description: z
+    .string()
+    .max(2000, 'Description must be at most 2000 characters')
+    .trim()
+    .optional(),
+  styles: z
+    .array(z.enum(TATTOO_STYLES))
+    .min(1, 'Select at least one style')
+    .max(5, 'Maximum 5 styles'),
+  bodyPlacement: z.enum(BODY_PLACEMENTS).optional(),
+  colorType: z.enum(COLOR_TYPES).default('COLOR'),
+});
+
+export const tattooFilterSchema = z.object({
+  styles: z.array(z.enum(TATTOO_STYLES)).optional(),
+  bodyPlacement: z.enum(BODY_PLACEMENTS).optional(),
+  colorType: z.enum(COLOR_TYPES).optional(),
+  search: z.string().max(100).optional(),
+  sort: z.enum(['latest', 'popular', 'trending']).default('latest'),
+});
+
+// ─── Pagination ───
+
+export const paginationSchema = z.object({
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().positive().max(100).default(20),
+});
+
+// ─── Types ───
+
+export type LoginInput = z.infer<typeof loginSchema>;
+export type RegisterInput = z.infer<typeof registerSchema>;
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+export type ReviewInput = z.infer<typeof reviewSchema>;
+export type BookingInput = z.infer<typeof bookingSchema>;
+export type CreatePostInput = z.infer<typeof createPostSchema>;
+export type CreateCommentInput = z.infer<typeof createCommentSchema>;
+export type UpdateArtistInput = z.infer<typeof updateArtistSchema>;
+export type CreateShopInput = z.infer<typeof createShopSchema>;
+export type CreateTattooInput = z.infer<typeof createTattooSchema>;
+export type TattooFilterInput = z.infer<typeof tattooFilterSchema>;
+export type PaginationInput = z.infer<typeof paginationSchema>;
