@@ -8,8 +8,7 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient() {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    // Return a client that will fail at query time, not at import time.
-    // This allows the app to start without a database for build/dev purposes.
+    // fallback for build without db
     return new PrismaClient({
       adapter: new PrismaPg({ connectionString: 'postgresql://localhost:5432/aetch' }),
     });

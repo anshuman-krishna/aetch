@@ -7,6 +7,7 @@ import { GlassButton } from '@/components/ui/glass-button';
 import { GlassInput } from '@/components/ui/glass-input';
 import { GlassTextarea } from '@/components/ui/glass-textarea';
 import { FormError } from '@/components/forms/form-error';
+import { slugify } from '@/utils/slugify';
 
 export default function ShopOnboardingPage() {
   const router = useRouter();
@@ -34,10 +35,7 @@ export default function ShopOnboardingPage() {
     setLoading(true);
     setError('');
     try {
-      const slug = form.shopName
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '');
+      const slug = slugify(form.shopName);
 
       const res = await fetch('/api/user/onboarding', {
         method: 'POST',

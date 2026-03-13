@@ -4,6 +4,7 @@ import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 
 interface NavLink {
@@ -30,15 +31,7 @@ export function MobileNavbar() {
         className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-white/10"
         aria-label="Toggle menu"
       >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          {open ? (
-            <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          ) : (
-            <>
-              <path d="M3 6H17M3 10H17M3 14H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </>
-          )}
-        </svg>
+        {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
       {/* Overlay menu */}

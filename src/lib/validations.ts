@@ -60,17 +60,42 @@ export const reviewSchema = z.object({
 
 // ─── Bookings ───
 
+export const bookingRequestSchema = z.object({
+  artistId: z.string().cuid('Invalid artist ID'),
+  date: z.string().datetime('Invalid date format'),
+  duration: z.number().int().positive().max(480).optional(),
+  tattooIdea: z.string().min(10, 'Describe your tattoo idea').max(2000).trim(),
+  placement: z.string().max(100).trim().optional(),
+  size: z.enum(['SMALL', 'MEDIUM', 'LARGE', 'EXTRA_LARGE']).optional(),
+  description: z.string().max(2000).trim().optional(),
+  reference: z.string().url('Invalid reference URL').optional(),
+});
+
 export const bookingSchema = z.object({
   artistId: z.string().cuid('Invalid artist ID'),
   shopId: z.string().cuid('Invalid shop ID').optional(),
   date: z.string().datetime('Invalid date format'),
-  duration: z.number().int().positive('Duration must be positive').max(480, 'Max 8 hours').optional(),
-  description: z
-    .string()
-    .max(2000, 'Description must be at most 2000 characters')
-    .trim()
-    .optional(),
+  duration: z.number().int().positive().max(480).optional(),
+  description: z.string().max(2000).trim().optional(),
   reference: z.string().url('Invalid reference URL').optional(),
+});
+
+export const updateBookingStatusSchema = z.object({
+  status: z.enum(['CONFIRMED', 'CANCELLED', 'COMPLETED', 'NO_SHOW']),
+  artistNotes: z.string().max(2000).trim().optional(),
+  price: z.number().positive().max(100000).optional(),
+});
+
+// ─── Availability ───
+
+export const availabilitySchema = z.object({
+  dayOfWeek: z.number().int().min(0).max(6),
+  startTime: z.string().regex(/^\d{2}:\d{2}$/, 'Use HH:MM format'),
+  endTime: z.string().regex(/^\d{2}:\d{2}$/, 'Use HH:MM format'),
+});
+
+export const availabilityBulkSchema = z.object({
+  slots: z.array(availabilitySchema).max(7),
 });
 
 // ─── Posts ───
@@ -264,6 +289,10 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
 export type ReviewInput = z.infer<typeof reviewSchema>;
 export type BookingInput = z.infer<typeof bookingSchema>;
+export type BookingRequestInput = z.infer<typeof bookingRequestSchema>;
+export type UpdateBookingStatusInput = z.infer<typeof updateBookingStatusSchema>;
+export type AvailabilityInput = z.infer<typeof availabilitySchema>;
+export type AvailabilityBulkInput = z.infer<typeof availabilityBulkSchema>;
 export type CreatePostInput = z.infer<typeof createPostSchema>;
 export type CreateCommentInput = z.infer<typeof createCommentSchema>;
 export type UpdateArtistInput = z.infer<typeof updateArtistSchema>;

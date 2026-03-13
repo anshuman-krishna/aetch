@@ -13,9 +13,7 @@ export interface PaginationMeta {
   hasPrev: boolean;
 }
 
-/**
- * Parse page/limit from query params into Prisma-compatible skip/take values.
- */
+/** page/limit to prisma skip/take */
 export function getPaginationParams(
   page = 1,
   limit = 20,
@@ -29,9 +27,7 @@ export function getPaginationParams(
   };
 }
 
-/**
- * Build pagination metadata from a total count and current params.
- */
+/** build pagination meta */
 export function buildPaginationMeta(
   total: number,
   params: PaginationParams,

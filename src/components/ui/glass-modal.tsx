@@ -2,6 +2,7 @@
 
 import { cn } from '@/utils/cn';
 import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 import { useEffect, useCallback, useRef } from 'react';
 
 interface GlassModalProps {
@@ -109,9 +110,7 @@ export function GlassModal({ open, onClose, title, description, size = 'md', chi
                   className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-white/10 hover:text-foreground"
                   aria-label="Close modal"
                 >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             )}

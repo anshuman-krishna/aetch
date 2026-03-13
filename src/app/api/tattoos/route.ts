@@ -29,22 +29,23 @@ export async function GET(req: NextRequest) {
     limit: searchParams.get('limit') ?? 20,
   });
 
-  const filters = filterResult.success ? filterResult.data : {};
   const { page, limit } = paginationResult.success
     ? paginationResult.data
     : { page: 1, limit: 20 };
 
   const pagination = getPaginationParams(page, limit);
 
+  const filters = filterResult.success ? filterResult.data : null;
+
   const result = await getTattoos(
     {
-      styles: filters.styles as TattooStyle[] | undefined,
-      bodyPlacement: filters.bodyPlacement,
-      colorType: filters.colorType as ColorType | undefined,
-      search: filters.search,
+      styles: (filters?.styles as TattooStyle[] | undefined) ?? undefined,
+      bodyPlacement: filters?.bodyPlacement,
+      colorType: (filters?.colorType as ColorType | undefined) ?? undefined,
+      search: filters?.search,
     },
     pagination,
-    (filters.sort as 'latest' | 'popular' | 'trending') ?? 'latest',
+    (filters?.sort as 'latest' | 'popular' | 'trending') ?? 'latest',
   );
 
   return NextResponse.json({ success: true, ...result });

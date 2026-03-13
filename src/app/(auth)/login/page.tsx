@@ -7,6 +7,7 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { GlassButton } from '@/components/ui/glass-button';
 import { GlassInput } from '@/components/ui/glass-input';
 import { FormError } from '@/components/forms/form-error';
+import { Mail } from 'lucide-react';
 import Link from 'next/link';
 
 const errorMessages: Record<string, string> = {
@@ -55,9 +56,7 @@ function LoginForm() {
     return (
       <GlassCard variant="strong" padding="lg" className="w-full max-w-md text-center">
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-pastel-mint/20">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-pastel-mint" />
-          </svg>
+          <Mail className="h-7 w-7 text-pastel-mint" />
         </div>
         <h1 className="text-xl font-bold text-foreground">Check your email</h1>
         <p className="mt-2 text-sm text-muted">

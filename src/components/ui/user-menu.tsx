@@ -31,6 +31,16 @@ export function UserMenu() {
     ? `/profile/${session.user.username}`
     : '/onboarding/role';
 
+  const isArtist = session.user.role === 'ARTIST' || session.user.role === 'ADMIN';
+
+  const menuItems = [
+    { id: 'profile', label: 'Profile' },
+    ...(isArtist ? [{ id: 'dashboard', label: 'Dashboard' }] : []),
+    { id: 'saved', label: 'Saved' },
+    { id: 'settings', label: 'Settings' },
+    { id: 'logout', label: 'Log Out', danger: true },
+  ];
+
   return (
     <GlassDropdown
       align="right"
@@ -42,16 +52,16 @@ export function UserMenu() {
           className="cursor-pointer ring-2 ring-transparent hover:ring-primary/30 transition-all"
         />
       }
-      items={[
-        { id: 'profile', label: 'Profile' },
-        { id: 'settings', label: 'Settings' },
-        { id: 'logout', label: 'Log Out', danger: true },
-      ]}
+      items={menuItems}
       onSelect={(id) => {
         if (id === 'logout') {
           signOut({ callbackUrl: '/' });
         } else if (id === 'profile') {
           window.location.href = profileHref;
+        } else if (id === 'dashboard') {
+          window.location.href = '/dashboard';
+        } else if (id === 'saved') {
+          window.location.href = '/saved';
         } else if (id === 'settings') {
           window.location.href = '/settings';
         }

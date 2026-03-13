@@ -2,6 +2,7 @@
 
 import { cn } from '@/utils/cn';
 import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 
 interface Toast {
@@ -68,9 +69,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 className="text-muted hover:text-foreground transition-colors"
                 aria-label="Dismiss"
               >
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                  <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
+                <X className="h-3.5 w-3.5" />
               </button>
             </motion.div>
           ))}
