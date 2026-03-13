@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from 'next/server';
 import { requireRole } from '@/backend/middleware/role-guard';
 import { getShopByOwnerId, getShopBookings } from '@/backend/services/shop-service';

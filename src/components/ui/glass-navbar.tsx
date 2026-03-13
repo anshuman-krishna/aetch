@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { MobileNavbar } from '@/components/layouts/mobile-navbar';
 import { UserMenu } from './user-menu';
+import { NotificationNavButton } from '@/components/features/messaging/notification-nav-button';
 
 interface NavLink {
   href: string;
@@ -44,7 +45,8 @@ export function GlassNavbar() {
           ))}
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-1">
+          <NotificationNavButton />
           <UserMenu />
         </div>
 

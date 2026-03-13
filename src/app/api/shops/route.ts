@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from 'next/server';
 import { getShops } from '@/backend/services/shop-service';
 import { shopFilterSchema, paginationSchema } from '@/lib/validations';

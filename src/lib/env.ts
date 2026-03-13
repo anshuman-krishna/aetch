@@ -29,6 +29,14 @@ const envSchema = z.object({
   AI_IMAGE_MODEL: z.string().default('dall-e-3'),
   AI_MAX_REQUESTS_PER_HOUR: z.coerce.number().int().positive().default(10),
 
+  // feature flags
+  FF_AI_GENERATION: z.string().optional(),
+  FF_AR_PREVIEW: z.string().optional(),
+  FF_PRICE_ESTIMATOR: z.string().optional(),
+  FF_MESSAGING: z.string().optional(),
+  FF_SOCIAL_FEED: z.string().optional(),
+  FF_BOOKING: z.string().optional(),
+
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).optional(),
   NODE_ENV: z.enum(['development', 'production', 'test']).optional(),

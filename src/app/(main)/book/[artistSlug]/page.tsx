@@ -6,6 +6,7 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { GlassAvatar } from '@/components/ui/glass-avatar';
 import { GlassBadge } from '@/components/ui/glass-badge';
 import { BookingForm } from '@/components/features/booking/booking-form';
+import { MessageArtistButton } from '@/components/features/messaging/message-artist-button';
 
 interface Props {
   params: Promise<{ artistSlug: string }>;
@@ -53,6 +54,9 @@ export default async function BookArtistPage({ params }: Props) {
                   ${Number(artist.hourlyRate)}/hr
                 </p>
               )}
+            </div>
+            <div className="ml-auto">
+              <MessageArtistButton artistUserId={artist.userId} />
             </div>
           </div>
         </GlassCard>

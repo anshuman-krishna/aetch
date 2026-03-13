@@ -1,10 +1,10 @@
 import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
-const protectedPaths = ['/onboarding', '/profile/edit', '/dashboard', '/settings', '/saved', '/book', '/shop-dashboard', '/feed', '/create-post', '/ai', '/ar-preview'];
+const protectedPaths = ['/onboarding', '/profile/edit', '/dashboard', '/settings', '/saved', '/book', '/shop-dashboard', '/feed', '/create-post', '/ai', '/ar-preview', '/messages'];
 const authPaths = ['/login', '/register'];
 
-// security headers
+// security response headers
 const securityHeaders = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',

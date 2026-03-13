@@ -320,6 +320,22 @@ export const savePreviewSchema = z.object({
   opacity: z.number().min(0).max(1).default(0.85),
 });
 
+// messaging
+
+export const createConversationSchema = z.object({
+  participantId: z.string().min(1, 'Participant required'),
+  bookingId: z.string().optional(),
+});
+
+export const sendMessageSchema = z.object({
+  conversationId: z.string().min(1, 'Conversation required'),
+  content: z
+    .string()
+    .min(1, 'Message cannot be empty')
+    .max(2000, 'Message too long')
+    .trim(),
+});
+
 // feed
 
 export const feedFilterSchema = z.object({
@@ -357,3 +373,5 @@ export type AIGenerateInput = z.infer<typeof aiGenerateSchema>;
 export type SavePreviewInput = z.infer<typeof savePreviewSchema>;
 export type FeedFilterInput = z.infer<typeof feedFilterSchema>;
 export type PaginationInput = z.infer<typeof paginationSchema>;
+export type CreateConversationInput = z.infer<typeof createConversationSchema>;
+export type SendMessageInput = z.infer<typeof sendMessageSchema>;
