@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
 import { rateLimit } from '@/backend/middleware/rate-limit';

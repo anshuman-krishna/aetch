@@ -1,0 +1,124 @@
+import { Server as HttpServer } from 'http';
+import { Server, Socket } from 'socket.io';
+
+export const runtime = 'nodejs';
+
+let io: Server | null = null;
+
+// event types
+export interface ServerToClientEvents {
+  'message:new': (data: MessageEvent) => void;
+  'message:read': (data: { conversationId: string }) => void;
+  'notification:new': (data: NotificationEvent) => void;
+  'user:online': (data: { userId: string }) => void;
+  'user:offline': (data: { userId: string }) => void;
+}
+
+export interface ClientToServerEvents {
+  'conversation:join': (conversationId: string) => void;
+  'conversation:leave': (conversationId: string) => void;
+  'message:typing': (conversationId: string) => void;
+}
+
+export interface MessageEvent {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  senderName: string;
+  senderImage?: string;
+  content: string;
+  createdAt: string;
+}
+
+export interface NotificationEvent {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  link?: string;
+}
+
+// user id to socket mapping
+const userSockets = new Map<string, Set<string>>();
+
+// initialize socket server
+export function initSocketServer(httpServer: HttpServer): Server {
+  if (io) return io;
+
+  io = new Server(httpServer, {
+    path: '/api/socket',
+    addTrailingSlash: false,
+    cors: {
+      origin: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
+      methods: ['GET', 'POST'],
+    },
+  });
+
+  io.on('connection', (socket: Socket) => {
+    const userId = socket.handshake.auth.userId as string;
+
+    if (!userId) {
+      socket.disconnect();
+      return;
+    }
+
+    // track user connection
+    if (!userSockets.has(userId)) {
+      userSockets.set(userId, new Set());
+    }
+    userSockets.get(userId)!.add(socket.id);
+
+    // join user room
+    socket.join(`user:${userId}`);
+
+    // join conversation rooms
+    socket.on('conversation:join', (conversationId: string) => {
+      socket.join(`conversation:${conversationId}`);
+    });
+
+    socket.on('conversation:leave', (conversationId: string) => {
+      socket.leave(`conversation:${conversationId}`);
+    });
+
+    // typing indicator
+    socket.on('message:typing', (conversationId: string) => {
+      socket.to(`conversation:${conversationId}`).emit('message:typing' as never, {
+        conversationId,
+        userId,
+      });
+    });
+
+    // cleanup on disconnect
+    socket.on('disconnect', () => {
+      const sockets = userSockets.get(userId);
+      if (sockets) {
+        sockets.delete(socket.id);
+        if (sockets.size === 0) {
+          userSockets.delete(userId);
+        }
+      }
+    });
+  });
+
+  return io;
+}
+
+// get socket server instance
+export function getIO(): Server | null {
+  return io;
+}
+
+// emit message to conversation
+export function emitNewMessage(event: MessageEvent) {
+  io?.to(`conversation:${event.conversationId}`).emit('message:new', event);
+}
+
+// emit notification to user
+export function emitNotification(userId: string, event: NotificationEvent) {
+  io?.to(`user:${userId}`).emit('notification:new', event);
+}
+
+// check if user is online
+export function isUserOnline(userId: string): boolean {
+  return userSockets.has(userId);
+}

@@ -24,6 +24,7 @@ const limiters = {
   'ai-generation': createLimiter(10, '1 h'),
   'ar-preview': createLimiter(30, '1 h'),
   upload: createLimiter(20, '1 m'),
+  message: createLimiter(20, '1 m'),
   api: createLimiter(60, '1 m'),
 } as const;
 

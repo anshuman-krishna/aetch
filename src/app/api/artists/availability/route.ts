@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from 'next/server';
 import { requireRole } from '@/backend/middleware/role-guard';
 import { getArtistByUserId, getArtistAvailability, setArtistAvailability } from '@/backend/services/artist-service';

@@ -75,8 +75,10 @@ model User {
   followers     Follower[] @relation("Following")
   following     Follower[] @relation("Followers")
   notifications  Notification[]
-  aiGenerations  AIGeneration[]
-  tattooPreviews TattooPreview[]
+  aiGenerations    AIGeneration[]
+  tattooPreviews   TattooPreview[]
+  conversations    ConversationParticipant[]
+  sentMessages     Message[]
 
   @@index([email])
   @@index([username])
@@ -330,6 +332,7 @@ model Booking {
   artist        Artist         @relation(fields: [artistId], references: [id])
   shop          Shop?          @relation(fields: [shopId], references: [id])
   notifications Notification[]
+  conversation  Conversation?
 
   @@index([userId])
   @@index([artistId])
@@ -393,6 +396,7 @@ enum NotificationType {
   NEW_FOLLOWER
   POST_LIKE
   POST_COMMENT
+  NEW_MESSAGE
   SYSTEM
 }
 
@@ -473,4 +477,50 @@ model Like {
   @@index([userId])
   @@index([postId])
   @@index([tattooId])
+}
+
+// messaging
+
+model Conversation {
+  id           String   @id @default(cuid())
+  bookingId    String?  @unique
+  lastMessage  String?  @db.Text
+  lastActivity DateTime @default(now())
+  createdAt    DateTime @default(now())
+
+  booking      Booking?                  @relation(fields: [bookingId], references: [id])
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  @@index([lastActivity])
+}
+
+model ConversationParticipant {
+  id             String   @id @default(cuid())
+  conversationId String
+  userId         String
+  lastReadAt     DateTime @default(now())
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+  @@index([conversationId])
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  senderId       String
+  content        String   @db.Text
+  read           Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
+  @@index([senderId])
 }

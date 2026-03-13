@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from 'next/server';
 import { getUserPosts } from '@/backend/services/post-service';
 import { getPaginationParams } from '@/utils/pagination';

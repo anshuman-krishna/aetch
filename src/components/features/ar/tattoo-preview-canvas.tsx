@@ -19,12 +19,13 @@ interface TattooPreviewCanvasProps {
 }
 
 const MAX_CANVAS_SIZE = 1024;
+const MAX_TATTOO_DIMENSION = 512;
 
 // downscale image for performance
-function fitImage(img: HTMLImageElement): { w: number; h: number } {
+function fitImage(img: HTMLImageElement, max = MAX_CANVAS_SIZE): { w: number; h: number } {
   const { naturalWidth: w, naturalHeight: h } = img;
-  if (w <= MAX_CANVAS_SIZE && h <= MAX_CANVAS_SIZE) return { w, h };
-  const ratio = Math.min(MAX_CANVAS_SIZE / w, MAX_CANVAS_SIZE / h);
+  if (w <= max && h <= max) return { w, h };
+  const ratio = Math.min(max / w, max / h);
   return { w: Math.round(w * ratio), h: Math.round(h * ratio) };
 }
 
@@ -84,8 +85,10 @@ export const TattooPreviewCanvas = forwardRef<HTMLCanvasElement, TattooPreviewCa
         const tattoo = tattooImgRef.current;
         const tx = (transform.positionX / 100) * canvas.width;
         const ty = (transform.positionY / 100) * canvas.height;
-        const tw = tattoo.naturalWidth * transform.scale * 0.5;
-        const th = tattoo.naturalHeight * transform.scale * 0.5;
+        // cap tattoo size to prevent spikes
+        const fit = fitImage(tattoo, MAX_TATTOO_DIMENSION);
+        const tw = fit.w * transform.scale;
+        const th = fit.h * transform.scale;
 
         ctx.save();
         ctx.translate(tx, ty);

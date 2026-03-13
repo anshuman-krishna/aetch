@@ -1,8 +1,8 @@
 import { storage, type UploadResult } from '@/lib/storage';
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
-const MAX_AVATAR_SIZE = 2 * 1024 * 1024; // 2MB
-const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_AVATAR_SIZE = 2 * 1024 * 1024; // 2mb max
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10mb max
 
 function validateImage(file: Buffer, contentType: string, maxSize: number) {
   if (!ALLOWED_IMAGE_TYPES.includes(contentType)) {

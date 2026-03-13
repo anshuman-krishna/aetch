@@ -85,6 +85,21 @@ export async function notifyPostComment(userId: string, postId: string, commente
   });
 }
 
+// notify new message
+export async function notifyNewMessage(
+  recipientId: string,
+  senderName: string,
+  conversationId: string,
+) {
+  return createNotification({
+    userId: recipientId,
+    type: 'NEW_MESSAGE',
+    title: 'New message',
+    message: `${senderName} sent you a message`,
+    link: `/messages/${conversationId}`,
+  });
+}
+
 // notify booking status
 export async function notifyBookingStatusChange(
   bookingId: string,

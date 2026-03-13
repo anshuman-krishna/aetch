@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
 import { toggleLike } from '@/backend/services/tattoo-service';

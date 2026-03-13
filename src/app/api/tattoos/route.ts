@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextRequest, NextResponse } from 'next/server';
 import { requireRole } from '@/backend/middleware/role-guard';
 import { authGuard } from '@/backend/middleware/auth-guard';

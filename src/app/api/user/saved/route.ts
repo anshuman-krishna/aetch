@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextRequest, NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
 import { getSavedTattoos } from '@/backend/services/tattoo-service';

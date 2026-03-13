@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from 'next/server';
 import { requireRole } from '@/backend/middleware/role-guard';
 import {
@@ -6,6 +8,12 @@ import {
   addArtistToShop,
   removeArtistFromShop,
 } from '@/backend/services/shop-service';
+import { z } from 'zod';
+
+const addArtistSchema = z.object({
+  artistId: z.string().min(1),
+  role: z.enum(['OWNER', 'LEAD_ARTIST', 'ARTIST', 'GUEST', 'APPRENTICE']).optional(),
+});
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -30,10 +38,11 @@ export async function POST(req: Request, { params }: Params) {
   }
 
   const body = await req.json();
-  const { artistId, role } = body;
-  if (!artistId) {
+  const parsed = addArtistSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: 'artistId required' }, { status: 400 });
   }
+  const { artistId, role } = parsed.data;
 
   try {
     const membership = await addArtistToShop(shopId, artistId, role);

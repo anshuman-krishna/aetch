@@ -15,9 +15,10 @@ export function PreviewExportButton({ canvasRef, onSave }: PreviewExportButtonPr
   const handleDownload = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const dataUrl = canvas.toDataURL('image/png');
+    // compress export as jpeg
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
     const link = document.createElement('a');
-    link.download = `tattoo-preview-${Date.now()}.png`;
+    link.download = `tattoo-preview-${Date.now()}.jpg`;
     link.href = dataUrl;
     link.click();
   };
@@ -26,7 +27,8 @@ export function PreviewExportButton({ canvasRef, onSave }: PreviewExportButtonPr
     if (!onSave || !canvasRef.current) return;
     setSaving(true);
     try {
-      const dataUrl = canvasRef.current.toDataURL('image/png');
+      // compress save as jpeg
+      const dataUrl = canvasRef.current.toDataURL('image/jpeg', 0.85);
       onSave(dataUrl);
     } finally {
       setSaving(false);
