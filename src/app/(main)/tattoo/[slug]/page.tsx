@@ -30,10 +30,10 @@ export default async function TattooDetailPage({ params }: Props) {
   const tattoo = await getTattooBySlug(slug);
   if (!tattoo) notFound();
 
-  // Track view (non-blocking)
+  // track view (non-blocking)
   incrementViewCount(tattoo.id).catch(() => {});
 
-  // Check user interactions
+  // check user interactions
   const session = await auth();
   let liked = false;
   let saved = false;
@@ -44,7 +44,7 @@ export default async function TattooDetailPage({ params }: Props) {
     ]);
   }
 
-  // Related tattoos
+  // related tattoos
   const related = await getRelatedTattoos(tattoo.id, tattoo.styles as TattooStyle[], 6);
 
   return (
@@ -69,7 +69,7 @@ export default async function TattooDetailPage({ params }: Props) {
           initialSaved={saved}
         />
 
-        {/* Related Tattoos */}
+        {/* related tattoos */}
         {related.length > 0 && (
           <div className="mt-12">
             <h2 className="text-h3 text-foreground mb-6">Related Tattoos</h2>

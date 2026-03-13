@@ -60,12 +60,12 @@ export default function GalleryPage() {
     [buildQueryString],
   );
 
-  // Fetch on filter/search change
+  // fetch on filter/search change
   useEffect(() => {
     fetchTattoos(1);
   }, [fetchTattoos]);
 
-  // Infinite scroll via IntersectionObserver
+  // infinite scroll observer
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect();
 
@@ -85,7 +85,7 @@ export default function GalleryPage() {
     return () => observerRef.current?.disconnect();
   }, [pagination, loadingMore, fetchTattoos]);
 
-  // Debounced search
+  // debounced search
   const [searchInput, setSearchInput] = useState('');
   useEffect(() => {
     const timer = setTimeout(() => setSearch(searchInput), 400);

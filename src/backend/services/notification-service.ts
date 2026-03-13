@@ -40,7 +40,7 @@ export async function markAllAsRead(userId: string) {
   });
 }
 
-// helper: send booking notification to artist
+// notify artist of booking
 export async function notifyBookingRequest(bookingId: string, artistUserId: string, clientName: string) {
   return createNotification({
     userId: artistUserId,
@@ -52,7 +52,40 @@ export async function notifyBookingRequest(bookingId: string, artistUserId: stri
   });
 }
 
-// helper: send booking status to client
+// notify new follower
+export async function notifyNewFollower(userId: string, followerName: string) {
+  return createNotification({
+    userId,
+    type: 'NEW_FOLLOWER',
+    title: 'New follower',
+    message: `${followerName} started following you`,
+    link: '/profile',
+  });
+}
+
+// notify post like
+export async function notifyPostLike(userId: string, postId: string, likerName: string) {
+  return createNotification({
+    userId,
+    type: 'POST_LIKE',
+    title: 'New like',
+    message: `${likerName} liked your post`,
+    link: `/post/${postId}`,
+  });
+}
+
+// notify post comment
+export async function notifyPostComment(userId: string, postId: string, commenterName: string) {
+  return createNotification({
+    userId,
+    type: 'POST_COMMENT',
+    title: 'New comment',
+    message: `${commenterName} commented on your post`,
+    link: `/post/${postId}`,
+  });
+}
+
+// notify booking status
 export async function notifyBookingStatusChange(
   bookingId: string,
   clientUserId: string,

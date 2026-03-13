@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
     const { artistId, date, duration, tattooIdea, placement, size, description } = parsed.data;
 
-    // look up artist to get their userId
+    // resolve artist user id
     const artist = await getArtistByUserId(artistId);
 
     const booking = await createBooking({

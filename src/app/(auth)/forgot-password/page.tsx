@@ -17,7 +17,7 @@ export default function ForgotPasswordPage() {
     if (!email) return;
     setLoading(true);
     try {
-      // NextAuth magic link handles password-less flow
+      // send magic link
       await signIn('nodemailer', { email, callbackUrl: '/', redirect: false });
       setSent(true);
     } finally {
