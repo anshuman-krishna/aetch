@@ -3,6 +3,7 @@
 import { cn } from '@/utils/cn';
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassButton } from '@/components/ui/glass-button';
+import { SlidersHorizontal } from 'lucide-react';
 import {
   TATTOO_STYLES,
   BODY_PLACEMENTS,
@@ -26,6 +27,11 @@ interface TattooFiltersProps {
   className?: string;
 }
 
+// shared chip button classes
+const chipBase = 'rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200';
+const chipActive = 'bg-primary/90 text-white border border-primary-light/30';
+const chipInactive = 'glass hover:bg-white/20 text-foreground/80';
+
 export function TattooFilters({ filters, onChange, className }: TattooFiltersProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -47,7 +53,6 @@ export function TattooFilters({ filters, onChange, className }: TattooFiltersPro
 
   return (
     <div className={cn('space-y-4', className)}>
-      {/* Sort + Toggle Row */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <GlassButton
@@ -55,7 +60,7 @@ export function TattooFilters({ filters, onChange, className }: TattooFiltersPro
             size="sm"
             onClick={() => setExpanded(!expanded)}
           >
-            <FilterIcon className="h-4 w-4" />
+            <SlidersHorizontal className="h-4 w-4" />
             Filters
             {activeCount > 0 && (
               <span className="ml-1 rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
@@ -85,7 +90,6 @@ export function TattooFilters({ filters, onChange, className }: TattooFiltersPro
         </div>
       </div>
 
-      {/* Expanded Filter Panel */}
       <AnimatePresence>
         {expanded && (
           <motion.div
@@ -96,86 +100,41 @@ export function TattooFilters({ filters, onChange, className }: TattooFiltersPro
             className="overflow-hidden"
           >
             <GlassCard variant="subtle" padding="md" className="space-y-5">
-              {/* Styles */}
-              <div>
-                <h4 className="text-xs font-semibold text-foreground/70 uppercase tracking-wider mb-2">
-                  Style
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {TATTOO_STYLES.map((style) => (
-                    <button
-                      key={style}
-                      onClick={() => toggleStyle(style)}
-                      className={cn(
-                        'rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200',
-                        filters.styles.includes(style)
-                          ? 'bg-primary/90 text-white border border-primary-light/30'
-                          : 'glass hover:bg-white/20 text-foreground/80',
-                      )}
-                    >
-                      {STYLE_LABELS[style]}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <FilterSection title="Style">
+                {TATTOO_STYLES.map((style) => (
+                  <button
+                    key={style}
+                    onClick={() => toggleStyle(style)}
+                    className={cn(chipBase, filters.styles.includes(style) ? chipActive : chipInactive)}
+                  >
+                    {STYLE_LABELS[style]}
+                  </button>
+                ))}
+              </FilterSection>
 
-              {/* Body Placement */}
-              <div>
-                <h4 className="text-xs font-semibold text-foreground/70 uppercase tracking-wider mb-2">
-                  Body Placement
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {BODY_PLACEMENTS.map((placement) => (
-                    <button
-                      key={placement}
-                      onClick={() =>
-                        onChange({
-                          ...filters,
-                          bodyPlacement: filters.bodyPlacement === placement ? '' : placement,
-                        })
-                      }
-                      className={cn(
-                        'rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200',
-                        filters.bodyPlacement === placement
-                          ? 'bg-primary/90 text-white border border-primary-light/30'
-                          : 'glass hover:bg-white/20 text-foreground/80',
-                      )}
-                    >
-                      {PLACEMENT_LABELS[placement]}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <FilterSection title="Body Placement">
+                {BODY_PLACEMENTS.map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => onChange({ ...filters, bodyPlacement: filters.bodyPlacement === p ? '' : p })}
+                    className={cn(chipBase, filters.bodyPlacement === p ? chipActive : chipInactive)}
+                  >
+                    {PLACEMENT_LABELS[p]}
+                  </button>
+                ))}
+              </FilterSection>
 
-              {/* Color Type */}
-              <div>
-                <h4 className="text-xs font-semibold text-foreground/70 uppercase tracking-wider mb-2">
-                  Color Type
-                </h4>
-                <div className="flex gap-2">
-                  {COLOR_TYPES.map((type) => (
-                    <button
-                      key={type}
-                      onClick={() =>
-                        onChange({
-                          ...filters,
-                          colorType: filters.colorType === type ? '' : type,
-                        })
-                      }
-                      className={cn(
-                        'rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200',
-                        filters.colorType === type
-                          ? 'bg-primary/90 text-white border border-primary-light/30'
-                          : 'glass hover:bg-white/20 text-foreground/80',
-                      )}
-                    >
-                      {type === 'BLACK_AND_GREY'
-                        ? 'Black & Grey'
-                        : type.charAt(0) + type.slice(1).toLowerCase()}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <FilterSection title="Color Type">
+                {COLOR_TYPES.map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => onChange({ ...filters, colorType: filters.colorType === type ? '' : type })}
+                    className={cn(chipBase, filters.colorType === type ? chipActive : chipInactive)}
+                  >
+                    {type === 'BLACK_AND_GREY' ? 'Black & Grey' : type.charAt(0) + type.slice(1).toLowerCase()}
+                  </button>
+                ))}
+              </FilterSection>
             </GlassCard>
           </motion.div>
         )}
@@ -184,14 +143,13 @@ export function TattooFilters({ filters, onChange, className }: TattooFiltersPro
   );
 }
 
-function FilterIcon({ className }: { className?: string }) {
+function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <svg className={className} viewBox="0 0 20 20" fill="currentColor">
-      <path
-        fillRule="evenodd"
-        d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-        clipRule="evenodd"
-      />
-    </svg>
+    <div>
+      <h4 className="text-xs font-semibold text-foreground/70 uppercase tracking-wider mb-2">
+        {title}
+      </h4>
+      <div className="flex flex-wrap gap-2">{children}</div>
+    </div>
   );
 }

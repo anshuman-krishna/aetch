@@ -11,7 +11,7 @@ import {
 } from 'react-hook-form';
 import { type ZodSchema } from 'zod';
 
-// Custom Zod resolver compatible with Zod v4
+// zod v4 form resolver
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function zodFormResolver(schema: ZodSchema): any {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

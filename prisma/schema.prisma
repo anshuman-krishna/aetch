@@ -70,10 +70,11 @@ model User {
   comments     Comment[]
   reviews      Review[]
   bookings     Booking[]
-  likes        Like[]
-  savedTattoos SavedTattoo[]
-  followers    Follower[] @relation("Following")
-  following    Follower[] @relation("Followers")
+  likes         Like[]
+  savedTattoos  SavedTattoo[]
+  followers     Follower[] @relation("Following")
+  following     Follower[] @relation("Followers")
+  notifications Notification[]
 
   @@index([email])
   @@index([username])
@@ -104,12 +105,13 @@ model Artist {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  shop     Shop?     @relation(fields: [shopId], references: [id])
-  shopId   String?
-  tattoos  Tattoo[]
-  bookings Booking[]
-  reviews  Review[]
+  user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop          Shop?               @relation(fields: [shopId], references: [id])
+  shopId        String?
+  tattoos       Tattoo[]
+  bookings      Booking[]
+  reviews       Review[]
+  availability  ArtistAvailability[]
 
   @@index([userId])
   @@index([slug])
@@ -273,28 +275,35 @@ model Review {
 }
 
 model Booking {
-  id          String        @id @default(cuid())
-  userId      String
-  artistId    String
-  shopId      String?
-  date        DateTime
-  duration    Int?
-  description String?       @db.Text
-  reference   String?
-  status      BookingStatus @default(PENDING)
-  price       Decimal?      @db.Decimal(10, 2)
-  currency    String        @default("USD")
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id              String        @id @default(cuid())
+  userId          String
+  artistId        String
+  shopId          String?
+  date            DateTime
+  duration        Int?
+  description     String?       @db.Text
+  tattooIdea      String?       @db.Text
+  placement       String?
+  size            String?
+  referenceImages String[]
+  reference       String?
+  status          BookingStatus @default(PENDING)
+  price           Decimal?      @db.Decimal(10, 2)
+  currency        String        @default("USD")
+  artistNotes     String?       @db.Text
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
-  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  artist Artist  @relation(fields: [artistId], references: [id])
-  shop   Shop?   @relation(fields: [shopId], references: [id])
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  artist        Artist         @relation(fields: [artistId], references: [id])
+  shop          Shop?          @relation(fields: [shopId], references: [id])
+  notifications Notification[]
 
   @@index([userId])
   @@index([artistId])
   @@index([shopId])
   @@index([date])
+  @@index([status])
 }
 
 enum BookingStatus {
@@ -303,6 +312,54 @@ enum BookingStatus {
   CANCELLED
   COMPLETED
   NO_SHOW
+}
+
+// ─── Artist Availability ───
+
+model ArtistAvailability {
+  id        String   @id @default(cuid())
+  artistId  String
+  dayOfWeek Int
+  startTime String
+  endTime   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([artistId, dayOfWeek])
+  @@index([artistId])
+}
+
+// ─── Notifications ───
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String           @db.Text
+  read      Boolean          @default(false)
+  bookingId String?
+  link      String?
+  createdAt DateTime         @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking Booking? @relation(fields: [bookingId], references: [id])
+
+  @@index([userId, read])
+  @@index([userId, createdAt])
+  @@index([bookingId])
+}
+
+enum NotificationType {
+  BOOKING_REQUEST
+  BOOKING_CONFIRMED
+  BOOKING_CANCELLED
+  BOOKING_COMPLETED
+  NEW_REVIEW
+  NEW_FOLLOWER
+  SYSTEM
 }
 
 model Follower {
