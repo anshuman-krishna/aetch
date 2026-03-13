@@ -1,6 +1,6 @@
 import type { Variants, Transition } from 'framer-motion';
 
-// ─── Transitions ───
+// transitions
 
 export const springSmooth: Transition = {
   type: 'spring',
@@ -19,7 +19,7 @@ export const easeFade: Transition = {
   ease: 'easeInOut',
 };
 
-// ─── Page Transitions ───
+// page transitions
 
 export const pageTransition: Variants = {
   initial: { opacity: 0, y: 12 },
@@ -27,7 +27,7 @@ export const pageTransition: Variants = {
   exit: { opacity: 0, y: -8, transition: { duration: 0.2, ease: 'easeIn' } },
 };
 
-// ─── Stagger Children ───
+// stagger children
 
 export const staggerContainer: Variants = {
   animate: {
@@ -42,14 +42,14 @@ export const staggerItem: Variants = {
   animate: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
 };
 
-// ─── Scale on Hover ───
+// scale on hover
 
 export const hoverScale = {
   whileHover: { scale: 1.02, transition: springSmooth },
   whileTap: { scale: 0.98, transition: springSmooth },
 };
 
-// ─── Card Hover Elevation ───
+// card hover elevation
 
 export const hoverElevation = {
   whileHover: {
@@ -59,13 +59,13 @@ export const hoverElevation = {
   },
 };
 
-// ─── Button Press ───
+// button press
 
 export const buttonPress = {
   whileTap: { scale: 0.96, transition: { duration: 0.1 } },
 };
 
-// ─── Fade In ───
+// fade in
 
 export const fadeIn: Variants = {
   initial: { opacity: 0 },
@@ -73,7 +73,7 @@ export const fadeIn: Variants = {
   exit: { opacity: 0, transition: easeFade },
 };
 
-// ─── Slide In ───
+// slide in
 
 export const slideInFromBottom: Variants = {
   initial: { opacity: 0, y: 24 },
@@ -87,7 +87,7 @@ export const slideInFromRight: Variants = {
   exit: { opacity: 0, x: 12, transition: easeFade },
 };
 
-// ─── Modal ───
+// modal
 
 export const modalOverlay: Variants = {
   initial: { opacity: 0 },

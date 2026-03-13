@@ -8,7 +8,7 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient() {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    // fallback for build without db
+    // build fallback
     return new PrismaClient({
       adapter: new PrismaPg({ connectionString: 'postgresql://localhost:5432/aetch' }),
     });

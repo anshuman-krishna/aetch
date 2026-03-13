@@ -32,10 +32,7 @@ function getClient(): MeiliSearch | null {
   return new MeiliSearch({ host, apiKey });
 }
 
-/**
- * Index a tattoo document for search.
- * No-op if Meilisearch is not configured.
- */
+// index tattoo for search
 export async function indexTattoo(doc: TattooSearchDocument): Promise<void> {
   const client = getClient();
   if (!client) return;
@@ -48,9 +45,7 @@ export async function indexTattoo(doc: TattooSearchDocument): Promise<void> {
   }
 }
 
-/**
- * Search tattoos with optional filters.
- */
+// search tattoos
 export async function searchTattoos(
   query: string,
   options?: {
@@ -100,9 +95,7 @@ export async function searchTattoos(
   }
 }
 
-/**
- * Remove a tattoo from the search index.
- */
+// remove from search index
 export async function removeTattooIndex(tattooId: string): Promise<void> {
   const client = getClient();
   if (!client) return;

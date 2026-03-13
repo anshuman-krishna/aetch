@@ -7,7 +7,7 @@ const envSchema = z.object({
   GOOGLE_CLIENT_ID: z.string().min(1, 'GOOGLE_CLIENT_ID is required'),
   GOOGLE_CLIENT_SECRET: z.string().min(1, 'GOOGLE_CLIENT_SECRET is required'),
 
-  // Optional
+  // optional services
   EMAIL_SERVER_HOST: z.string().optional(),
   EMAIL_SERVER_PORT: z.string().optional(),
   EMAIL_SERVER_USER: z.string().optional(),
@@ -26,6 +26,8 @@ const envSchema = z.object({
   MEILISEARCH_HOST: z.string().optional(),
   MEILISEARCH_API_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
+  AI_IMAGE_MODEL: z.string().default('dall-e-3'),
+  AI_MAX_REQUESTS_PER_HOUR: z.coerce.number().int().positive().default(10),
 
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).optional(),

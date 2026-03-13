@@ -14,7 +14,7 @@ const THUMBNAIL_SIZE = 400;
 const BLUR_SIZE = 16;
 const QUALITY = 85;
 
-/** process, thumbnail, blur placeholder */
+// process, thumbnail, blur placeholder
 export async function processTattooImage(input: Buffer): Promise<ProcessedImage> {
   const metadata = await sharp(input).metadata();
   const originalWidth = metadata.width ?? TATTOO_MAX_WIDTH;
@@ -57,7 +57,7 @@ export async function processTattooImage(input: Buffer): Promise<ProcessedImage>
   };
 }
 
-/** resize avatar to square */
+// resize avatar to square
 export async function processAvatarImage(
   input: Buffer,
   size = 256,

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// ─── Auth ───
+// auth
 
 export const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -24,7 +24,7 @@ export const registerSchema = z.object({
     .toLowerCase(),
 });
 
-// ─── User Profile ───
+// user profile
 
 export const updateProfileSchema = z.object({
   name: z
@@ -44,7 +44,7 @@ export const updateProfileSchema = z.object({
   image: z.string().url('Invalid image URL').optional(),
 });
 
-// ─── Reviews ───
+// reviews
 
 export const reviewSchema = z.object({
   rating: z.number().int().min(1, 'Rating must be at least 1').max(5, 'Rating must be at most 5'),
@@ -58,7 +58,7 @@ export const reviewSchema = z.object({
   shopId: z.string().cuid('Invalid shop ID').optional(),
 });
 
-// ─── Bookings ───
+// bookings
 
 export const bookingRequestSchema = z.object({
   artistId: z.string().cuid('Invalid artist ID'),
@@ -86,7 +86,7 @@ export const updateBookingStatusSchema = z.object({
   price: z.number().positive().max(100000).optional(),
 });
 
-// ─── Availability ───
+// availability
 
 export const availabilitySchema = z.object({
   dayOfWeek: z.number().int().min(0).max(6),
@@ -98,7 +98,7 @@ export const availabilityBulkSchema = z.object({
   slots: z.array(availabilitySchema).max(7),
 });
 
-// ─── Posts ───
+// posts
 
 export const createPostSchema = z.object({
   caption: z
@@ -108,9 +108,10 @@ export const createPostSchema = z.object({
     .optional(),
   imageUrl: z.string().url('Invalid image URL').optional(),
   tattooId: z.string().cuid('Invalid tattoo ID').optional(),
+  tags: z.array(z.string().max(50)).max(10).optional(),
 });
 
-// ─── Comments ───
+// comments
 
 export const createCommentSchema = z.object({
   content: z
@@ -122,7 +123,7 @@ export const createCommentSchema = z.object({
   parentId: z.string().cuid('Invalid parent comment ID').optional(),
 });
 
-// ─── Artist Profile ───
+// artist profile
 
 export const updateArtistSchema = z.object({
   displayName: z.string().min(2).max(100).trim().optional(),
@@ -139,7 +140,7 @@ export const updateArtistSchema = z.object({
     .optional(),
 });
 
-// ─── Shop ───
+// shop
 
 export const createShopSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100).trim(),
@@ -160,7 +161,25 @@ export const createShopSchema = z.object({
   website: z.string().url().optional(),
 });
 
-// ─── Tattoo ───
+export const updateShopSchema = z.object({
+  name: z.string().min(2).max(100).trim().optional(),
+  description: z.string().max(2000).trim().optional(),
+  address: z.string().max(300).optional(),
+  city: z.string().max(100).optional(),
+  state: z.string().max(100).optional(),
+  country: z.string().max(100).optional(),
+  phone: z.string().max(20).optional(),
+  email: z.string().email().optional(),
+  website: z.string().url().optional(),
+});
+
+export const shopFilterSchema = z.object({
+  city: z.string().max(100).optional(),
+  search: z.string().max(100).optional(),
+  sort: z.enum(['latest', 'popular', 'name']).default('latest'),
+});
+
+// tattoo
 
 export const TATTOO_STYLES = [
   'TRADITIONAL',
@@ -275,14 +294,47 @@ export const tattooFilterSchema = z.object({
   sort: z.enum(['latest', 'popular', 'trending']).default('latest'),
 });
 
-// ─── Pagination ───
+// ai generation
+
+export const AI_COMPLEXITIES = ['simple', 'moderate', 'detailed', 'complex'] as const;
+
+export const aiGenerateSchema = z.object({
+  idea: z.string().min(5, 'Describe your idea').max(500).trim(),
+  style: z.enum(TATTOO_STYLES).optional(),
+  placement: z.enum(BODY_PLACEMENTS).optional(),
+  colorType: z.enum(COLOR_TYPES).optional(),
+  complexity: z.enum(AI_COMPLEXITIES).default('moderate'),
+});
+
+// ar preview
+
+export const savePreviewSchema = z.object({
+  bodyImageUrl: z.string().url('Invalid body image URL'),
+  tattooImageUrl: z.string().url('Invalid tattoo image URL'),
+  previewImageUrl: z.string().url('Invalid preview image URL').optional(),
+  placement: z.enum(BODY_PLACEMENTS).optional(),
+  positionX: z.number().min(0).max(100).default(50),
+  positionY: z.number().min(0).max(100).default(50),
+  scale: z.number().min(0.1).max(5).default(1),
+  rotation: z.number().min(-360).max(360).default(0),
+  opacity: z.number().min(0).max(1).default(0.85),
+});
+
+// feed
+
+export const feedFilterSchema = z.object({
+  type: z.enum(['following', 'trending', 'latest']).default('latest'),
+  tag: z.string().max(50).optional(),
+});
+
+// pagination
 
 export const paginationSchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
-// ─── Types ───
+// types
 
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
@@ -297,6 +349,11 @@ export type CreatePostInput = z.infer<typeof createPostSchema>;
 export type CreateCommentInput = z.infer<typeof createCommentSchema>;
 export type UpdateArtistInput = z.infer<typeof updateArtistSchema>;
 export type CreateShopInput = z.infer<typeof createShopSchema>;
+export type UpdateShopInput = z.infer<typeof updateShopSchema>;
+export type ShopFilterInput = z.infer<typeof shopFilterSchema>;
 export type CreateTattooInput = z.infer<typeof createTattooSchema>;
 export type TattooFilterInput = z.infer<typeof tattooFilterSchema>;
+export type AIGenerateInput = z.infer<typeof aiGenerateSchema>;
+export type SavePreviewInput = z.infer<typeof savePreviewSchema>;
+export type FeedFilterInput = z.infer<typeof feedFilterSchema>;
 export type PaginationInput = z.infer<typeof paginationSchema>;

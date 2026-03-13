@@ -21,7 +21,7 @@ export async function GET(req: Request, { params }: Params) {
     return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
   }
 
-  // only visible to booking owner or artist
+  // verify owner or artist
   const artist = await getArtistByUserId(session.user.id);
   if (booking.userId !== session.user.id && booking.artistId !== artist?.id) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });

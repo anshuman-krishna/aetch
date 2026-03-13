@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
   const { session, error } = await requireRole('ARTIST', 'ADMIN');
   if (error) return error;
 
-  // Get artist record
+  // get artist record
   const { session: authSession, error: authError } = await authGuard();
   if (authError) return authError;
 
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
   const bodyPlacement = formData.get('bodyPlacement') as string | null;
   const colorType = (formData.get('colorType') as string) ?? 'COLOR';
 
-  // Validate input
+  // validate input
   const validation = createTattooSchema.safeParse({
     title,
     description: description ?? undefined,
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Upload image
+  // upload image
   const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
   const uploadResult = await uploadTattooImage(
     imageBuffer,
@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
     authSession!.user.id,
   );
 
-  // Generate unique slug
+  // generate unique slug
   let slug = slugify(validation.data.title);
   let counter = 0;
   while (await isTattooSlugTaken(slug)) {
@@ -110,7 +110,7 @@ export async function POST(req: NextRequest) {
     slug = slugWithCounter(validation.data.title, counter);
   }
 
-  // Get artist ID
+  // get artist id
   const { prisma } = await import('@/lib/prisma');
   const artist = await prisma.artist.findUnique({
     where: { userId: session!.user.id },
@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
     artistId: artist.id,
   });
 
-  // Index in search (non-blocking)
+  // index in search (non-blocking)
   indexTattoo({
     id: tattoo.id,
     title: tattoo.title,

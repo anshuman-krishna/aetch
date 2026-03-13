@@ -112,7 +112,7 @@ export async function getTattoos(
 }
 
 export async function getTrendingTattoos(limit = 20) {
-  // weighted by likes, views, recency
+  // weighted by engagement
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 

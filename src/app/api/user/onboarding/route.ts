@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const { type, username, ...data } = body;
 
-  // Validate username
+  // validate username
   if (!username || typeof username !== 'string' || username.length < 3 || username.length > 30) {
     return NextResponse.json(
       { success: false, error: 'Username must be 3-30 characters' },

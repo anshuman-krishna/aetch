@@ -1,9 +1,15 @@
 import { notFound } from 'next/navigation';
+import { auth } from '@/lib/auth';
 import { getUserByUsername } from '@/backend/services/user-service';
+import { isFollowing } from '@/backend/services/follow-service';
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassAvatar } from '@/components/ui/glass-avatar';
 import { GlassBadge } from '@/components/ui/glass-badge';
 import { PageContainer } from '@/components/layouts/page-container';
+import { FollowButton } from '@/components/features/social/follow-button';
+import { ProfileTabs } from '@/components/features/social/profile-tabs';
+
+export const dynamic = 'force-dynamic';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -21,6 +27,12 @@ export default async function ProfilePage({ params }: Props) {
   const user = await getUserByUsername(username);
   if (!user) notFound();
 
+  const session = await auth();
+  const isOwnProfile = session?.user?.id === user.id;
+  const followingUser = session?.user && !isOwnProfile
+    ? await isFollowing(session.user.id, user.id)
+    : false;
+
   const roleLabel = {
     USER: 'Enthusiast',
     ARTIST: 'Artist',
@@ -30,7 +42,7 @@ export default async function ProfilePage({ params }: Props) {
 
   return (
     <PageContainer animate={false}>
-      <div className="py-12">
+      <div className="py-12 space-y-6">
         <GlassCard variant="strong" padding="lg" className="text-center">
           <GlassAvatar
             src={user.image}
@@ -48,7 +60,7 @@ export default async function ProfilePage({ params }: Props) {
           </div>
           {user.bio && <p className="mt-4 text-sm text-muted max-w-md mx-auto">{user.bio}</p>}
 
-          {/* Stats */}
+          {/* stats */}
           <div className="mt-6 flex justify-center gap-8">
             <div className="text-center">
               <p className="text-lg font-bold text-foreground">{user._count.posts}</p>
@@ -63,11 +75,18 @@ export default async function ProfilePage({ params }: Props) {
               <p className="text-xs text-muted">Following</p>
             </div>
           </div>
+
+          {/* follow button */}
+          {!isOwnProfile && session?.user && (
+            <div className="mt-4">
+              <FollowButton userId={user.id} initialFollowing={followingUser} />
+            </div>
+          )}
         </GlassCard>
 
-        {/* Favorite Styles */}
+        {/* styles */}
         {user.favoriteStyles.length > 0 && (
-          <GlassCard padding="md" className="mt-6">
+          <GlassCard padding="md">
             <h2 className="text-h4 text-foreground mb-3">Favorite Styles</h2>
             <div className="flex flex-wrap gap-2">
               {user.favoriteStyles.map((style) => (
@@ -76,6 +95,9 @@ export default async function ProfilePage({ params }: Props) {
             </div>
           </GlassCard>
         )}
+
+        {/* social tabs */}
+        <ProfileTabs userId={user.id} />
       </div>
     </PageContainer>
   );

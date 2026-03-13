@@ -6,7 +6,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// ─── Auth Models (NextAuth) ───
+// auth models (nextauth)
 
 model Account {
   id                String  @id @default(cuid())
@@ -47,7 +47,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// ─── Core Models ───
+// core models
 
 model User {
   id            String    @id @default(cuid())
@@ -74,7 +74,9 @@ model User {
   savedTattoos  SavedTattoo[]
   followers     Follower[] @relation("Following")
   following     Follower[] @relation("Followers")
-  notifications Notification[]
+  notifications  Notification[]
+  aiGenerations  AIGeneration[]
+  tattooPreviews TattooPreview[]
 
   @@index([email])
   @@index([username])
@@ -112,6 +114,7 @@ model Artist {
   bookings      Booking[]
   reviews       Review[]
   availability  ArtistAvailability[]
+  shopArtists   ShopArtist[]
 
   @@index([userId])
   @@index([slug])
@@ -141,13 +144,38 @@ model Shop {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  artists  Artist[]
-  bookings Booking[]
-  reviews  Review[]
+  artists     Artist[]
+  shopArtists ShopArtist[]
+  bookings    Booking[]
+  reviews     Review[]
 
   @@index([slug])
   @@index([city])
   @@index([ownerId])
+}
+
+// shop artist membership
+model ShopArtist {
+  id        String         @id @default(cuid())
+  shopId    String
+  artistId  String
+  role      ShopArtistRole @default(ARTIST)
+  createdAt DateTime       @default(now())
+
+  shop   Shop   @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([shopId, artistId])
+  @@index([shopId])
+  @@index([artistId])
+}
+
+enum ShopArtistRole {
+  OWNER
+  LEAD_ARTIST
+  ARTIST
+  GUEST
+  APPRENTICE
 }
 
 model Tattoo {
@@ -218,13 +246,16 @@ enum ColorType {
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  caption   String?  @db.Text
-  imageUrl  String?
-  authorId  String
-  tattooId  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  caption       String?  @db.Text
+  imageUrl      String?
+  tags          String[]
+  authorId      String
+  tattooId      String?
+  likesCount    Int      @default(0)
+  commentsCount Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   tattoo   Tattoo?   @relation(fields: [tattooId], references: [id])
@@ -234,6 +265,7 @@ model Post {
   @@index([authorId])
   @@index([tattooId])
   @@index([createdAt])
+  @@index([likesCount])
 }
 
 model Comment {
@@ -314,7 +346,7 @@ enum BookingStatus {
   NO_SHOW
 }
 
-// ─── Artist Availability ───
+// artist availability
 
 model ArtistAvailability {
   id        String   @id @default(cuid())
@@ -331,7 +363,7 @@ model ArtistAvailability {
   @@index([artistId])
 }
 
-// ─── Notifications ───
+// notifications
 
 model Notification {
   id        String           @id @default(cuid())
@@ -359,6 +391,8 @@ enum NotificationType {
   BOOKING_COMPLETED
   NEW_REVIEW
   NEW_FOLLOWER
+  POST_LIKE
+  POST_COMMENT
   SYSTEM
 }
 
@@ -374,6 +408,53 @@ model Follower {
   @@unique([followerId, followingId])
   @@index([followerId])
   @@index([followingId])
+}
+
+// ai generations
+
+model AIGeneration {
+  id        String   @id @default(cuid())
+  userId    String
+  prompt    String   @db.Text
+  imageUrl  String?
+  style     String?
+  placement String?
+  colorType String?
+  status    AIGenerationStatus @default(PENDING)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+enum AIGenerationStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+// ar tattoo previews
+
+model TattooPreview {
+  id          String   @id @default(cuid())
+  userId      String
+  bodyImageUrl String
+  tattooImageUrl String
+  previewImageUrl String?
+  placement   String?
+  positionX   Float    @default(50)
+  positionY   Float    @default(50)
+  scale       Float    @default(1)
+  rotation    Float    @default(0)
+  opacity     Float    @default(0.85)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model Like {

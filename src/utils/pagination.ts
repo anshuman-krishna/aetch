@@ -13,7 +13,7 @@ export interface PaginationMeta {
   hasPrev: boolean;
 }
 
-/** page/limit to prisma skip/take */
+// page/limit to skip/take
 export function getPaginationParams(
   page = 1,
   limit = 20,
@@ -27,7 +27,7 @@ export function getPaginationParams(
   };
 }
 
-/** build pagination meta */
+// build pagination meta
 export function buildPaginationMeta(
   total: number,
   params: PaginationParams,

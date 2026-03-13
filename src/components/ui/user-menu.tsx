@@ -32,10 +32,12 @@ export function UserMenu() {
     : '/onboarding/role';
 
   const isArtist = session.user.role === 'ARTIST' || session.user.role === 'ADMIN';
+  const isShopOwner = session.user.role === 'SHOP_OWNER' || session.user.role === 'ADMIN';
 
   const menuItems = [
     { id: 'profile', label: 'Profile' },
     ...(isArtist ? [{ id: 'dashboard', label: 'Dashboard' }] : []),
+    ...(isShopOwner ? [{ id: 'shop-dashboard', label: 'Shop Dashboard' }] : []),
     { id: 'saved', label: 'Saved' },
     { id: 'settings', label: 'Settings' },
     { id: 'logout', label: 'Log Out', danger: true },
@@ -60,6 +62,8 @@ export function UserMenu() {
           window.location.href = profileHref;
         } else if (id === 'dashboard') {
           window.location.href = '/dashboard';
+        } else if (id === 'shop-dashboard') {
+          window.location.href = '/shop-dashboard';
         } else if (id === 'saved') {
           window.location.href = '/saved';
         } else if (id === 'settings') {

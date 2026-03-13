@@ -21,6 +21,8 @@ function createLimiter(requests: number, window: `${number} ${'s' | 'ms' | 'm' |
 const limiters = {
   auth: createLimiter(10, '1 m'),
   ai: createLimiter(5, '1 m'),
+  'ai-generation': createLimiter(10, '1 h'),
+  'ar-preview': createLimiter(30, '1 h'),
   upload: createLimiter(20, '1 m'),
   api: createLimiter(60, '1 m'),
 } as const;
