@@ -136,7 +136,7 @@ export function TattooDetailView({ tattoo, initialLiked, initialSaved }: TattooD
         </GlassCard>
 
         {/* Artist Card */}
-        <Link href={`/artist/${tattoo.artist.slug}`}>
+        <Link href={`/app/artist/${tattoo.artist.slug}`}>
           <GlassCard padding="md" className="hover:bg-white/20 transition-colors">
             <div className="flex items-center gap-3">
               <GlassAvatar
@@ -177,7 +177,7 @@ export function TattooDetailView({ tattoo, initialLiked, initialSaved }: TattooD
           <h3 className="text-sm font-semibold text-foreground/80 mb-2">Styles</h3>
           <div className="flex flex-wrap gap-2">
             {tattoo.styles.map((style) => (
-              <Link key={style} href={`/gallery?styles=${style}`}>
+              <Link key={style} href={`/app/gallery?styles=${style}`}>
                 <GlassBadge variant="primary" size="md">
                   {STYLE_LABELS[style] ?? style}
                 </GlassBadge>

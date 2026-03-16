@@ -1,10 +1,35 @@
 import { prisma } from '@/lib/prisma';
 import type { UserRole } from '@prisma/client';
 
-export async function updateUserRole(userId: string, role: UserRole) {
+// add role to user
+export async function addUserRole(userId: string, role: UserRole) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { roles: true },
+  });
+  if (!user) throw new Error('User not found');
+
+  const roles = user.roles.includes(role)
+    ? user.roles
+    : [...user.roles, role];
+
   return prisma.user.update({
     where: { id: userId },
-    data: { role },
+    data: { roles },
+  });
+}
+
+// remove role from user
+export async function removeUserRole(userId: string, role: UserRole) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { roles: true },
+  });
+  if (!user) throw new Error('User not found');
+
+  return prisma.user.update({
+    where: { id: userId },
+    data: { roles: user.roles.filter((r) => r !== role) },
   });
 }
 
@@ -39,12 +64,19 @@ export async function completeArtistOnboarding(
     hourlyRate?: number;
   },
 ) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { roles: true },
+  });
+  const roles = user?.roles ?? ['USER'];
+  if (!roles.includes('ARTIST')) roles.push('ARTIST');
+
   return prisma.$transaction([
     prisma.user.update({
       where: { id: userId },
       data: {
         username: data.username,
-        role: 'ARTIST',
+        roles,
         onboardingComplete: true,
       },
     }),
@@ -74,12 +106,19 @@ export async function completeShopOnboarding(
     country?: string;
   },
 ) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { roles: true },
+  });
+  const roles = user?.roles ?? ['USER'];
+  if (!roles.includes('SHOP_OWNER')) roles.push('SHOP_OWNER');
+
   return prisma.$transaction([
     prisma.user.update({
       where: { id: userId },
       data: {
         username: data.username,
-        role: 'SHOP_OWNER',
+        roles,
         onboardingComplete: true,
       },
     }),
@@ -106,7 +145,7 @@ export async function getUserByUsername(username: string) {
       username: true,
       image: true,
       bio: true,
-      role: true,
+      roles: true,
       favoriteStyles: true,
       createdAt: true,
       artist: {

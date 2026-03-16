@@ -60,7 +60,7 @@ export function ConversationList({
         return (
           <Link
             key={conv.id}
-            href={`/messages/${conv.id}`}
+            href={`/app/messages/${conv.id}`}
             className={cn(
               'flex items-center gap-3 rounded-xl px-3 py-3 transition-colors',
               'hover:bg-white/10',

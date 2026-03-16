@@ -96,7 +96,7 @@ export function TattooSelector({ onSelect, selectedUrl }: TattooSelectorProps) {
           <p className="text-xs text-muted">
             Generate a tattoo design first, then use it here
           </p>
-          <a href="/ai">
+          <a href="/app/ai">
             <GlassButton variant="ghost" size="sm" className="mt-2">
               Go to AI Generator
             </GlassButton>

@@ -17,3 +17,12 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
     totalPages: number;
   };
 }
+
+// helper to check user roles
+export function hasRole(roles: UserRole[], role: UserRole): boolean {
+  return roles.includes(role);
+}
+
+export function hasAnyRole(roles: UserRole[], required: UserRole[]): boolean {
+  return required.some((r) => roles.includes(r));
+}

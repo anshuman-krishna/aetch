@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
+import { rateLimit } from '@/backend/middleware/rate-limit';
 import { toggleFollow } from '@/backend/services/follow-service';
 import { notifyNewFollower } from '@/backend/services/notification-service';
 
@@ -12,6 +13,9 @@ interface Params {
 export async function POST(_req: Request, { params }: Params) {
   const { session, error } = await authGuard();
   if (error) return error;
+
+  const rl = await rateLimit(session.user.id, 'api');
+  if (!rl.success) return rl.error;
 
   const { id: followingId } = await params;
 

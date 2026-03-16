@@ -56,7 +56,7 @@ export default function ShopOnboardingPage() {
         setError(data.error ?? 'Something went wrong');
         return;
       }
-      router.push('/');
+      router.push('/app/gallery');
       router.refresh();
     } finally {
       setLoading(false);

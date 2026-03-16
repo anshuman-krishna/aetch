@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Bebas_Neue, Sora } from 'next/font/google';
 import { Providers } from '@/components/layouts/providers';
 import { siteConfig } from '@/config/site';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const bebasNeue = Bebas_Neue({
+  variable: '--font-heading',
   subsets: ['latin'],
+  weight: '400',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const sora = Sora({
+  variable: '--font-body',
   subsets: ['latin'],
 });
 
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${bebasNeue.variable} ${sora.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

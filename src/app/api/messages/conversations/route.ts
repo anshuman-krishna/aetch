@@ -2,6 +2,7 @@ export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
+import { rateLimit } from '@/backend/middleware/rate-limit';
 import { getUserConversations, findOrCreateConversation } from '@/backend/services/message-service';
 import { getPaginationParams } from '@/utils/pagination';
 import { paginationSchema, createConversationSchema } from '@/lib/validations';
@@ -30,6 +31,9 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const { session, error } = await authGuard();
   if (error) return error;
+
+  const rl = await rateLimit(session.user.id, 'message');
+  if (!rl.success) return rl.error;
 
   const body = await req.json();
   const parsed = createConversationSchema.safeParse(body);

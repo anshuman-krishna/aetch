@@ -56,11 +56,11 @@ export function PostCard({ post, currentUserId, initialLiked = false, onDelete }
     <GlassCard padding="sm" className="overflow-hidden !p-0">
       {/* header */}
       <div className="flex items-center gap-3 p-4 pb-2">
-        <Link href={`/profile/${post.author.username}`}>
+        <Link href={`/app/profile/${post.author.username}`}>
           <GlassAvatar src={post.author.image} alt={post.author.name ?? ''} size="sm" />
         </Link>
         <div className="flex-1 min-w-0">
-          <Link href={`/profile/${post.author.username}`} className="text-sm font-medium text-foreground hover:underline">
+          <Link href={`/app/profile/${post.author.username}`} className="text-sm font-medium text-foreground hover:underline">
             {post.author.name ?? post.author.username}
           </Link>
           <p className="text-xs text-muted">{timeAgo}</p>
@@ -91,7 +91,7 @@ export function PostCard({ post, currentUserId, initialLiked = false, onDelete }
           <Heart className={cn('h-5 w-5 transition-colors', liked ? 'fill-red-400 text-red-400' : 'text-muted group-hover:text-foreground')} />
           <span className="text-sm text-muted">{likes}</span>
         </button>
-        <Link href={`/post/${post.id}`} className="flex items-center gap-1.5 group">
+        <Link href={`/app/post/${post.id}`} className="flex items-center gap-1.5 group">
           <MessageCircle className="h-5 w-5 text-muted group-hover:text-foreground transition-colors" />
           <span className="text-sm text-muted">{post.commentsCount}</span>
         </Link>
@@ -101,7 +101,7 @@ export function PostCard({ post, currentUserId, initialLiked = false, onDelete }
       {post.caption && (
         <div className="px-4 pt-2">
           <p className="text-sm text-foreground">
-            <Link href={`/profile/${post.author.username}`} className="font-medium hover:underline mr-1">
+            <Link href={`/app/profile/${post.author.username}`} className="font-medium hover:underline mr-1">
               {post.author.username}
             </Link>
             {post.caption}

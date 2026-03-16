@@ -13,14 +13,14 @@ declare module 'next-auth' {
       email?: string | null;
       image?: string | null;
       username?: string | null;
-      role: UserRole;
+      roles: UserRole[];
       onboardingComplete: boolean;
     };
   }
 
   interface User {
     username?: string | null;
-    role: UserRole;
+    roles: UserRole[];
     onboardingComplete: boolean;
   }
 }
@@ -28,6 +28,7 @@ declare module 'next-auth' {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   adapter: PrismaAdapter(prisma) as any,
+  trustHost: true,
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -57,7 +58,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         session.user.id = user.id;
         session.user.username = user.username;
-        session.user.role = user.role;
+        session.user.roles = user.roles;
         session.user.onboardingComplete = user.onboardingComplete;
       }
       return session;

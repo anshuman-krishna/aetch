@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { auth } from '@/lib/auth';
+import { rateLimit } from '@/backend/middleware/rate-limit';
 import {
   completeUserOnboarding,
   completeArtistOnboarding,
@@ -16,6 +17,9 @@ export async function POST(request: NextRequest) {
   if (!session?.user?.id) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
   }
+
+  const rl = await rateLimit(session.user.id, 'api');
+  if (!rl.success) return rl.error;
 
   const body = await request.json();
   const { type, username, ...data } = body;

@@ -336,6 +336,16 @@ export const sendMessageSchema = z.object({
     .trim(),
 });
 
+// reports
+
+export const createReportSchema = z.object({
+  targetType: z.enum(['USER', 'POST', 'TATTOO', 'COMMENT']),
+  targetId: z.string().min(1, 'Target ID required'),
+  reason: z.string().min(10, 'Describe the issue').max(1000).trim(),
+});
+
+export type CreateReportInput = z.infer<typeof createReportSchema>;
+
 // feed
 
 export const feedFilterSchema = z.object({

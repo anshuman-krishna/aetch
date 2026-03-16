@@ -64,7 +64,7 @@ export function CreatePostForm() {
         return;
       }
 
-      router.push('/feed');
+      router.push('/app/feed');
     } catch {
       setError('Something went wrong.');
     } finally {

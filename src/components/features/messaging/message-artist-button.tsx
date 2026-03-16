@@ -24,7 +24,7 @@ export function MessageArtistButton({ artistUserId }: MessageArtistButtonProps) 
 
       if (!res.ok) return;
       const { conversation } = await res.json();
-      router.push(`/messages/${conversation.id}`);
+      router.push(`/app/messages/${conversation.id}`);
     } finally {
       setLoading(false);
     }

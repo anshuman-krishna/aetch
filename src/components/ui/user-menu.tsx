@@ -28,11 +28,12 @@ export function UserMenu() {
   }
 
   const profileHref = session.user.username
-    ? `/profile/${session.user.username}`
+    ? `/app/profile/${session.user.username}`
     : '/onboarding/role';
 
-  const isArtist = session.user.role === 'ARTIST' || session.user.role === 'ADMIN';
-  const isShopOwner = session.user.role === 'SHOP_OWNER' || session.user.role === 'ADMIN';
+  const roles = session.user.roles ?? [];
+  const isArtist = roles.includes('ARTIST') || roles.includes('ADMIN');
+  const isShopOwner = roles.includes('SHOP_OWNER') || roles.includes('ADMIN');
 
   const menuItems = [
     { id: 'profile', label: 'Profile' },
@@ -61,13 +62,13 @@ export function UserMenu() {
         } else if (id === 'profile') {
           window.location.href = profileHref;
         } else if (id === 'dashboard') {
-          window.location.href = '/dashboard';
+          window.location.href = '/app/dashboard';
         } else if (id === 'shop-dashboard') {
-          window.location.href = '/shop-dashboard';
+          window.location.href = '/app/shop-dashboard';
         } else if (id === 'saved') {
-          window.location.href = '/saved';
+          window.location.href = '/app/saved';
         } else if (id === 'settings') {
-          window.location.href = '/settings';
+          window.location.href = '/app/settings';
         }
       }}
     />

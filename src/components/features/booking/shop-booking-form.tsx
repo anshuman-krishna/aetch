@@ -80,7 +80,7 @@ export function ShopBookingForm({ shopId, shopSlug, artists }: ShopBookingFormPr
         return;
       }
 
-      router.push(`/shop/${shopSlug}?booked=true`);
+      router.push(`/app/shop/${shopSlug}?booked=true`);
     } catch {
       setError('Something went wrong.');
     } finally {

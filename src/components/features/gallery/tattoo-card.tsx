@@ -51,7 +51,7 @@ export function TattooCard({ tattoo, priority = false, className }: TattooCardPr
       onHoverEnd={() => setIsHovered(false)}
       layout
     >
-      <Link href={`/tattoo/${tattoo.slug}`} className="block">
+      <Link href={`/app/tattoo/${tattoo.slug}`} className="block">
         <div className="relative overflow-hidden rounded-2xl glass">
           <div className="relative aspect-[3/4]">
             <Image
@@ -104,7 +104,7 @@ export function TattooCard({ tattoo, priority = false, className }: TattooCardPr
       {/* artist info */}
       <div className="mt-2.5 px-0.5">
         <Link
-          href={`/artist/${tattoo.artist.slug}`}
+          href={`/app/artist/${tattoo.artist.slug}`}
           className="flex items-center gap-2 group/artist"
         >
           <GlassAvatar
