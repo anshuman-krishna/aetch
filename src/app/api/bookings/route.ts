@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
+import { rateLimit } from '@/backend/middleware/rate-limit';
 import { createBooking, getUserBookings } from '@/backend/services/booking-service';
 import { getArtistByUserId } from '@/backend/services/artist-service';
 import { notifyBookingRequest } from '@/backend/services/notification-service';
@@ -28,6 +29,9 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const { session, error } = await authGuard();
   if (error) return error;
+
+  const rl = await rateLimit(session.user.id, 'api');
+  if (!rl.success) return rl.error;
 
   try {
     const body = await req.json();

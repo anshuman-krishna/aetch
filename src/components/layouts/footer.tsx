@@ -2,10 +2,10 @@ import Link from 'next/link';
 
 const footerLinks = {
   Platform: [
-    { href: '/gallery', label: 'Gallery' },
-    { href: '/artists', label: 'Artists' },
-    { href: '/shops', label: 'Shops' },
-    { href: '/feed', label: 'Feed' },
+    { href: '/app/gallery', label: 'Gallery' },
+    { href: '/app/artists', label: 'Artists' },
+    { href: '/app/shops', label: 'Shops' },
+    { href: '/app/feed', label: 'Feed' },
   ],
   Company: [
     { href: '/about', label: 'About' },

@@ -14,6 +14,7 @@ interface Field {
 interface Model {
   name: string;
   fields: Field[];
+  indexes: string[];
 }
 
 interface EnumDef {
@@ -35,7 +36,7 @@ function parseSchema(content: string) {
     // model start
     const modelMatch = line.match(/^model\s+(\w+)\s*\{/);
     if (modelMatch) {
-      current = { name: modelMatch[1], fields: [] };
+      current = { name: modelMatch[1], fields: [], indexes: [] };
       continue;
     }
 
@@ -56,6 +57,12 @@ function parseSchema(content: string) {
     // enum value
     if (currentEnum && line && !line.startsWith('//') && !line.startsWith('@@')) {
       currentEnum.values.push(line);
+      continue;
+    }
+
+    // indexes and constraints
+    if (current && (line.startsWith('@@index') || line.startsWith('@@unique'))) {
+      current.indexes.push(line);
       continue;
     }
 
@@ -108,6 +115,25 @@ function generateMarkdown(models: Model[], enums: EnumDef[]) {
       const attrs = f.attributes.join(' ');
       lines.push(`| ${f.name} | ${f.type} | ${req} | ${attrs} |`);
     }
+
+    if (model.indexes.length > 0) {
+      lines.push('', '**Indexes:**', '');
+      for (const idx of model.indexes) {
+        lines.push(`- \`${idx}\``);
+      }
+    }
+
+    // relations
+    const relations = model.fields.filter(
+      (f) => f.attributes.some((a) => a.startsWith('@relation')),
+    );
+    if (relations.length > 0) {
+      lines.push('', '**Relations:**', '');
+      for (const rel of relations) {
+        lines.push(`- ${rel.name} → ${rel.type}`);
+      }
+    }
+
     lines.push('');
   }
 

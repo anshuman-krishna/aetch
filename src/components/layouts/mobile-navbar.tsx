@@ -13,10 +13,10 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/artists', label: 'Artists' },
-  { href: '/shops', label: 'Shops' },
-  { href: '/feed', label: 'Feed' },
+  { href: '/app/gallery', label: 'Gallery' },
+  { href: '/app/artists', label: 'Artists' },
+  { href: '/app/shops', label: 'Shops' },
+  { href: '/app/feed', label: 'Feed' },
 ];
 
 export function MobileNavbar() {

@@ -53,7 +53,7 @@ export default function UserOnboardingPage() {
         setError(data.error ?? 'Something went wrong');
         return;
       }
-      router.push('/');
+      router.push('/app/gallery');
       router.refresh();
     } finally {
       setLoading(false);

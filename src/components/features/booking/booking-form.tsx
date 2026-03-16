@@ -66,7 +66,7 @@ export function BookingForm({ artistId, artistSlug }: BookingFormProps) {
         return;
       }
 
-      router.push(`/artist/${artistSlug}?booked=true`);
+      router.push(`/app/artist/${artistSlug}?booked=true`);
     } catch {
       setError('Something went wrong.');
     } finally {

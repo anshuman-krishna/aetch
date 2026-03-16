@@ -24,7 +24,7 @@ export function ShopCard({ shop }: ShopCardProps) {
   const location = [shop.city, shop.country].filter(Boolean).join(', ');
 
   return (
-    <Link href={`/shop/${shop.slug}`}>
+    <Link href={`/app/shop/${shop.slug}`}>
       <GlassCard padding="md" className="hover:bg-white/15 transition-colors h-full">
         <div className="flex items-start gap-4">
           <GlassAvatar

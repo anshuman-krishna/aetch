@@ -112,22 +112,33 @@ export async function getTattoos(
 }
 
 export async function getTrendingTattoos(limit = 20) {
-  // weighted by engagement
+  // weighted score: likes*3 + saves*2 + views
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-  return prisma.tattoo.findMany({
+  const tattoos = await prisma.tattoo.findMany({
     where: {
       createdAt: { gte: sevenDaysAgo },
     },
-    include: tattooInclude,
+    include: {
+      ...tattooInclude,
+      _count: { select: { savedBy: true } },
+    },
     orderBy: [
       { likesCount: 'desc' },
       { viewsCount: 'desc' },
-      { createdAt: 'desc' },
     ],
-    take: limit,
+    take: limit * 2,
   });
+
+  // apply weighted ranking
+  const scored = tattoos.map((t) => ({
+    ...t,
+    _score: t.likesCount * 3 + t._count.savedBy * 2 + t.viewsCount,
+  }));
+
+  scored.sort((a, b) => b._score - a._score);
+  return scored.slice(0, limit);
 }
 
 export async function getArtistTattoos(artistId: string, pagination: PaginationParams) {

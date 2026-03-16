@@ -48,7 +48,7 @@ export async function notifyBookingRequest(bookingId: string, artistUserId: stri
     title: 'New booking request',
     message: `${clientName} requested a booking`,
     bookingId,
-    link: '/dashboard/bookings',
+    link: '/app/dashboard/bookings',
   });
 }
 
@@ -59,7 +59,7 @@ export async function notifyNewFollower(userId: string, followerName: string) {
     type: 'NEW_FOLLOWER',
     title: 'New follower',
     message: `${followerName} started following you`,
-    link: '/profile',
+    link: '/app/profile',
   });
 }
 
@@ -70,7 +70,7 @@ export async function notifyPostLike(userId: string, postId: string, likerName: 
     type: 'POST_LIKE',
     title: 'New like',
     message: `${likerName} liked your post`,
-    link: `/post/${postId}`,
+    link: `/app/post/${postId}`,
   });
 }
 
@@ -81,7 +81,7 @@ export async function notifyPostComment(userId: string, postId: string, commente
     type: 'POST_COMMENT',
     title: 'New comment',
     message: `${commenterName} commented on your post`,
-    link: `/post/${postId}`,
+    link: `/app/post/${postId}`,
   });
 }
 
@@ -96,7 +96,7 @@ export async function notifyNewMessage(
     type: 'NEW_MESSAGE',
     title: 'New message',
     message: `${senderName} sent you a message`,
-    link: `/messages/${conversationId}`,
+    link: `/app/messages/${conversationId}`,
   });
 }
 
@@ -119,6 +119,6 @@ export async function notifyBookingStatusChange(
     title: `Booking ${status.toLowerCase()}`,
     message: `${artistName} ${status.toLowerCase()} your booking`,
     bookingId,
-    link: '/bookings',
+    link: '/app/bookings',
   });
 }

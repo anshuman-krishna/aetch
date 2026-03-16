@@ -85,53 +85,63 @@
   --color-glass-border: var(--glass-border);
   --color-glass-shadow: var(--glass-shadow);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
 }
 
 /* ─── Base Styles ─── */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* ─── Typography System ─── */
 .text-display {
+  font-family: var(--font-heading), system-ui, sans-serif;
   font-size: 4rem;
   line-height: 1.1;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .text-h1 {
+  font-family: var(--font-heading), system-ui, sans-serif;
   font-size: 3rem;
   line-height: 1.15;
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
 }
 
 .text-h2 {
+  font-family: var(--font-heading), system-ui, sans-serif;
   font-size: 2rem;
   line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
 .text-h3 {
+  font-family: var(--font-heading), system-ui, sans-serif;
   font-size: 1.5rem;
   line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
 .text-h4 {
+  font-family: var(--font-heading), system-ui, sans-serif;
   font-size: 1.125rem;
   line-height: 1.4;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
 }
 
 .text-body {

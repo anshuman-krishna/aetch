@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { auth } from '@/lib/auth';
+import { rateLimit } from '@/backend/middleware/rate-limit';
 import { updateUserAvatar } from '@/backend/services/user-service';
 import { uploadAvatar } from '@/lib/upload';
 
@@ -10,6 +11,9 @@ export async function POST(request: NextRequest) {
   if (!session?.user?.id) {
     return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
   }
+
+  const rl = await rateLimit(session.user.id, 'upload');
+  if (!rl.success) return rl.error;
 
   try {
     const formData = await request.formData();

@@ -2,6 +2,7 @@ import sharp from 'sharp';
 
 interface ProcessedImage {
   image: Buffer;
+  preview: Buffer;
   thumbnail: Buffer;
   blurDataUrl: string;
   width: number;
@@ -10,7 +11,8 @@ interface ProcessedImage {
 
 const TATTOO_MAX_WIDTH = 1920;
 const TATTOO_MAX_HEIGHT = 1920;
-const THUMBNAIL_SIZE = 400;
+const PREVIEW_SIZE = 800;
+const THUMBNAIL_SIZE = 300;
 const BLUR_SIZE = 16;
 const QUALITY = 85;
 
@@ -31,7 +33,16 @@ export async function processTattooImage(input: Buffer): Promise<ProcessedImage>
 
   const resizedMeta = await sharp(image).metadata();
 
-  // thumbnail
+  // preview (800px)
+  const preview = await sharp(input)
+    .resize(PREVIEW_SIZE, PREVIEW_SIZE, {
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+    .webp({ quality: 80 })
+    .toBuffer();
+
+  // thumbnail (300px)
   const thumbnail = await sharp(input)
     .resize(THUMBNAIL_SIZE, THUMBNAIL_SIZE, {
       fit: 'cover',
@@ -50,6 +61,7 @@ export async function processTattooImage(input: Buffer): Promise<ProcessedImage>
 
   return {
     image,
+    preview,
     thumbnail,
     blurDataUrl,
     width: resizedMeta.width ?? originalWidth,

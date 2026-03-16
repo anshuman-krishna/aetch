@@ -43,7 +43,7 @@ export function ShopArtistsList({ artists, editable = false, onRemove }: ShopArt
     <div className="space-y-3">
       {artists.map((sa) => (
         <GlassCard key={sa.id} padding="sm" className="flex items-center gap-3">
-          <Link href={`/artist/${sa.artist.slug}`} className="flex items-center gap-3 flex-1 min-w-0">
+          <Link href={`/app/artist/${sa.artist.slug}`} className="flex items-center gap-3 flex-1 min-w-0">
             <GlassAvatar
               src={sa.artist.user.image}
               alt={sa.artist.displayName}

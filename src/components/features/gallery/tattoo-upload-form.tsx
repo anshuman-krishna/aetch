@@ -98,7 +98,7 @@ export function TattooUploadForm() {
         return;
       }
 
-      router.push(`/tattoo/${data.tattoo.slug}`);
+      router.push(`/app/tattoo/${data.tattoo.slug}`);
     } catch {
       setError('Something went wrong. Please try again.');
     } finally {

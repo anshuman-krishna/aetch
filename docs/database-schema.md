@@ -1,6 +1,6 @@
 # AETCH Database Schema
 
-> Auto-generated on 2026-03-13
+> Auto-generated on 2026-03-14
 
 ---
 
@@ -23,7 +23,11 @@
 - [Notification](#notification)
 - [Follower](#follower)
 - [AIGeneration](#aigeneration)
+- [TattooPreview](#tattoopreview)
 - [Like](#like)
+- [Conversation](#conversation)
+- [ConversationParticipant](#conversationparticipant)
+- [Message](#message)
 
 ## Enums
 
@@ -55,6 +59,15 @@
 | session_state | S | Yes | tring? |
 | user | U | Yes | ser @relation(fields: [userId], references: [id], onDelete: Cascade) |
 
+**Indexes:**
+
+- `@@unique([provider, providerAccountId])`
+- `@@index([userId])`
+
+**Relations:**
+
+- user → U
+
 ### Session
 
 | Field | Type | Required | Attributes |
@@ -65,6 +78,14 @@
 | expires | D | Yes | ateTime |
 | user | U | Yes | ser @relation(fields: [userId], references: [id], onDelete: Cascade) |
 
+**Indexes:**
+
+- `@@index([userId])`
+
+**Relations:**
+
+- user → U
+
 ### VerificationToken
 
 | Field | Type | Required | Attributes |
@@ -72,6 +93,10 @@
 | identifier | S | Yes | tring |
 | token | S | Yes | tring @unique |
 | expires | D | Yes | ateTime |
+
+**Indexes:**
+
+- `@@unique([identifier, token])`
 
 ### User
 
@@ -84,7 +109,7 @@
 | image | S | Yes | tring? |
 | bio | S | Yes | tring? @db.Text |
 | username | S | Yes | tring? @unique |
-| role | U | Yes | serRole @default(USER) |
+| roles | U | Yes | serRole[] @default([USER]) |
 | onboardingComplete | B | Yes | oolean @default(false) |
 | favoriteStyles | S | Yes | tring[] |
 | createdAt | D | Yes | ateTime @default(now()) |
@@ -102,6 +127,19 @@
 | following | F | Yes | ollower[] @relation("Followers") |
 | notifications | N | Yes | otification[] |
 | aiGenerations | A | Yes | IGeneration[] |
+| tattooPreviews | T | Yes | attooPreview[] |
+| conversations | C | Yes | onversationParticipant[] |
+| sentMessages | M | Yes | essage[] |
+
+**Indexes:**
+
+- `@@index([email])`
+- `@@index([username])`
+
+**Relations:**
+
+- followers → F
+- following → F
 
 ### Artist
 
@@ -132,6 +170,18 @@
 | availability | A | Yes | rtistAvailability[] |
 | shopArtists | S | Yes | hopArtist[] |
 
+**Indexes:**
+
+- `@@index([userId])`
+- `@@index([slug])`
+- `@@index([shopId])`
+- `@@index([location])`
+
+**Relations:**
+
+- user → U
+- shop → S
+
 ### Shop
 
 | Field | Type | Required | Attributes |
@@ -161,6 +211,12 @@
 | bookings | B | Yes | ooking[] |
 | reviews | R | Yes | eview[] |
 
+**Indexes:**
+
+- `@@index([slug])`
+- `@@index([city])`
+- `@@index([ownerId])`
+
 ### ShopArtist
 
 | Field | Type | Required | Attributes |
@@ -172,6 +228,17 @@
 | createdAt | D | Yes | ateTime @default(now()) |
 | shop | S | Yes | hop @relation(fields: [shopId], references: [id], onDelete: Cascade) |
 | artist | A | Yes | rtist @relation(fields: [artistId], references: [id], onDelete: Cascade) |
+
+**Indexes:**
+
+- `@@unique([shopId, artistId])`
+- `@@index([shopId])`
+- `@@index([artistId])`
+
+**Relations:**
+
+- shop → S
+- artist → A
 
 ### Tattoo
 
@@ -199,6 +266,16 @@
 | likes | L | Yes | ike[] |
 | savedBy | S | Yes | avedTattoo[] |
 
+**Indexes:**
+
+- `@@index([artistId])`
+- `@@index([bodyPlacement])`
+- `@@index([createdAt])`
+
+**Relations:**
+
+- artist → A
+
 ### SavedTattoo
 
 | Field | Type | Required | Attributes |
@@ -209,6 +286,17 @@
 | createdAt | D | Yes | ateTime @default(now()) |
 | user | U | Yes | ser @relation(fields: [userId], references: [id], onDelete: Cascade) |
 | tattoo | T | Yes | attoo @relation(fields: [tattooId], references: [id], onDelete: Cascade) |
+
+**Indexes:**
+
+- `@@unique([userId, tattooId])`
+- `@@index([userId])`
+- `@@index([tattooId])`
+
+**Relations:**
+
+- user → U
+- tattoo → T
 
 ### Post
 
@@ -229,6 +317,18 @@
 | comments | C | Yes | omment[] |
 | likes | L | Yes | ike[] |
 
+**Indexes:**
+
+- `@@index([authorId])`
+- `@@index([tattooId])`
+- `@@index([createdAt])`
+- `@@index([likesCount])`
+
+**Relations:**
+
+- author → U
+- tattoo → T
+
 ### Comment
 
 | Field | Type | Required | Attributes |
@@ -245,6 +345,19 @@
 | parent | C | Yes | omment? @relation("CommentReplies", fields: [parentId], references: [id]) |
 | replies | C | Yes | omment[] @relation("CommentReplies") |
 
+**Indexes:**
+
+- `@@index([postId])`
+- `@@index([authorId])`
+- `@@index([parentId])`
+
+**Relations:**
+
+- author → U
+- post → P
+- parent → C
+- replies → C
+
 ### Review
 
 | Field | Type | Required | Attributes |
@@ -260,6 +373,18 @@
 | author | U | Yes | ser @relation(fields: [authorId], references: [id], onDelete: Cascade) |
 | artist | A | Yes | rtist? @relation(fields: [artistId], references: [id]) |
 | shop | S | Yes | hop? @relation(fields: [shopId], references: [id]) |
+
+**Indexes:**
+
+- `@@index([artistId])`
+- `@@index([shopId])`
+- `@@index([authorId])`
+
+**Relations:**
+
+- author → U
+- artist → A
+- shop → S
 
 ### Booking
 
@@ -287,6 +412,21 @@
 | artist | A | Yes | rtist @relation(fields: [artistId], references: [id]) |
 | shop | S | Yes | hop? @relation(fields: [shopId], references: [id]) |
 | notifications | N | Yes | otification[] |
+| conversation | C | Yes | onversation? |
+
+**Indexes:**
+
+- `@@index([userId])`
+- `@@index([artistId])`
+- `@@index([shopId])`
+- `@@index([date])`
+- `@@index([status])`
+
+**Relations:**
+
+- user → U
+- artist → A
+- shop → S
 
 ### ArtistAvailability
 
@@ -300,6 +440,15 @@
 | createdAt | D | Yes | ateTime @default(now()) |
 | updatedAt | D | Yes | ateTime @updatedAt |
 | artist | A | Yes | rtist @relation(fields: [artistId], references: [id], onDelete: Cascade) |
+
+**Indexes:**
+
+- `@@unique([artistId, dayOfWeek])`
+- `@@index([artistId])`
+
+**Relations:**
+
+- artist → A
 
 ### Notification
 
@@ -317,6 +466,17 @@
 | user | U | Yes | ser @relation(fields: [userId], references: [id], onDelete: Cascade) |
 | booking | B | Yes | ooking? @relation(fields: [bookingId], references: [id]) |
 
+**Indexes:**
+
+- `@@index([userId, read])`
+- `@@index([userId, createdAt])`
+- `@@index([bookingId])`
+
+**Relations:**
+
+- user → U
+- booking → B
+
 ### Follower
 
 | Field | Type | Required | Attributes |
@@ -327,6 +487,17 @@
 | createdAt | D | Yes | ateTime @default(now()) |
 | follower | U | Yes | ser @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade) |
 | following | U | Yes | ser @relation("Following", fields: [followingId], references: [id], onDelete: Cascade) |
+
+**Indexes:**
+
+- `@@unique([followerId, followingId])`
+- `@@index([followerId])`
+- `@@index([followingId])`
+
+**Relations:**
+
+- follower → U
+- following → U
 
 ### AIGeneration
 
@@ -343,6 +514,42 @@
 | createdAt | D | Yes | ateTime @default(now()) |
 | user | U | Yes | ser @relation(fields: [userId], references: [id], onDelete: Cascade) |
 
+**Indexes:**
+
+- `@@index([userId])`
+- `@@index([createdAt])`
+
+**Relations:**
+
+- user → U
+
+### TattooPreview
+
+| Field | Type | Required | Attributes |
+|-------|------|----------|------------|
+| id | S | Yes | tring @id @default(cuid()) |
+| userId | S | Yes | tring |
+| bodyImageUrl | S | Yes | tring |
+| tattooImageUrl | S | Yes | tring |
+| previewImageUrl | S | Yes | tring? |
+| placement | S | Yes | tring? |
+| positionX | F | Yes | loat @default(50) |
+| positionY | F | Yes | loat @default(50) |
+| scale | F | Yes | loat @default(1) |
+| rotation | F | Yes | loat @default(0) |
+| opacity | F | Yes | loat @default(0.85) |
+| createdAt | D | Yes | ateTime @default(now()) |
+| user | U | Yes | ser @relation(fields: [userId], references: [id], onDelete: Cascade) |
+
+**Indexes:**
+
+- `@@index([userId])`
+- `@@index([createdAt])`
+
+**Relations:**
+
+- user → U
+
 ### Like
 
 | Field | Type | Required | Attributes |
@@ -355,6 +562,87 @@
 | user | U | Yes | ser @relation(fields: [userId], references: [id], onDelete: Cascade) |
 | post | P | Yes | ost? @relation(fields: [postId], references: [id], onDelete: Cascade) |
 | tattoo | T | Yes | attoo? @relation(fields: [tattooId], references: [id], onDelete: Cascade) |
+
+**Indexes:**
+
+- `@@unique([userId, postId])`
+- `@@unique([userId, tattooId])`
+- `@@index([userId])`
+- `@@index([postId])`
+- `@@index([tattooId])`
+
+**Relations:**
+
+- user → U
+- post → P
+- tattoo → T
+
+### Conversation
+
+| Field | Type | Required | Attributes |
+|-------|------|----------|------------|
+| id | S | Yes | tring @id @default(cuid()) |
+| bookingId | S | Yes | tring? @unique |
+| lastMessage | S | Yes | tring? @db.Text |
+| lastActivity | D | Yes | ateTime @default(now()) |
+| createdAt | D | Yes | ateTime @default(now()) |
+| booking | B | Yes | ooking? @relation(fields: [bookingId], references: [id]) |
+| participants | C | Yes | onversationParticipant[] |
+| messages | M | Yes | essage[] |
+
+**Indexes:**
+
+- `@@index([lastActivity])`
+
+**Relations:**
+
+- booking → B
+
+### ConversationParticipant
+
+| Field | Type | Required | Attributes |
+|-------|------|----------|------------|
+| id | S | Yes | tring @id @default(cuid()) |
+| conversationId | S | Yes | tring |
+| userId | S | Yes | tring |
+| lastReadAt | D | Yes | ateTime @default(now()) |
+| createdAt | D | Yes | ateTime @default(now()) |
+| conversation | C | Yes | onversation @relation(fields: [conversationId], references: [id], onDelete: Cascade) |
+| user | U | Yes | ser @relation(fields: [userId], references: [id], onDelete: Cascade) |
+
+**Indexes:**
+
+- `@@unique([conversationId, userId])`
+- `@@index([userId])`
+- `@@index([conversationId])`
+
+**Relations:**
+
+- conversation → C
+- user → U
+
+### Message
+
+| Field | Type | Required | Attributes |
+|-------|------|----------|------------|
+| id | S | Yes | tring @id @default(cuid()) |
+| conversationId | S | Yes | tring |
+| senderId | S | Yes | tring |
+| content | S | Yes | tring @db.Text |
+| read | B | Yes | oolean @default(false) |
+| createdAt | D | Yes | ateTime @default(now()) |
+| conversation | C | Yes | onversation @relation(fields: [conversationId], references: [id], onDelete: Cascade) |
+| sender | U | Yes | ser @relation(fields: [senderId], references: [id], onDelete: Cascade) |
+
+**Indexes:**
+
+- `@@index([conversationId, createdAt])`
+- `@@index([senderId])`
+
+**Relations:**
+
+- conversation → C
+- sender → U
 
 ---
 
@@ -417,6 +705,7 @@
 - NEW_FOLLOWER
 - POST_LIKE
 - POST_COMMENT
+- NEW_MESSAGE
 - SYSTEM
 
 ### AIGenerationStatus

@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // upload image
+  // process and upload image variants
   const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
   const uploadResult = await uploadTattooImage(
     imageBuffer,
@@ -130,8 +130,11 @@ export async function POST(req: NextRequest) {
     title: validation.data.title,
     slug,
     description: validation.data.description,
-    imageUrl: uploadResult.url,
-    thumbnailUrl: uploadResult.url,
+    imageUrl: uploadResult.imageUrl,
+    thumbnailUrl: uploadResult.thumbnailUrl,
+    blurDataUrl: uploadResult.blurDataUrl,
+    width: uploadResult.width,
+    height: uploadResult.height,
     styles: validation.data.styles as TattooStyle[],
     bodyPlacement: validation.data.bodyPlacement,
     colorType: validation.data.colorType as ColorType,

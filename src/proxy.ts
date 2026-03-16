@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
-const protectedPaths = ['/onboarding', '/profile/edit', '/dashboard', '/settings', '/saved', '/book', '/shop-dashboard', '/feed', '/create-post', '/ai', '/ar-preview', '/messages'];
+const protectedPaths = ['/onboarding', '/app/profile/edit', '/app/dashboard', '/app/settings', '/app/saved', '/app/book', '/app/shop-dashboard', '/app/feed', '/app/create-post', '/app/ai', '/app/ar-preview', '/app/messages'];
 const authPaths = ['/login', '/register'];
 
 // security response headers
@@ -30,13 +30,12 @@ export default auth((req) => {
     return NextResponse.redirect(loginUrl);
   }
 
-  // enforce onboarding completion
+  // enforce onboarding on app routes
   if (
     isLoggedIn &&
     !req.auth?.user?.onboardingComplete &&
-    !pathname.startsWith('/onboarding') &&
-    !pathname.startsWith('/api') &&
-    !authPaths.some((p) => pathname.startsWith(p))
+    pathname.startsWith('/app') &&
+    !pathname.startsWith('/api')
   ) {
     return NextResponse.redirect(new URL('/onboarding/role', req.url));
   }

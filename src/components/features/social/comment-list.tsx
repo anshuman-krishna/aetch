@@ -52,12 +52,12 @@ function CommentItem({
   return (
     <div className="space-y-2">
       <div className="flex gap-3">
-        <Link href={`/profile/${comment.author.username}`}>
+        <Link href={`/app/profile/${comment.author.username}`}>
           <GlassAvatar src={comment.author.image} alt={comment.author.name ?? ''} size="sm" />
         </Link>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <Link href={`/profile/${comment.author.username}`} className="text-sm font-medium text-foreground hover:underline">
+            <Link href={`/app/profile/${comment.author.username}`} className="text-sm font-medium text-foreground hover:underline">
               {comment.author.username ?? comment.author.name}
             </Link>
             <span className="text-xs text-muted">{timeAgo}</span>

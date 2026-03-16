@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import type { UserRole } from '@prisma/client';
 
+// check if user has any required role
 export async function requireRole(...roles: UserRole[]) {
   const session = await auth();
 
@@ -15,7 +16,10 @@ export async function requireRole(...roles: UserRole[]) {
     };
   }
 
-  if (!roles.includes(session.user.role as UserRole)) {
+  const userRoles = session.user.roles ?? [];
+  const hasRole = roles.some((r) => userRoles.includes(r));
+
+  if (!hasRole) {
     return {
       session: null as null,
       error: NextResponse.json(

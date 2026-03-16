@@ -57,7 +57,7 @@ model User {
   image         String?
   bio           String?   @db.Text
   username      String?   @unique
-  role               UserRole  @default(USER)
+  roles              UserRole[] @default([USER])
   onboardingComplete Boolean   @default(false)
   favoriteStyles     String[]
   createdAt          DateTime  @default(now())
@@ -79,6 +79,7 @@ model User {
   tattooPreviews   TattooPreview[]
   conversations    ConversationParticipant[]
   sentMessages     Message[]
+  reports          Report[]
 
   @@index([email])
   @@index([username])
@@ -122,6 +123,7 @@ model Artist {
   @@index([slug])
   @@index([shopId])
   @@index([location])
+  @@index([verified])
 }
 
 model Shop {
@@ -154,6 +156,7 @@ model Shop {
   @@index([slug])
   @@index([city])
   @@index([ownerId])
+  @@index([verified])
 }
 
 // shop artist membership
@@ -207,6 +210,8 @@ model Tattoo {
   @@index([artistId])
   @@index([bodyPlacement])
   @@index([createdAt])
+  @@index([likesCount])
+  @@index([colorType])
 }
 
 model SavedTattoo {
@@ -431,6 +436,7 @@ model AIGeneration {
 
   @@index([userId])
   @@index([createdAt])
+  @@index([status])
 }
 
 enum AIGenerationStatus {
@@ -523,4 +529,35 @@ model Message {
 
   @@index([conversationId, createdAt])
   @@index([senderId])
+}
+
+// content reports
+model Report {
+  id          String       @id @default(cuid())
+  reporterId  String
+  reason      String       @db.Text
+  targetType  ReportTarget
+  targetId    String
+  status      ReportStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+
+  reporter User @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@index([reporterId])
+  @@index([targetType, targetId])
+  @@index([status])
+}
+
+enum ReportTarget {
+  USER
+  POST
+  TATTOO
+  COMMENT
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+  DISMISSED
 }
