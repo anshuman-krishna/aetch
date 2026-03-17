@@ -4,7 +4,9 @@ import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
 import { rateLimit } from '@/backend/middleware/rate-limit';
 import { sendMessage } from '@/backend/services/message-service';
+import { notifyNewMessage } from '@/backend/services/notification-service';
 import { sendMessageSchema } from '@/lib/validations';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(req: Request) {
   const { session, error } = await authGuard();
@@ -29,6 +31,23 @@ export async function POST(req: Request) {
       session.user.id,
       parsed.data.content,
     );
+
+    // notify recipient (non-blocking)
+    prisma.conversationParticipant.findMany({
+      where: {
+        conversationId: parsed.data.conversationId,
+        userId: { not: session.user.id },
+      },
+    }).then((participants) => {
+      for (const p of participants) {
+        notifyNewMessage(
+          p.userId,
+          session.user.name ?? 'Someone',
+          parsed.data.conversationId,
+        ).catch(() => {});
+      }
+    }).catch(() => {});
+
     return NextResponse.json({ message }, { status: 201 });
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Send failed';

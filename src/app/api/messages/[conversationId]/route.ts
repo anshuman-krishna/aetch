@@ -30,18 +30,17 @@ export async function GET(req: Request, { params }: Params) {
   const limit = parsed.success ? parsed.data.limit : 50;
 
   try {
-    const [conversation, result] = await Promise.all([
-      getConversationById(conversationId, session.user.id),
-      getMessages(
-        conversationId,
-        session.user.id,
-        getPaginationParams(page, limit),
-      ),
-    ]);
-
+    // verify membership before fetching
+    const conversation = await getConversationById(conversationId, session.user.id);
     if (!conversation) {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
+
+    const result = await getMessages(
+      conversationId,
+      session.user.id,
+      getPaginationParams(page, limit),
+    );
 
     return NextResponse.json({ conversation, ...result });
   } catch (err) {
