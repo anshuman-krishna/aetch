@@ -17,9 +17,9 @@ it is not just limited to be a gallery or a tool but rather an attempt to build 
 
 aetch is a full stack platform where
 
-/ users can explore tattoos, generate ideas using ai, preview them on their own body, and book artists.
-/ artists can showcase their work, manage bookings, and grow their presence.
-/ shops can operate as hubs with multiple artists and manage incoming work.
+-  users can explore tattoos, generate ideas using ai, preview them on their own body, and book artists.
+- artists can showcase their work, manage bookings, and grow their presence.
+- shops can operate as hubs with multiple artists and manage incoming work.
 
 it blends
 
