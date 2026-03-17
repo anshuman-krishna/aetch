@@ -166,3 +166,72 @@
 - [ ] XSS payload in input is sanitized
 - [ ] CSRF token present on forms
 - [ ] SQL injection attempts fail safely
+
+## AI Generator
+
+- [ ] Submit tattoo idea with description
+- [ ] Select style, placement, color options
+- [ ] Generation starts and shows loading state
+- [ ] Generated image displays on completion
+- [ ] Failed generation shows error message
+- [ ] Daily generation limit enforced
+- [ ] Generation history page lists past results
+- [ ] Can view individual generation detail
+- [ ] Feature flag disables AI when OFF
+
+## AR Preview
+
+- [ ] Upload body photo for preview
+- [ ] Select tattoo image to overlay
+- [ ] Adjust position (drag/coordinates)
+- [ ] Adjust scale (resize slider)
+- [ ] Adjust rotation
+- [ ] Adjust opacity
+- [ ] Save preview to history
+- [ ] Preview history page lists saved previews
+- [ ] Delete saved preview works
+- [ ] Feature flag disables AR when OFF
+
+## Artist Analytics
+
+- [ ] Analytics page loads for artist role
+- [ ] Total tattoos count is accurate
+- [ ] Total views aggregate displays
+- [ ] Total likes aggregate displays
+- [ ] Booking counts by status correct
+- [ ] Average review rating calculated
+- [ ] Follower count matches profile
+
+## Admin Moderation
+
+- [ ] Admin can list all users with pagination
+- [ ] Admin can disable a user account
+- [ ] Admin can delete a post by ID
+- [ ] Admin can delete a tattoo by ID
+- [ ] Admin can view pending reports
+- [ ] Non-admin gets 403 on admin endpoints
+- [ ] Role guard blocks ARTIST-only routes for USER role
+
+## Rate Limiting
+
+- [ ] Auth endpoints return 429 after 10 requests/min
+- [ ] AI generation returns 429 after 10 requests/hour
+- [ ] Upload returns 429 after 20 requests/min
+- [ ] Message send returns 429 after 20 requests/min
+- [ ] API default returns 429 after 60 requests/min
+- [ ] Rate limit resets after window expires
+- [ ] 429 response includes appropriate error message
+
+## Image Upload Stress
+
+- [ ] Upload JPEG under 10MB succeeds
+- [ ] Upload PNG under 10MB succeeds
+- [ ] Upload WebP under 10MB succeeds
+- [ ] Upload over 10MB returns size error
+- [ ] Upload non-image file (PDF) returns type error
+- [ ] Upload GIF returns type error
+- [ ] Avatar upload over 2MB returns size error
+- [ ] Thumbnail is generated for every tattoo upload
+- [ ] Blur placeholder is generated for every tattoo upload
+- [ ] Image dimensions stored in database
+- [ ] Multiple rapid uploads are rate limited

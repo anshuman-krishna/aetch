@@ -1,6 +1,15 @@
 import { prisma } from '@/lib/prisma';
 import { type PaginationParams, buildPaginationMeta } from '@/utils/pagination';
 
+// valid booking state transitions
+export const VALID_TRANSITIONS: Record<string, string[]> = {
+  PENDING: ['CONFIRMED', 'CANCELLED'],
+  CONFIRMED: ['COMPLETED', 'CANCELLED', 'NO_SHOW'],
+  COMPLETED: [],
+  CANCELLED: [],
+  NO_SHOW: [],
+};
+
 const bookingInclude = {
   user: { select: { id: true, name: true, username: true, image: true } },
   artist: {
@@ -100,6 +109,23 @@ export async function updateBookingStatus(
     },
     include: bookingInclude,
   });
+}
+
+// check 2-hour conflict window
+export async function hasConflictingBooking(artistId: string, date: Date): Promise<boolean> {
+  const windowMs = 2 * 60 * 60 * 1000;
+  const start = new Date(date.getTime() - windowMs);
+  const end = new Date(date.getTime() + windowMs);
+
+  const count = await prisma.booking.count({
+    where: {
+      artistId,
+      status: { in: ['PENDING', 'CONFIRMED'] },
+      date: { gte: start, lte: end },
+    },
+  });
+
+  return count > 0;
 }
 
 export async function getUpcomingBookings(artistId: string, limit = 5) {

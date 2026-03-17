@@ -26,7 +26,7 @@ export async function POST(_req: Request, { params }: Params) {
       if (post && post.authorId !== session!.user.id) {
         notifyPostLike(post.authorId, id, session!.user.name ?? 'Someone');
       }
-    });
+    }).catch(() => {});
   }
 
   return NextResponse.json({ success: true, ...result });

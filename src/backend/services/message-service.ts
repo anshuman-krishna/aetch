@@ -33,6 +33,8 @@ export async function findOrCreateConversation(
         { participants: { some: { userId } } },
         { participants: { some: { userId: participantId } } },
       ],
+      // prevent duplicate non-booking conversations
+      bookingId: bookingId ?? null,
     },
     include: {
       participants: { include: { user: { select: { id: true, name: true, image: true, username: true } } } },
@@ -166,7 +168,8 @@ export async function getMessages(
   const [messages, total] = await Promise.all([
     prisma.message.findMany({
       where,
-      orderBy: { createdAt: 'desc' },
+      // oldest first for display
+      orderBy: { createdAt: 'asc' },
       skip: pagination.skip,
       take: pagination.limit,
       include: {

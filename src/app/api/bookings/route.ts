@@ -3,7 +3,7 @@ export const runtime = "nodejs";
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
 import { rateLimit } from '@/backend/middleware/rate-limit';
-import { createBooking, getUserBookings } from '@/backend/services/booking-service';
+import { createBooking, getUserBookings, hasConflictingBooking } from '@/backend/services/booking-service';
 import { getArtistByUserId } from '@/backend/services/artist-service';
 import { notifyBookingRequest } from '@/backend/services/notification-service';
 import { bookingRequestSchema, paginationSchema } from '@/lib/validations';
@@ -45,8 +45,26 @@ export async function POST(req: Request) {
 
     const { artistId, date, duration, tattooIdea, placement, size, description } = parsed.data;
 
+    // reject past date bookings
+    const bookingDate = new Date(date);
+    if (bookingDate <= new Date()) {
+      return NextResponse.json(
+        { success: false, error: 'Booking date must be in the future' },
+        { status: 400 },
+      );
+    }
+
     // resolve artist user id
     const artist = await getArtistByUserId(artistId);
+
+    // prevent double booking
+    const conflict = await hasConflictingBooking(artistId, bookingDate);
+    if (conflict) {
+      return NextResponse.json(
+        { success: false, error: 'Artist has a conflicting booking in that time window' },
+        { status: 409 },
+      );
+    }
 
     const booking = await createBooking({
       userId: session.user.id,

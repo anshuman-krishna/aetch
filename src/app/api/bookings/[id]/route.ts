@@ -3,7 +3,7 @@ export const runtime = "nodejs";
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
 import { requireRole } from '@/backend/middleware/role-guard';
-import { getBookingById, updateBookingStatus } from '@/backend/services/booking-service';
+import { getBookingById, updateBookingStatus, VALID_TRANSITIONS } from '@/backend/services/booking-service';
 import { getArtistByUserId } from '@/backend/services/artist-service';
 import { notifyBookingStatusChange } from '@/backend/services/notification-service';
 import { updateBookingStatusSchema } from '@/lib/validations';
@@ -50,6 +50,20 @@ export async function PATCH(req: Request, { params }: Params) {
   const artist = await getArtistByUserId(session!.user.id);
   if (!artist) {
     return NextResponse.json({ error: 'Artist profile not found' }, { status: 404 });
+  }
+
+  // validate state transition
+  const existing = await getBookingById(id);
+  if (!existing) {
+    return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+  }
+
+  const allowed = VALID_TRANSITIONS[existing.status] ?? [];
+  if (!allowed.includes(parsed.data.status)) {
+    return NextResponse.json(
+      { success: false, error: `Cannot transition from ${existing.status} to ${parsed.data.status}` },
+      { status: 400 },
+    );
   }
 
   try {

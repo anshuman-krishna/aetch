@@ -27,7 +27,7 @@ export async function POST(_req: Request, { params }: Params) {
 
   // notify on follow (non-blocking)
   if (result.following) {
-    notifyNewFollower(followingId, session!.user.name ?? 'Someone');
+    notifyNewFollower(followingId, session!.user.name ?? 'Someone').catch(() => {});
   }
 
   return NextResponse.json({ success: true, ...result });

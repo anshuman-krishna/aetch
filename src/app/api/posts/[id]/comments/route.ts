@@ -48,7 +48,7 @@ export async function POST(req: Request, { params }: Params) {
     if (post && post.authorId !== session!.user.id) {
       notifyPostComment(post.authorId, postId, session!.user.name ?? 'Someone');
     }
-  });
+  }).catch(() => {});
 
   return NextResponse.json({ comment }, { status: 201 });
 }

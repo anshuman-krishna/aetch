@@ -35,6 +35,31 @@ export const errors = {
 
 // log and return 500
 export function handleApiError(err: unknown, context?: string) {
-  logger.error({ err, context }, 'api error');
+  const isPrismaError =
+    err instanceof Error && err.constructor.name.startsWith('Prisma');
+  logger.error(
+    {
+      err,
+      context,
+      type: isPrismaError ? 'database' : 'unexpected',
+      message: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+    },
+    isPrismaError ? 'database error' : 'api error',
+  );
   return errors.internal();
+}
+
+// wrap async route handler with error catching
+export function withErrorHandler(
+  handler: (req: Request, ctx?: unknown) => Promise<Response>,
+  context?: string,
+) {
+  return async (req: Request, ctx?: unknown) => {
+    try {
+      return await handler(req, ctx);
+    } catch (err) {
+      return handleApiError(err, context ?? new URL(req.url).pathname);
+    }
+  };
 }
