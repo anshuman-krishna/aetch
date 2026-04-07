@@ -1,346 +1,97 @@
 ## aetch
 
-this is a personal project that started from a very real conversation,
+a client once asked me, "what if someone could see a tattoo on their body before actually getting it done?"
 
-a client once reached out with a simple but powerful idea
-“what if someone could see a tattoo on their own body before getting it done”
-
-that question ideated aetch
-
-what began as a quick concept slowly turned into a full platform that combines design, discovery, ai, ar, and real artist workflows into one place
-
-it is not just limited to be a gallery or a tool but rather an attempt to build a complete ecosystem around tattoos and/or art.
+that one question turned into this. aetch is a tattoo platform — discovery, artist portfolios, bookings, social, ai generation, ar preview — all in one place. it started as a quick idea and kept growing because the problem space kept growing.
 
 ---
 
-## what this actually is
+## what it does
 
-aetch is a full stack platform where
+three types of users, three different experiences:
 
--  users can explore tattoos, generate ideas using ai, preview them on their own body, and book artists.
-- artists can showcase their work, manage bookings, and grow their presence.
-- shops can operate as hubs with multiple artists and manage incoming work.
+- **users** browse tattoos, generate ideas with ai, preview them on their own body using ar, and book artists directly.
+- **artists** build portfolios, manage their availability, and get discovered through the platform's recommendation and social layers.
+- **shops** group multiple artists under one profile, aggregate portfolios, and handle bookings as a studio.
 
-it blends
-
-- ai generation
-- ar preview
-- social features
-- marketplace logic
-- booking workflows
-- messaging
-- analytics
-
-into one system.
+the platform stitches together ai generation, ar preview, social feeds, booking workflows, messaging, and analytics into a single system. none of these are bolted on — they share data and context.
 
 ---
 
-## core features
+## features worth mentioning
 
-### ai tattoo generator
+**ai tattoo generator** — describe what you want in plain text. pick a style, placement, color preference, complexity. the system generates designs you can save, revisit, or send straight to ar preview. rate limited and validated, not a free-for-all.
 
-users can describe an idea in natural language and generate tattoo designs.
+**ar preview** — the original spark for the project. upload a photo, overlay a tattoo, drag/scale/rotate it, adjust opacity. uses canvas blending so it actually looks placed on skin. previews are saved to history.
 
-it supports:
+**discovery** — search by style, placement, tags. filter, sort, scroll infinitely. there's a trending algorithm based on engagement and a recommendation layer that connects users to artists based on behavior.
 
-- style selection
-- placement context
-- color type
-- complexity levels
+**artist profiles** — portfolio, bio, styles, location, availability. users can follow and book directly. not a landing page — a working profile tied into the rest of the system.
 
-results are stored and can be reused later.
-there is rate limiting, validation, and history tracking built in.
+**shops** — real-world studio structures represented digitally. artist lists, aggregated portfolios, booking entry points.
 
----
+**bookings** — request slots with artists or shops. availability checks, time slots, state tracking (pending, confirmed, rejected, completed, cancelled). handles double-booking prevention.
 
-### ar tattoo preview
+**social feed** — posts, likes, comments, follows. turns the platform into something people come back to, not just use once.
 
-this is the original idea that sparked the project:
-users upload a photo of their body and overlay tattoos on top of it.
+**messaging** — real-time conversations between users and artists. message history, unread indicators, access control.
 
-they can:
+**notifications** — likes, comments, follows, bookings, messages. dropdown ui with read tracking.
 
-- drag
-- scale
-- rotate
-- adjust opacity
+**image pipeline** — every upload gets processed server-side into full res, preview, thumbnail, and blur placeholder. format optimized.
 
-the preview blends using canvas techniques and can be exported or saved.
-history is stored so users can revisit past previews.
+**analytics** — artists see views, likes, saves, booking activity. basic but useful feedback loop.
+
+**admin/moderation** — content removal, user management, report handling.
 
 ---
 
-### tattoo discovery
+## tech
 
-the gallery is not just a grid,
-it includes:
+- next.js (app router) + react + tailwind on the frontend
+- next.js api routes + prisma + postgresql on the backend
+- ai integration for generation features
+- sharp for image processing
+- zod for validation
+- rate limiting on sensitive endpoints
 
-- search by style, placement, tags
-- filters and sorting
-- trending algorithm based on engagement
-- infinite scroll
-
-there is also a recommendation system for artists based on user behavior.
-
----
-
-### artist profiles
-
-artists have full profiles with:
-
-- portfolio
-- bio
-- styles
-- location
-- availability
-
-users can follow artists and book them directly.
+structured around modular services and reusable utilities. api layer, service layer, ui components — kept separate.
 
 ---
 
-### shop system
+## architecture bits
 
-shops can group multiple artists.
-each shop has:
+roles are flexible. a user can be a regular user, an artist, a shop owner, or an admin — and can hold multiple roles at once.
 
-- a profile
-- artist list
-- portfolio aggregation
-- booking entry point
-
-this allows real world studio structures to exist in the platform.
-
----
-
-### booking system
-
-users can request bookings with artists or shops.
-the system supports:
-
-- availability
-- time slots
-- booking states
-- timeline tracking
-
-states include:
-
-- pending
-- confirmed
-- rejected
-- completed
-- cancelled
-
-double booking and invalid scheduling are prevented.
-
----
-
-### social layer
-
-there is a built in social feed.
-users can:
-
-- create posts
-- like
-- comment
-- follow
-
-this turns the platform into a discovery engine rather than just limited to utility.
-
----
-
-### messaging
-
-real time style messaging between users and artists.
-supports:
-
-- conversations
-- message history
-- unread indicators
-
-with proper validation and access control.
-
----
-
-### notifications
-
-users receive notifications for:
-
-- likes
-- comments
-- follows
-- bookings
-- messages
-
-there is a dropdown ui and read tracking.
-
----
-
-### admin controls
-
-basic moderation tools exist.
-admins can:
-
-- remove content
-- manage users
-- handle reports
-
-a report system is also included for users.
-
----
-
-### image pipeline
-
-images are processed server side.
-
-every upload generates:
-
-- full resolution
-- preview
-- thumbnail
-- blur placeholder
-
-formats are optimized for performance.
-
----
-
-### analytics
-
-artists can see:
-
-- views
-- likes
-- saves
-- booking activity
-
-this gives feedback on performance and reach.
-
----
-
-## technical overview
-
-this is a modern full stack system.
-
-frontend:
-- next.js app router
-- react
-- tailwind
-
-backend:
-- next.js api routes
-- prisma
-- postgresql
-
-services include:
- 
-- ai integration
-- image processing with sharp
-- rate limiting
-- validation with zod
-
-everything is structured around modular services and reusable utilities.
-
----
-
-## architecture notes
-
-the system is split into:
-- api layer
-- service layer
-- ui components
-
-data is handled through prisma with proper indexing and relations.
-
-roles are flexible.
-
-a user can be:
-- user
-- artist
-- shop owner
-- admin
-
-and can hold multiple roles at once.
+data goes through prisma with proper indexing and relations. api responses follow a consistent structure throughout.
 
 ---
 
 ## security
 
-security is treated quite seriously and would definitely be improved in future phases/versions.
-
-- all inputs are validated
+- all inputs validated
 - no raw html rendering
-- file uploads are restricted by type and size
-- rate limiting is applied to sensitive endpoints
+- file uploads restricted by type and size
+- rate limiting on sensitive routes
 
-api responses follow a consistent structure.
+not claiming it's bulletproof, but it's not an afterthought either. will keep improving this.
 
 ---
 
 ## performance
 
-- images are optimized
-- queries are indexed
-- n+1 queries are avoided
-- heavy operations run only on server runtime
-- lazy loading is used across media
-
----
-
-## developer experience
-
-scripts exist for:
-
-- resetting dev environment
-- checking system health
-- generating schema documentation
-
-the database schema is documented automatically.
-
----
-
-## manual qa
-
-a full checklist exists covering:
-
-- auth
-- gallery
-- profiles
-- bookings
-- social features
-- messaging
-- ai
-- ar preview
-- security
-- performance
-
-this project was meant to be manually validated before any deployment.
+images are optimized, queries are indexed, n+1s are avoided, heavy ops run server-side, media is lazy loaded. the basics, done properly.
 
 ---
 
 ## current state
 
-the system is feature complete, it includes everything needed for a working product.
-
-this phase focused heavily on:
-
-- stability
-- consistency
-- real world usability
+feature complete for what it set out to do. the recent work focused on stability, consistency, and making sure things actually work end-to-end rather than just existing as isolated features.
 
 ---
 
-## why this project exists
+## why
 
-this was never meant to be just another demo, it started with a very specific problem;
-people hesitate before getting tattoos because they cannot visualize the outcome, this platform tries to reduce that gap,
-at the same time it helps artists showcase their work and get discovered.
+people hesitate before getting tattoos because they can't visualize the result. artists struggle to get discovered outside of instagram. shops don't have great digital tooling.
 
----
-
-## final note
-
-this is still a personal project;
-but it is built with the intention of being real, usable, and extensible,
-if you explore it, you will notice it is not just about features, it is about connecting ideas, tools, and people in one place.
-thankyou.
-
----
+aetch tries to close those gaps. it's a personal project, but it's built like it isn't.
