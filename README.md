@@ -19,29 +19,29 @@ the platform stitches together ai generation, ar preview, social feeds, booking 
 
 ## features worth mentioning
 
-**ai tattoo generator** — describe what you want in plain text. pick a style, placement, color preference, complexity. the system generates designs you can save, revisit, or send straight to ar preview. rate limited and validated, not a free-for-all.
+- **ai tattoo generator** — describe what you want in plain text. pick a style, placement, color preference, complexity. the system generates designs you can save, revisit, or send straight to ar preview. rate limited and validated, not a free-for-all.
 
-**ar preview** — the original spark for the project. upload a photo, overlay a tattoo, drag/scale/rotate it, adjust opacity. uses canvas blending so it actually looks placed on skin. previews are saved to history.
+- **ar preview** — the original spark for the project. upload a photo, overlay a tattoo, drag/scale/rotate it, adjust opacity. uses canvas blending so it actually looks placed on skin. previews are saved to history.
 
-**discovery** — search by style, placement, tags. filter, sort, scroll infinitely. there's a trending algorithm based on engagement and a recommendation layer that connects users to artists based on behavior.
+- **discovery** — search by style, placement, tags. filter, sort, scroll infinitely. there's a trending algorithm based on engagement and a recommendation layer that connects users to artists based on behavior.
 
-**artist profiles** — portfolio, bio, styles, location, availability. users can follow and book directly. not a landing page — a working profile tied into the rest of the system.
+- **artist profiles** — portfolio, bio, styles, location, availability. users can follow and book directly. not a landing page — a working profile tied into the rest of the system.
 
-**shops** — real-world studio structures represented digitally. artist lists, aggregated portfolios, booking entry points.
+- **shops** — real-world studio structures represented digitally. artist lists, aggregated portfolios, booking entry points.
 
-**bookings** — request slots with artists or shops. availability checks, time slots, state tracking (pending, confirmed, rejected, completed, cancelled). handles double-booking prevention.
+- **bookings** — request slots with artists or shops. availability checks, time slots, state tracking (pending, confirmed, rejected, completed, cancelled). handles double-booking prevention.
 
-**social feed** — posts, likes, comments, follows. turns the platform into something people come back to, not just use once.
+- **social feed** — posts, likes, comments, follows. turns the platform into something people come back to, not just use once.
 
-**messaging** — real-time conversations between users and artists. message history, unread indicators, access control.
+- **messaging** — real-time conversations between users and artists. message history, unread indicators, access control.
 
-**notifications** — likes, comments, follows, bookings, messages. dropdown ui with read tracking.
+- **notifications** — likes, comments, follows, bookings, messages. dropdown ui with read tracking.
 
-**image pipeline** — every upload gets processed server-side into full res, preview, thumbnail, and blur placeholder. format optimized.
+- **image pipeline** — every upload gets processed server-side into full res, preview, thumbnail, and blur placeholder. format optimized.
 
-**analytics** — artists see views, likes, saves, booking activity. basic but useful feedback loop.
+- **analytics** — artists see views, likes, saves, booking activity. basic but useful feedback loop.
 
-**admin/moderation** — content removal, user management, report handling.
+- **admin/moderation** — content removal, user management, report handling.
 
 ---
 
@@ -54,13 +54,13 @@ the platform stitches together ai generation, ar preview, social feeds, booking 
 - zod for validation
 - rate limiting on sensitive endpoints
 
-structured around modular services and reusable utilities. api layer, service layer, ui components — kept separate.
+structured around modular services and reusable utilities. api layer, service layer, ui components; kept separate.
 
 ---
 
 ## architecture bits
 
-roles are flexible. a user can be a regular user, an artist, a shop owner, or an admin — and can hold multiple roles at once.
+roles are flexible. a user can be a regular user, an artist, a shop owner, or an admin; and can hold multiple roles at once.
 
 data goes through prisma with proper indexing and relations. api responses follow a consistent structure throughout.
 
