@@ -1,8 +1,7 @@
 ## aetch
 
-a client once asked me, "what if someone could see a tattoo on their body before actually getting it done?"
-
-that one question turned into this. aetch is a tattoo platform — discovery, artist portfolios, bookings, social, ai generation, ar preview — all in one place. it started as a quick idea and kept growing because the problem space kept growing.
+alright, so a freelance client recently asked me, "what if someone could see a tattoo on their body before actually getting it done?"
+that one question turned into this. aetch is a tattoo platform: discovery, artist portfolios, bookings, social, ai generation, ar preview,  all in one place. it started as a quick idea and kept growing because the problem space kept growing.
 
 ---
 
@@ -14,7 +13,7 @@ three types of users, three different experiences:
 - **artists** build portfolios, manage their availability, and get discovered through the platform's recommendation and social layers.
 - **shops** group multiple artists under one profile, aggregate portfolios, and handle bookings as a studio.
 
-the platform stitches together ai generation, ar preview, social feeds, booking workflows, messaging, and analytics into a single system. none of these are bolted on — they share data and context.
+the platform stitches together ai generation, ar preview, social feeds, booking workflows, messaging, and analytics into a single system. none of these are bolted on: they share data and context.
 
 ---
 
