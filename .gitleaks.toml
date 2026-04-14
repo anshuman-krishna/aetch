@@ -1,0 +1,33 @@
+title = "AETCH gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "paths to ignore"
+paths = [
+  '''(^|/)node_modules/''',
+  '''(^|/).next/''',
+  '''(^|/)coverage/''',
+  '''(^|/)testing/''',
+  '''(^|/)\.env\.example$''',
+  '''package-lock\.json''',
+]
+
+[[rules]]
+id = "openai-key"
+description = "OpenAI API key"
+regex = '''sk-[A-Za-z0-9]{20,}'''
+tags = ["key", "openai"]
+
+[[rules]]
+id = "next-auth-secret"
+description = "NextAuth secret assigned literal"
+regex = '''NEXTAUTH_SECRET\s*=\s*["'][A-Za-z0-9+/=]{20,}["']'''
+tags = ["secret", "nextauth"]
+
+[[rules]]
+id = "aws-access-key"
+description = "AWS-style access key"
+regex = '''AKIA[0-9A-Z]{16}'''
+tags = ["key", "aws"]

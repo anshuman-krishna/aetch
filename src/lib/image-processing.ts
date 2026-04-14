@@ -22,39 +22,47 @@ export async function processTattooImage(input: Buffer): Promise<ProcessedImage>
   const originalWidth = metadata.width ?? TATTOO_MAX_WIDTH;
   const originalHeight = metadata.height ?? TATTOO_MAX_HEIGHT;
 
-  // resize main image
+  // resize main image, strip exif
   const image = await sharp(input)
+    .rotate()
     .resize(TATTOO_MAX_WIDTH, TATTOO_MAX_HEIGHT, {
       fit: 'inside',
       withoutEnlargement: true,
     })
     .webp({ quality: QUALITY })
+    .withMetadata({})
     .toBuffer();
 
   const resizedMeta = await sharp(image).metadata();
 
   // preview (800px)
   const preview = await sharp(input)
+    .rotate()
     .resize(PREVIEW_SIZE, PREVIEW_SIZE, {
       fit: 'inside',
       withoutEnlargement: true,
     })
     .webp({ quality: 80 })
+    .withMetadata({})
     .toBuffer();
 
   // thumbnail (300px)
   const thumbnail = await sharp(input)
+    .rotate()
     .resize(THUMBNAIL_SIZE, THUMBNAIL_SIZE, {
       fit: 'cover',
       position: 'centre',
     })
     .webp({ quality: 75 })
+    .withMetadata({})
     .toBuffer();
 
   // blur placeholder
   const blurBuffer = await sharp(input)
+    .rotate()
     .resize(BLUR_SIZE, BLUR_SIZE, { fit: 'inside' })
     .webp({ quality: 20 })
+    .withMetadata({})
     .toBuffer();
 
   const blurDataUrl = `data:image/webp;base64,${blurBuffer.toString('base64')}`;
@@ -75,7 +83,9 @@ export async function processAvatarImage(
   size = 256,
 ): Promise<Buffer> {
   return sharp(input)
+    .rotate()
     .resize(size, size, { fit: 'cover', position: 'centre' })
     .webp({ quality: QUALITY })
+    .withMetadata({})
     .toBuffer();
 }
