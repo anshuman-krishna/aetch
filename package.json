@@ -16,7 +16,14 @@
     "db:seed": "prisma db seed",
     "dev:check": "bash scripts/dev-check.sh",
     "dev:reset": "bash scripts/dev-reset.sh",
-    "db:reset": "bash scripts/db-reset.sh"
+    "db:reset": "bash scripts/db-reset.sh",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install --with-deps chromium",
+    "ci:check": "bash scripts/ci-check.sh",
+    "audit:prod": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
@@ -48,8 +55,13 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/bcryptjs": "^2.4.6",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/nodemailer": "^7.0.11",
     "@types/pg": "^8.18.0",
@@ -59,8 +71,11 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "eslint-config-prettier": "^10.1.8",
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
     "prettier": "^3.8.1",
     "tailwindcss": "^4",
+    "ts-jest": "^29.4.9",
     "typescript": "^5"
   }
 }

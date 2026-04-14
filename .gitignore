@@ -38,6 +38,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-#tests and validations
-.claude/
-CLAUDE.md
+# testing and validation
+/testing

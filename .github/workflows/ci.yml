@@ -1,0 +1,63 @@
+name: ci
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://test:test@localhost:5432/aetch_test
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: test-secret-32-chars-minimum-abcdef
+      GOOGLE_CLIENT_ID: test
+      GOOGLE_CLIENT_SECRET: test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: install
+        run: npm ci
+
+      - name: format check
+        run: npm run format:check
+
+      - name: lint
+        run: npm run lint
+
+      - name: typecheck
+        run: npx tsc --noEmit
+
+      - name: prisma validate
+        run: npx prisma validate
+
+      - name: unit + service tests (with coverage)
+        run: npm run test:coverage
+
+      - name: build
+        run: npm run build
+
+      - name: npm audit (prod deps)
+        run: npm run audit:prod
+
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
