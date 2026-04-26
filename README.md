@@ -25,7 +25,7 @@ the platform stitches together ai generation, ar preview, social feeds, booking 
 
 - **discovery** — search by style, placement, tags. filter, sort, scroll infinitely. there's a trending algorithm based on engagement and a recommendation layer that connects users to artists based on behavior.
 
-- **artist profiles** — portfolio, bio, styles, location, availability. users can follow and book directly. not a landing page — a working profile tied into the rest of the system.
+- **artist profiles** — portfolio, bio, styles, location, availability. users can follow and book directly. practically, a working profile tied into the rest of the system.
 
 - **shops** — real-world studio structures represented digitally. artist lists, aggregated portfolios, booking entry points.
 
@@ -93,4 +93,11 @@ feature complete for what it set out to do. the recent work focused on stability
 
 people hesitate before getting tattoos because they can't visualize the result. artists struggle to get discovered outside of instagram. shops don't have great digital tooling.
 
-aetch tries to close those gaps. it's a personal project, but it's built like it isn't.
+aetch tries to close those gaps. it's a personal project, but i tried to build it like it isn't.
+
+
+---
+
+## how to run
+
+tba.
