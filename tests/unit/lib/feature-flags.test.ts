@@ -37,9 +37,12 @@ describe('feature-flags', () => {
     const all = flags.getFeatureFlags();
     expect(Object.keys(all).sort()).toEqual(
       [
+        'AFTERCARE_AI_ENABLED',
         'AI_GENERATION_ENABLED',
         'AR_PREVIEW_ENABLED',
         'BOOKING_ENABLED',
+        'COLLECTIONS_ENABLED',
+        'COVERUP_ENABLED',
         'MESSAGING_ENABLED',
         'PRICE_ESTIMATOR_ENABLED',
         'SOCIAL_FEED_ENABLED',

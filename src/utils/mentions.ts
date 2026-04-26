@@ -1,7 +1,8 @@
 // extract @mentions from caption / comment content.
-// rules: 3-30 chars, [a-zA-Z0-9_-], must follow whitespace or string start.
+// rules: 3-30 chars, [a-zA-Z0-9_-], must follow whitespace or string start
+// and end at a non-username char (so 31-char strings don't truncate-match).
 
-const MENTION_RE = /(^|\s)@([a-zA-Z0-9_-]{3,30})/g;
+const MENTION_RE = /(^|\s)@([a-zA-Z0-9_-]{3,30})(?![a-zA-Z0-9_-])/g;
 
 export function extractMentions(text: string): string[] {
   if (!text) return [];

@@ -35,7 +35,10 @@ export const POST = withErrorHandler(async (req: Request, ctx: unknown) => {
     return withRequestId(req, NextResponse.json({ success: true, repost }, { status: 201 }));
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Repost failed';
-    return withRequestId(req, NextResponse.json({ success: false, error: message }, { status: 400 }));
+    return withRequestId(
+      req,
+      NextResponse.json({ success: false, error: message }, { status: 400 }),
+    );
   }
 }, 'POST /api/posts/[id]/repost');
 
@@ -49,6 +52,9 @@ export const DELETE = withErrorHandler(async (req: Request, ctx: unknown) => {
     await deleteRepost(session.user.id, id);
     return withRequestId(req, NextResponse.json({ success: true }));
   } catch {
-    return withRequestId(req, NextResponse.json({ success: false, error: 'Repost not found' }, { status: 404 }));
+    return withRequestId(
+      req,
+      NextResponse.json({ success: false, error: 'Repost not found' }, { status: 404 }),
+    );
   }
 }, 'DELETE /api/posts/[id]/repost');

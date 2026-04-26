@@ -5,10 +5,7 @@ import { authGuard } from '@/backend/middleware/auth-guard';
 import { withErrorHandler } from '@/lib/api-error';
 import { withRequestId } from '@/backend/middleware/request-log';
 import { rateLimit } from '@/backend/middleware/rate-limit';
-import {
-  createCollection,
-  getCollectionsForOwner,
-} from '@/backend/services/collection-service';
+import { createCollection, getCollectionsForOwner } from '@/backend/services/collection-service';
 import { createCollectionSchema, paginationSchema } from '@/lib/validations';
 import { getPaginationParams } from '@/utils/pagination';
 

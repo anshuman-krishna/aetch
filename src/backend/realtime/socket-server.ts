@@ -8,7 +8,9 @@ let io: Server | null = null;
 // event types
 export interface ServerToClientEvents {
   'message:new': (data: MessageEvent) => void;
-  'message:read': (data: { conversationId: string }) => void;
+  'message:read': (data: { conversationId: string; byUserId: string }) => void;
+  'message:typing': (data: { conversationId: string; userId: string }) => void;
+  'message:typing-stop': (data: { conversationId: string; userId: string }) => void;
   'notification:new': (data: NotificationEvent) => void;
   'user:online': (data: { userId: string }) => void;
   'user:offline': (data: { userId: string }) => void;
@@ -18,6 +20,7 @@ export interface ClientToServerEvents {
   'conversation:join': (conversationId: string) => void;
   'conversation:leave': (conversationId: string) => void;
   'message:typing': (conversationId: string) => void;
+  'message:typing-stop': (conversationId: string) => void;
 }
 
 export interface MessageEvent {
@@ -80,13 +83,20 @@ export function initSocketServer(httpServer: HttpServer): Server {
       socket.leave(`conversation:${conversationId}`);
     });
 
-    // typing indicator
+    // typing indicators (start + stop)
     socket.on('message:typing', (conversationId: string) => {
-      socket.to(`conversation:${conversationId}`).emit('message:typing' as never, {
-        conversationId,
-        userId,
-      });
+      socket
+        .to(`conversation:${conversationId}`)
+        .emit('message:typing' as never, { conversationId, userId });
     });
+    socket.on('message:typing-stop', (conversationId: string) => {
+      socket
+        .to(`conversation:${conversationId}`)
+        .emit('message:typing-stop' as never, { conversationId, userId });
+    });
+
+    // presence: tell others this user is online + replay at connect
+    socket.broadcast.emit('user:online' as never, { userId });
 
     // cleanup on disconnect
     socket.on('disconnect', () => {
@@ -95,6 +105,7 @@ export function initSocketServer(httpServer: HttpServer): Server {
         sockets.delete(socket.id);
         if (sockets.size === 0) {
           userSockets.delete(userId);
+          socket.broadcast.emit('user:offline' as never, { userId });
         }
       }
     });
@@ -118,7 +129,20 @@ export function emitNotification(userId: string, event: NotificationEvent) {
   io?.to(`user:${userId}`).emit('notification:new', event);
 }
 
+// broadcast read receipt to the other participant(s)
+export function emitConversationRead(conversationId: string, byUserId: string) {
+  io?.to(`conversation:${conversationId}`).emit('message:read', {
+    conversationId,
+    byUserId,
+  } as never);
+}
+
 // check if user is online
 export function isUserOnline(userId: string): boolean {
   return userSockets.has(userId);
+}
+
+// list currently-online user ids (presence)
+export function listOnlineUsers(): string[] {
+  return [...userSockets.keys()];
 }

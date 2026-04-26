@@ -73,9 +73,7 @@ export default async function CityShopsPage({ params, searchParams }: PageProps)
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="flex items-baseline gap-3">
-        <h1 className="text-h2 text-foreground">
-          Tattoo shops in {titleCase(cityName)}
-        </h1>
+        <h1 className="text-h2 text-foreground">Tattoo shops in {titleCase(cityName)}</h1>
         <GlassBadge variant="primary">{meta.total} shops</GlassBadge>
       </div>
 

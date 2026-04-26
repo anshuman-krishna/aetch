@@ -19,7 +19,11 @@ describe('estimatePrice', () => {
   });
 
   it('color and complexity multipliers compound', () => {
-    const grey = estimatePrice({ hourlyRate: baseRate, size: 'LARGE', colorType: 'BLACK_AND_GREY' });
+    const grey = estimatePrice({
+      hourlyRate: baseRate,
+      size: 'LARGE',
+      colorType: 'BLACK_AND_GREY',
+    });
     const color = estimatePrice({ hourlyRate: baseRate, size: 'LARGE', colorType: 'COLOR' });
     expect(color.midpoint).toBeGreaterThan(grey.midpoint);
 

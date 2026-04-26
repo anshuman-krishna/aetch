@@ -42,7 +42,10 @@ export const POST = withErrorHandler(async (req: Request, ctx: unknown) => {
     return withRequestId(req, NextResponse.json({ success: true, item }, { status: 201 }));
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Failed';
-    return withRequestId(req, NextResponse.json({ success: false, error: message }, { status: 404 }));
+    return withRequestId(
+      req,
+      NextResponse.json({ success: false, error: message }, { status: 404 }),
+    );
   }
 }, 'POST /api/collections/[id]/items');
 
@@ -66,6 +69,9 @@ export const DELETE = withErrorHandler(async (req: Request, ctx: unknown) => {
     await removeCollectionItem(itemId, session.user.id);
     return withRequestId(req, NextResponse.json({ success: true }));
   } catch {
-    return withRequestId(req, NextResponse.json({ success: false, error: 'Item not found' }, { status: 404 }));
+    return withRequestId(
+      req,
+      NextResponse.json({ success: false, error: 'Item not found' }, { status: 404 }),
+    );
   }
 }, 'DELETE /api/collections/[id]/items');

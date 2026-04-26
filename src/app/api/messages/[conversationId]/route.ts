@@ -2,11 +2,14 @@ export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
+import { withErrorHandler } from '@/lib/api-error';
+import { withRequestId } from '@/backend/middleware/request-log';
 import {
   getMessages,
   getConversationById,
   markConversationRead,
 } from '@/backend/services/message-service';
+import { emitConversationRead } from '@/backend/realtime/socket-server';
 import { getPaginationParams } from '@/utils/pagination';
 import { paginationSchema } from '@/lib/validations';
 
@@ -15,9 +18,10 @@ interface Params {
 }
 
 // get messages for conversation
-export async function GET(req: Request, { params }: Params) {
+export const GET = withErrorHandler(async (req: Request, ctx: unknown) => {
+  const { params } = ctx as Params;
   const { session, error } = await authGuard();
-  if (error) return error;
+  if (error) return withRequestId(req, error);
 
   const { conversationId } = await params;
   const { searchParams } = new URL(req.url);
@@ -30,10 +34,9 @@ export async function GET(req: Request, { params }: Params) {
   const limit = parsed.success ? parsed.data.limit : 50;
 
   try {
-    // verify membership before fetching
     const conversation = await getConversationById(conversationId, session.user.id);
     if (!conversation) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return withRequestId(req, NextResponse.json({ error: 'Forbidden' }, { status: 403 }));
     }
 
     const result = await getMessages(
@@ -42,24 +45,26 @@ export async function GET(req: Request, { params }: Params) {
       getPaginationParams(page, limit),
     );
 
-    return NextResponse.json({ conversation, ...result });
+    return withRequestId(req, NextResponse.json({ conversation, ...result }));
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Failed';
-    return NextResponse.json({ error: msg }, { status: 403 });
+    return withRequestId(req, NextResponse.json({ error: msg }, { status: 403 }));
   }
-}
+}, 'GET /api/messages/[conversationId]');
 
-// mark conversation as read
-export async function PATCH(_req: Request, { params }: Params) {
+// mark conversation as read + broadcast receipt
+export const PATCH = withErrorHandler(async (req: Request, ctx: unknown) => {
+  const { params } = ctx as Params;
   const { session, error } = await authGuard();
-  if (error) return error;
+  if (error) return withRequestId(req, error);
 
   const { conversationId } = await params;
 
   try {
     await markConversationRead(conversationId, session.user.id);
-    return NextResponse.json({ success: true });
+    emitConversationRead(conversationId, session.user.id);
+    return withRequestId(req, NextResponse.json({ success: true }));
   } catch {
-    return NextResponse.json({ error: 'Failed' }, { status: 400 });
+    return withRequestId(req, NextResponse.json({ error: 'Failed' }, { status: 400 }));
   }
-}
+}, 'PATCH /api/messages/[conversationId]');
