@@ -47,13 +47,10 @@ export function ChatWindow({
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [sending, setSending] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { socket, joinConversation, leaveConversation, emitTyping } =
-    useSocket(currentUserId);
+  const { socket, joinConversation, leaveConversation, emitTyping } = useSocket(currentUserId);
 
   // get other participant
-  const other = participants.find(
-    (p) => p.user.id !== currentUserId,
-  )?.user;
+  const other = participants.find((p) => p.user.id !== currentUserId)?.user;
 
   // join socket room
   useEffect(() => {
@@ -93,7 +90,9 @@ export function ChatWindow({
     };
 
     socket.on('message:new', handler);
-    return () => { socket.off('message:new', handler); };
+    return () => {
+      socket.off('message:new', handler);
+    };
   }, [socket, conversationId]);
 
   // auto scroll to bottom
@@ -110,21 +109,24 @@ export function ChatWindow({
   }, [conversationId]);
 
   // send message handler
-  const handleSend = useCallback(async (content: string) => {
-    setSending(true);
-    try {
-      const res = await fetch('/api/messages/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ conversationId, content }),
-      });
-      if (!res.ok) return;
-      const { message } = await res.json();
-      setMessages((prev) => [...prev, message]);
-    } finally {
-      setSending(false);
-    }
-  }, [conversationId]);
+  const handleSend = useCallback(
+    async (content: string) => {
+      setSending(true);
+      try {
+        const res = await fetch('/api/messages/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ conversationId, content }),
+        });
+        if (!res.ok) return;
+        const { message } = await res.json();
+        setMessages((prev) => [...prev, message]);
+      } finally {
+        setSending(false);
+      }
+    },
+    [conversationId],
+  );
 
   return (
     <div className="flex h-full flex-col">
@@ -137,11 +139,7 @@ export function ChatWindow({
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <GlassAvatar
-          src={other?.image}
-          alt={other?.name ?? ''}
-          size="sm"
-        />
+        <GlassAvatar src={other?.image} alt={other?.name ?? ''} size="sm" />
         <div>
           <p className="text-sm font-medium text-foreground">
             {other?.name ?? other?.username ?? 'User'}
@@ -150,14 +148,9 @@ export function ChatWindow({
       </div>
 
       {/* messages */}
-      <div
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto space-y-3 px-1 pb-3"
-      >
+      <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 px-1 pb-3">
         {messages.length === 0 ? (
-          <p className="text-center text-muted text-sm py-12">
-            No messages yet. Say hello!
-          </p>
+          <p className="text-center text-muted text-sm py-12">No messages yet. Say hello!</p>
         ) : (
           messages.map((msg) => (
             <MessageBubble

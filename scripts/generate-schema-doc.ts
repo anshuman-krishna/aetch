@@ -49,8 +49,14 @@ function parseSchema(content: string) {
 
     // close block
     if (line === '}') {
-      if (current) { models.push(current); current = null; }
-      if (currentEnum) { enums.push(currentEnum); currentEnum = null; }
+      if (current) {
+        models.push(current);
+        current = null;
+      }
+      if (currentEnum) {
+        enums.push(currentEnum);
+        currentEnum = null;
+      }
       continue;
     }
 
@@ -124,8 +130,8 @@ function generateMarkdown(models: Model[], enums: EnumDef[]) {
     }
 
     // relations
-    const relations = model.fields.filter(
-      (f) => f.attributes.some((a) => a.startsWith('@relation')),
+    const relations = model.fields.filter((f) =>
+      f.attributes.some((a) => a.startsWith('@relation')),
     );
     if (relations.length > 0) {
       lines.push('', '**Relations:**', '');

@@ -69,9 +69,7 @@ export default function PostDetailPage() {
         <PostCard post={post} currentUserId={session?.user?.id} />
 
         <GlassCard variant="subtle" padding="md" className="space-y-4">
-          <h3 className="text-sm font-semibold text-foreground/80">
-            Comments ({comments.length})
-          </h3>
+          <h3 className="text-sm font-semibold text-foreground/80">Comments ({comments.length})</h3>
           <CommentInput postId={id} onCommentAdded={fetchComments} />
           <CommentList
             comments={comments}

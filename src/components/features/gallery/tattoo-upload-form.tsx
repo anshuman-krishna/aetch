@@ -124,12 +124,7 @@ export function TattooUploadForm() {
         {imagePreview ? (
           <div className="relative">
             <div className="relative w-full max-w-md mx-auto aspect-[3/4] rounded-xl overflow-hidden glass">
-              <Image
-                src={imagePreview}
-                alt="Preview"
-                fill
-                className="object-cover"
-              />
+              <Image src={imagePreview} alt="Preview" fill className="object-cover" />
             </div>
             <div className="flex justify-center mt-3">
               <GlassButton
@@ -217,7 +212,9 @@ export function TattooUploadForm() {
         <h3 className="text-sm font-semibold text-foreground/80">Placement & Color</h3>
 
         <div>
-          <label className="text-sm font-medium text-foreground/80 mb-2 block">Body Placement</label>
+          <label className="text-sm font-medium text-foreground/80 mb-2 block">
+            Body Placement
+          </label>
           <div className="flex flex-wrap gap-2">
             {BODY_PLACEMENTS.map((placement) => (
               <button
@@ -262,13 +259,7 @@ export function TattooUploadForm() {
       </GlassCard>
 
       {/* Submit */}
-      <GlassButton
-        type="submit"
-        variant="primary"
-        size="lg"
-        className="w-full"
-        loading={loading}
-      >
+      <GlassButton type="submit" variant="primary" size="lg" className="w-full" loading={loading}>
         Upload Tattoo
       </GlassButton>
     </form>

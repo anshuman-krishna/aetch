@@ -154,13 +154,7 @@ export function BookingForm({ artistId, artistSlug }: BookingFormProps) {
         />
       </GlassCard>
 
-      <GlassButton
-        type="submit"
-        variant="primary"
-        size="lg"
-        className="w-full"
-        loading={loading}
-      >
+      <GlassButton type="submit" variant="primary" size="lg" className="w-full" loading={loading}>
         Submit Booking Request
       </GlassButton>
     </form>

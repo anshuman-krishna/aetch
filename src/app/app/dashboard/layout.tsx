@@ -3,11 +3,7 @@ import { auth } from '@/lib/auth';
 import { PageContainer } from '@/components/layouts/page-container';
 import { DashboardSidebar } from '@/components/features/dashboard/dashboard-sidebar';
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
   if (!session?.user) {

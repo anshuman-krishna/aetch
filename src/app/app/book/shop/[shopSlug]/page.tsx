@@ -56,27 +56,23 @@ export default async function BookShopPage({ params }: Props) {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-h4 text-foreground">{shop.name}</h1>
-                {shop.verified && <GlassBadge variant="success" size="sm">Verified</GlassBadge>}
+                {shop.verified && (
+                  <GlassBadge variant="success" size="sm">
+                    Verified
+                  </GlassBadge>
+                )}
               </div>
-              {location && (
-                <p className="text-xs text-muted mt-0.5">{location}</p>
-              )}
+              {location && <p className="text-xs text-muted mt-0.5">{location}</p>}
             </div>
           </div>
         </GlassCard>
 
         <div>
           <h2 className="text-h3 text-foreground mb-2">Book via Shop</h2>
-          <p className="text-muted text-sm">
-            Choose an artist and fill out details below.
-          </p>
+          <p className="text-muted text-sm">Choose an artist and fill out details below.</p>
         </div>
 
-        <ShopBookingForm
-          shopId={shop.id}
-          shopSlug={shopSlug}
-          artists={artists}
-        />
+        <ShopBookingForm shopId={shop.id} shopSlug={shopSlug} artists={artists} />
       </div>
     </PageContainer>
   );

@@ -59,12 +59,7 @@ export function BodyImageUploader({ imageUrl, onImageSelect }: BodyImageUploader
             <img src={imageUrl} alt="body" className="w-full h-full object-cover" />
           </div>
         </GlassCard>
-        <GlassButton
-          variant="danger"
-          size="sm"
-          className="absolute top-2 right-2"
-          onClick={clear}
-        >
+        <GlassButton variant="danger" size="sm" className="absolute top-2 right-2" onClick={clear}>
           <X className="h-3.5 w-3.5" />
         </GlassButton>
       </div>

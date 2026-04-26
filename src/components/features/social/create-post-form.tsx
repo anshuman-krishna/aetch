@@ -118,7 +118,10 @@ export function CreatePostForm() {
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-3">
             {tags.map((tag) => (
-              <span key={tag} className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs glass text-foreground/80">
+              <span
+                key={tag}
+                className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs glass text-foreground/80"
+              >
                 #{tag}
                 <button type="button" onClick={() => removeTag(tag)}>
                   <X className="h-3 w-3" />

@@ -9,10 +9,7 @@ export async function requireRole(...roles: UserRole[]) {
   if (!session?.user) {
     return {
       session: null as null,
-      error: NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 },
-      ),
+      error: NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 }),
     };
   }
 

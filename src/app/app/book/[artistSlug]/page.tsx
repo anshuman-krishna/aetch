@@ -36,23 +36,19 @@ export default async function BookArtistPage({ params }: Props) {
         {/* artist header */}
         <GlassCard variant="strong" padding="md">
           <div className="flex items-center gap-4">
-            <GlassAvatar
-              src={artist.user.image}
-              alt={artist.displayName}
-              size="lg"
-            />
+            <GlassAvatar src={artist.user.image} alt={artist.displayName} size="lg" />
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-h4 text-foreground">{artist.displayName}</h1>
-                {artist.verified && <GlassBadge variant="success" size="sm">Verified</GlassBadge>}
+                {artist.verified && (
+                  <GlassBadge variant="success" size="sm">
+                    Verified
+                  </GlassBadge>
+                )}
               </div>
-              {artist.location && (
-                <p className="text-xs text-muted mt-0.5">{artist.location}</p>
-              )}
+              {artist.location && <p className="text-xs text-muted mt-0.5">{artist.location}</p>}
               {artist.hourlyRate && (
-                <p className="text-sm text-foreground mt-1">
-                  ${Number(artist.hourlyRate)}/hr
-                </p>
+                <p className="text-sm text-foreground mt-1">${Number(artist.hourlyRate)}/hr</p>
               )}
             </div>
             <div className="ml-auto">

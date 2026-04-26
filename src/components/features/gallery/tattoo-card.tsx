@@ -70,9 +70,7 @@ export function TattooCard({ tattoo, priority = false, className }: TattooCardPr
               onLoad={() => setImageLoaded(true)}
             />
 
-            {!imageLoaded && (
-              <div className="absolute inset-0 animate-pulse bg-foreground/5" />
-            )}
+            {!imageLoaded && <div className="absolute inset-0 animate-pulse bg-foreground/5" />}
 
             {/* hover overlay */}
             <motion.div
@@ -82,9 +80,7 @@ export function TattooCard({ tattoo, priority = false, className }: TattooCardPr
               transition={{ duration: 0.2 }}
             >
               <div className="absolute bottom-0 left-0 right-0 p-4">
-                <h3 className="font-semibold text-white text-sm line-clamp-1">
-                  {tattoo.title}
-                </h3>
+                <h3 className="font-semibold text-white text-sm line-clamp-1">{tattoo.title}</h3>
                 <div className="flex items-center gap-3 mt-1.5">
                   <span className="flex items-center gap-1 text-xs text-white/80">
                     <Heart className="h-3.5 w-3.5" />
@@ -107,17 +103,11 @@ export function TattooCard({ tattoo, priority = false, className }: TattooCardPr
           href={`/app/artist/${tattoo.artist.slug}`}
           className="flex items-center gap-2 group/artist"
         >
-          <GlassAvatar
-            src={tattoo.artist.user.image}
-            alt={tattoo.artist.displayName}
-            size="sm"
-          />
+          <GlassAvatar src={tattoo.artist.user.image} alt={tattoo.artist.displayName} size="sm" />
           <span className="text-xs text-muted group-hover/artist:text-foreground transition-colors truncate">
             {tattoo.artist.displayName}
           </span>
-          {tattoo.artist.verified && (
-            <BadgeCheck className="h-3.5 w-3.5 text-primary shrink-0" />
-          )}
+          {tattoo.artist.verified && <BadgeCheck className="h-3.5 w-3.5 text-primary shrink-0" />}
         </Link>
 
         {tattoo.styles.length > 0 && (

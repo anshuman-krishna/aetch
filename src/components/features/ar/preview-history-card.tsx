@@ -48,9 +48,7 @@ export function PreviewHistoryCard({ preview, onDelete }: PreviewHistoryCardProp
           <GlassBadge size="sm">{Math.round(preview.scale * 100)}% size</GlassBadge>
         </div>
 
-        <p className="text-xs text-muted">
-          {new Date(preview.createdAt).toLocaleDateString()}
-        </p>
+        <p className="text-xs text-muted">{new Date(preview.createdAt).toLocaleDateString()}</p>
 
         <div className="flex gap-2 pt-1">
           {preview.previewImageUrl && (

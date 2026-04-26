@@ -20,10 +20,7 @@ export async function GET(req: Request) {
   const page = parsed.success ? parsed.data.page : 1;
   const limit = parsed.success ? parsed.data.limit : 20;
 
-  const result = await getUserConversations(
-    session.user.id,
-    getPaginationParams(page, limit),
-  );
+  const result = await getUserConversations(session.user.id, getPaginationParams(page, limit));
   return NextResponse.json(result);
 }
 
@@ -38,10 +35,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const parsed = createConversationSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.issues[0]?.message },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: parsed.error.issues[0]?.message }, { status: 400 });
   }
 
   try {

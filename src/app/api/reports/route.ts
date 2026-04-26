@@ -34,10 +34,7 @@ export async function POST(req: Request) {
   });
 
   if (existing) {
-    return NextResponse.json(
-      { success: false, error: 'Already reported' },
-      { status: 409 },
-    );
+    return NextResponse.json({ success: false, error: 'Already reported' }, { status: 409 });
   }
 
   const report = await prisma.report.create({

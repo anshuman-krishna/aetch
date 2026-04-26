@@ -57,12 +57,14 @@ export function AIGenerationCard({ generation, onSave }: AIGenerationCardProps) 
         <div className="flex flex-wrap gap-1">
           {styleLabel && <GlassBadge size="sm">{styleLabel}</GlassBadge>}
           {placementLabel && <GlassBadge size="sm">{placementLabel}</GlassBadge>}
-          {isFailed && <GlassBadge variant="warning" size="sm">Failed</GlassBadge>}
+          {isFailed && (
+            <GlassBadge variant="warning" size="sm">
+              Failed
+            </GlassBadge>
+          )}
         </div>
 
-        <p className="text-xs text-muted">
-          {new Date(generation.createdAt).toLocaleDateString()}
-        </p>
+        <p className="text-xs text-muted">{new Date(generation.createdAt).toLocaleDateString()}</p>
 
         {/* actions */}
         {generation.imageUrl && (

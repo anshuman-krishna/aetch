@@ -1,17 +1,23 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
+import { withErrorHandler } from '@/lib/api-error';
+import { withRequestId } from '@/backend/middleware/request-log';
 import { rateLimit } from '@/backend/middleware/rate-limit';
-import { createBooking, getUserBookings, hasConflictingBooking } from '@/backend/services/booking-service';
+import {
+  createBooking,
+  getUserBookings,
+  hasConflictingBooking,
+} from '@/backend/services/booking-service';
 import { getArtistByUserId } from '@/backend/services/artist-service';
 import { notifyBookingRequest } from '@/backend/services/notification-service';
 import { bookingRequestSchema, paginationSchema } from '@/lib/validations';
 import { getPaginationParams } from '@/utils/pagination';
 
-export async function GET(req: Request) {
+export const GET = withErrorHandler(async (req: Request) => {
   const { session, error } = await authGuard();
-  if (error) return error;
+  if (error) return withRequestId(req, error);
 
   const { searchParams } = new URL(req.url);
   const parsed = paginationSchema.safeParse({
@@ -23,23 +29,26 @@ export async function GET(req: Request) {
   const pagination = getPaginationParams(page, limit);
 
   const result = await getUserBookings(session.user.id, pagination);
-  return NextResponse.json(result);
-}
+  return withRequestId(req, NextResponse.json(result));
+}, 'GET /api/bookings');
 
-export async function POST(req: Request) {
+export const POST = withErrorHandler(async (req: Request) => {
   const { session, error } = await authGuard();
-  if (error) return error;
+  if (error) return withRequestId(req, error);
 
   const rl = await rateLimit(session.user.id, 'api');
-  if (!rl.success) return rl.error;
+  if (!rl.success) return withRequestId(req, rl.error);
 
   try {
     const body = await req.json();
     const parsed = bookingRequestSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json(
-        { success: false, error: parsed.error.issues[0].message },
-        { status: 400 },
+      return withRequestId(
+        req,
+        NextResponse.json(
+          { success: false, error: parsed.error.issues[0].message },
+          { status: 400 },
+        ),
       );
     }
 
@@ -48,9 +57,12 @@ export async function POST(req: Request) {
     // reject past date bookings
     const bookingDate = new Date(date);
     if (bookingDate <= new Date()) {
-      return NextResponse.json(
-        { success: false, error: 'Booking date must be in the future' },
-        { status: 400 },
+      return withRequestId(
+        req,
+        NextResponse.json(
+          { success: false, error: 'Booking date must be in the future' },
+          { status: 400 },
+        ),
       );
     }
 
@@ -60,9 +72,12 @@ export async function POST(req: Request) {
     // prevent double booking
     const conflict = await hasConflictingBooking(artistId, bookingDate);
     if (conflict) {
-      return NextResponse.json(
-        { success: false, error: 'Artist has a conflicting booking in that time window' },
-        { status: 409 },
+      return withRequestId(
+        req,
+        NextResponse.json(
+          { success: false, error: 'Artist has a conflicting booking in that time window' },
+          { status: 409 },
+        ),
       );
     }
 
@@ -79,16 +94,17 @@ export async function POST(req: Request) {
 
     // notify artist (non-blocking)
     if (artist) {
-      notifyBookingRequest(
-        booking.id,
-        artist.userId,
-        session.user.name ?? 'Someone',
-      ).catch(() => {});
+      notifyBookingRequest(booking.id, artist.userId, session.user.name ?? 'Someone').catch(
+        () => {},
+      );
     }
 
-    return NextResponse.json({ success: true, booking }, { status: 201 });
+    return withRequestId(req, NextResponse.json({ success: true, booking }, { status: 201 }));
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Booking failed';
-    return NextResponse.json({ success: false, error: message }, { status: 400 });
+    return withRequestId(
+      req,
+      NextResponse.json({ success: false, error: message }, { status: 400 }),
+    );
   }
-}
+}, 'POST /api/bookings');

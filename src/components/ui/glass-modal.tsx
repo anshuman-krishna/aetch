@@ -20,7 +20,14 @@ const sizeClasses = {
   lg: 'max-w-2xl',
 } as const;
 
-export function GlassModal({ open, onClose, title, description, size = 'md', children }: GlassModalProps) {
+export function GlassModal({
+  open,
+  onClose,
+  title,
+  description,
+  size = 'md',
+  children,
+}: GlassModalProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
@@ -100,9 +107,13 @@ export function GlassModal({ open, onClose, title, description, size = 'md', chi
             {title && (
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <h2 id="modal-title" className="text-lg font-semibold text-foreground">{title}</h2>
+                  <h2 id="modal-title" className="text-lg font-semibold text-foreground">
+                    {title}
+                  </h2>
                   {description && (
-                    <p id="modal-description" className="mt-0.5 text-sm text-muted">{description}</p>
+                    <p id="modal-description" className="mt-0.5 text-sm text-muted">
+                      {description}
+                    </p>
                   )}
                 </div>
                 <button

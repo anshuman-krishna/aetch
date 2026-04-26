@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { Bebas_Neue, Sora } from 'next/font/google';
 import { Providers } from '@/components/layouts/providers';
 import { siteConfig } from '@/config/site';
@@ -31,11 +32,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const nonce = (await headers()).get('x-csp-nonce') ?? undefined;
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${bebasNeue.variable} ${sora.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <Providers nonce={nonce}>{children}</Providers>
       </body>
     </html>
   );

@@ -1,14 +1,11 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
 import { rateLimit } from '@/backend/middleware/rate-limit';
 import { saveTattoo } from '@/backend/services/tattoo-service';
 
-export async function POST(
-  _req: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { session, error } = await authGuard();
   if (error) return error;
 

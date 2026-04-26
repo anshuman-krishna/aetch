@@ -2,7 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { PageContainer } from '@/components/layouts/page-container';
-import { PreviewHistoryCard, type PreviewData } from '@/components/features/ar/preview-history-card';
+import {
+  PreviewHistoryCard,
+  type PreviewData,
+} from '@/components/features/ar/preview-history-card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { GlassButton } from '@/components/ui/glass-button';
 import { GlassSkeleton } from '@/components/ui/glass-skeleton';
@@ -23,12 +26,14 @@ export default function ARPreviewHistoryPage() {
     const data = await res.json();
     const items = data.previews ?? [];
 
-    setPreviews((prev) => reset ? items : [...prev, ...items]);
+    setPreviews((prev) => (reset ? items : [...prev, ...items]));
     setHasMore(data.pagination?.hasNext ?? false);
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchHistory(1, true); }, [fetchHistory]);
+  useEffect(() => {
+    fetchHistory(1, true);
+  }, [fetchHistory]);
 
   const loadMore = () => {
     const next = page + 1;
@@ -74,7 +79,9 @@ export default function ARPreviewHistoryPage() {
             description="Create your first AR tattoo preview to see it here."
             action={
               <Link href="/app/ar-preview">
-                <GlassButton variant="primary" size="sm">Create Preview</GlassButton>
+                <GlassButton variant="primary" size="sm">
+                  Create Preview
+                </GlassButton>
               </Link>
             }
           />

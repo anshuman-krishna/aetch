@@ -82,10 +82,7 @@ interface ArtistSearchFilters {
   shopId?: string;
 }
 
-export async function searchArtists(
-  filters: ArtistSearchFilters,
-  pagination: PaginationParams,
-) {
+export async function searchArtists(filters: ArtistSearchFilters, pagination: PaginationParams) {
   const where: Prisma.ArtistWhereInput = {};
 
   if (filters.q) {

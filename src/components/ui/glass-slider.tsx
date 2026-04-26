@@ -21,9 +21,7 @@ export const GlassSlider = forwardRef<HTMLInputElement, GlassSliderProps>(
                 {label}
               </label>
             )}
-            {showValue && (
-              <span className="text-sm tabular-nums text-muted">{value}</span>
-            )}
+            {showValue && <span className="text-sm tabular-nums text-muted">{value}</span>}
           </div>
         )}
         <input

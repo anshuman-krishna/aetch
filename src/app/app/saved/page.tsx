@@ -35,9 +35,7 @@ export default async function SavedTattoosPage({ searchParams }: Props) {
       <div className="py-8 sm:py-12">
         <div className="mb-8">
           <h1 className="text-h2 text-foreground">Saved Tattoos</h1>
-          <p className="mt-2 text-muted">
-            Your bookmarked tattoo inspiration.
-          </p>
+          <p className="mt-2 text-muted">Your bookmarked tattoo inspiration.</p>
         </div>
 
         {result.tattoos.length === 0 ? (
@@ -47,7 +45,9 @@ export default async function SavedTattoosPage({ searchParams }: Props) {
             description="Browse the gallery and save tattoos you love."
             action={
               <Link href="/app/gallery">
-                <GlassButton variant="primary" size="md">Explore Gallery</GlassButton>
+                <GlassButton variant="primary" size="md">
+                  Explore Gallery
+                </GlassButton>
               </Link>
             }
           />

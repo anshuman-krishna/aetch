@@ -1,7 +1,7 @@
 ## aetch
 
 alright, so a freelance client recently asked me, "what if someone could see a tattoo on their body before actually getting it done?"
-that one question turned into this. aetch is a tattoo platform: discovery, artist portfolios, bookings, social, ai generation, ar preview,  all in one place. it started as a quick idea and kept growing because the problem space kept growing.
+that one question turned into this. aetch is a tattoo platform: discovery, artist portfolios, bookings, social, ai generation, ar preview, all in one place. it started as a quick idea and kept growing because the problem space kept growing.
 
 ---
 

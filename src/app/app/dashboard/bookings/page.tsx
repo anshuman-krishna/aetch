@@ -55,7 +55,9 @@ export default function BookingsPage() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchBookings(); }, [filter]);
+  useEffect(() => {
+    fetchBookings();
+  }, [filter]);
 
   const updateStatus = async (id: string, status: string) => {
     await fetch(`/api/bookings/${id}`, {
@@ -126,9 +128,7 @@ export default function BookingsPage() {
                   {b.tattooIdea && (
                     <p className="text-sm text-muted line-clamp-2">{b.tattooIdea}</p>
                   )}
-                  {b.placement && (
-                    <p className="text-xs text-muted">Placement: {b.placement}</p>
-                  )}
+                  {b.placement && <p className="text-xs text-muted">Placement: {b.placement}</p>}
                 </div>
 
                 {b.status === 'PENDING' && (

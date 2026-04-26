@@ -11,9 +11,7 @@ export default function LandingPage() {
       {/* nav */}
       <header className="fixed top-0 left-0 right-0 z-50 px-2 sm:px-0">
         <nav className="mx-auto mt-3 flex max-w-6xl items-center justify-between rounded-2xl px-4 py-2.5 sm:px-6 sm:py-3 glass-strong">
-          <span className="text-xl font-bold tracking-tight text-foreground">
-            AETCH
-          </span>
+          <span className="text-xl font-bold tracking-tight text-foreground">AETCH</span>
           <div className="flex items-center gap-2">
             <Link
               href="/login"
@@ -37,8 +35,8 @@ export default function LandingPage() {
           The Tattoo Creative Platform
         </h1>
         <p className="mt-6 mx-auto max-w-2xl text-lg text-muted">
-          Discover inspiration, connect with artists, book sessions, generate
-          AI tattoo concepts, and preview ink on your skin — all in one place.
+          Discover inspiration, connect with artists, book sessions, generate AI tattoo concepts,
+          and preview ink on your skin — all in one place.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link
@@ -58,9 +56,7 @@ export default function LandingPage() {
 
       {/* features */}
       <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="text-h1 text-center text-foreground mb-4">
-          Everything Tattoo
-        </h2>
+        <h2 className="text-h1 text-center text-foreground mb-4">Everything Tattoo</h2>
         <p className="text-center text-muted max-w-xl mx-auto mb-16">
           From discovery to aftercare — the complete ecosystem for tattoo culture.
         </p>
@@ -80,12 +76,10 @@ export default function LandingPage() {
       {/* marketplace preview */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="glass-strong rounded-3xl p-10 md:p-16 text-center">
-          <h2 className="text-h1 text-foreground mb-4">
-            A Living Marketplace
-          </h2>
+          <h2 className="text-h1 text-foreground mb-4">A Living Marketplace</h2>
           <p className="text-muted max-w-2xl mx-auto mb-8">
-            Browse curated galleries, find verified artists by style and location,
-            book sessions directly, and share your ink with the community.
+            Browse curated galleries, find verified artists by style and location, book sessions
+            directly, and share your ink with the community.
           </p>
           <div className="grid gap-4 sm:grid-cols-3 max-w-2xl mx-auto">
             {stats.map((s) => (
@@ -102,13 +96,10 @@ export default function LandingPage() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-10 md:grid-cols-2 items-center">
           <div>
-            <h2 className="text-h1 text-foreground mb-4">
-              AI Tattoo Generator
-            </h2>
+            <h2 className="text-h1 text-foreground mb-4">AI Tattoo Generator</h2>
             <p className="text-muted mb-6">
-              Describe your vision and watch AI create unique tattoo concepts
-              in seconds. Choose styles, placements, and color palettes — then
-              preview directly on your skin with AR.
+              Describe your vision and watch AI create unique tattoo concepts in seconds. Choose
+              styles, placements, and color palettes — then preview directly on your skin with AR.
             </p>
             <Link
               href="/register"
@@ -137,9 +128,7 @@ export default function LandingPage() {
 
       {/* cta */}
       <section className="mx-auto max-w-6xl px-6 py-20 text-center">
-        <h2 className="text-h1 text-foreground mb-4">
-          Ready to Create?
-        </h2>
+        <h2 className="text-h1 text-foreground mb-4">Ready to Create?</h2>
         <p className="text-muted max-w-xl mx-auto mb-10">
           Join the most advanced tattoo platform on the internet.
         </p>
@@ -156,10 +145,18 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
           <span className="text-lg font-bold text-foreground">AETCH</span>
           <div className="flex gap-6 text-sm text-muted">
-            <Link href="/about" className="hover:text-foreground transition-colors">About</Link>
-            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
-            <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
+            <Link href="/about" className="hover:text-foreground transition-colors">
+              About
+            </Link>
+            <Link href="/privacy" className="hover:text-foreground transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-foreground transition-colors">
+              Terms
+            </Link>
+            <Link href="/contact" className="hover:text-foreground transition-colors">
+              Contact
+            </Link>
           </div>
           <p className="text-xs text-muted">&copy; {new Date().getFullYear()} AETCH</p>
         </div>

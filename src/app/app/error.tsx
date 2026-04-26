@@ -17,9 +17,7 @@ export default function AppError({
   return (
     <div className="mx-auto max-w-md px-6 py-20">
       <GlassCard variant="strong" padding="lg" className="text-center">
-        <h2 className="text-h2 text-foreground mb-2">
-          Something went wrong
-        </h2>
+        <h2 className="text-h2 text-foreground mb-2">Something went wrong</h2>
         <p className="text-sm text-muted mb-6">
           An error occurred while loading this page. Please try again.
         </p>

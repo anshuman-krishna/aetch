@@ -31,12 +31,7 @@ export function MessageArtistButton({ artistUserId }: MessageArtistButtonProps) 
   };
 
   return (
-    <GlassButton
-      variant="secondary"
-      size="md"
-      onClick={handleClick}
-      loading={loading}
-    >
+    <GlassButton variant="secondary" size="md" onClick={handleClick} loading={loading}>
       <MessageCircle className="h-4 w-4" />
       Message Artist
     </GlassButton>

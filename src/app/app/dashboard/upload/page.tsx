@@ -30,7 +30,8 @@ export default async function UploadPage() {
             </div>
             <h1 className="text-h3 text-foreground">Artist Access Required</h1>
             <p className="mt-2 text-sm text-muted max-w-md mx-auto">
-              Only artists can upload tattoos. If you&apos;re an artist, update your role in settings.
+              Only artists can upload tattoos. If you&apos;re an artist, update your role in
+              settings.
             </p>
           </GlassCard>
         </div>
@@ -43,9 +44,7 @@ export default async function UploadPage() {
       <div className="py-8 sm:py-12">
         <div className="mb-8">
           <h1 className="text-h2 text-foreground">Upload Tattoo</h1>
-          <p className="mt-2 text-muted">
-            Share your work with the AETCH community.
-          </p>
+          <p className="mt-2 text-muted">Share your work with the AETCH community.</p>
         </div>
         <TattooUploadForm />
       </div>

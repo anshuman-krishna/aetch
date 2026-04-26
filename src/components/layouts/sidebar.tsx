@@ -19,12 +19,7 @@ export function Sidebar({ links, className }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside
-      className={cn(
-        'flex w-64 shrink-0 flex-col gap-1 rounded-2xl glass p-3',
-        className,
-      )}
-    >
+    <aside className={cn('flex w-64 shrink-0 flex-col gap-1 rounded-2xl glass p-3', className)}>
       {links.map((link) => {
         const active = pathname === link.href;
         return (

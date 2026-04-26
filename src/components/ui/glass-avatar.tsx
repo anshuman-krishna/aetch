@@ -19,13 +19,14 @@ const sizeClasses = {
 const imageSizes = { sm: 32, md: 40, lg: 48, xl: 64 } as const;
 
 export function GlassAvatar({ src, alt = '', fallback, size = 'md', className }: GlassAvatarProps) {
-  const initials = fallback
-    ?? alt
-        .split(' ')
-        .map((w) => w[0])
-        .join('')
-        .slice(0, 2)
-        .toUpperCase();
+  const initials =
+    fallback ??
+    alt
+      .split(' ')
+      .map((w) => w[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
 
   return (
     <div

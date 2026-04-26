@@ -1,4 +1,4 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import { getUserLikedPosts } from '@/backend/services/post-service';

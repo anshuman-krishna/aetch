@@ -25,9 +25,7 @@ export function MessageBubble({
 
   return (
     <div className={cn('flex gap-2 max-w-[80%]', isOwn && 'ml-auto flex-row-reverse')}>
-      {!isOwn && (
-        <GlassAvatar src={senderImage} alt={senderName} size="sm" />
-      )}
+      {!isOwn && <GlassAvatar src={senderImage} alt={senderName} size="sm" />}
       <div>
         <div
           className={cn(
@@ -39,9 +37,7 @@ export function MessageBubble({
         >
           {content}
         </div>
-        <p className={cn('text-[10px] text-muted mt-1', isOwn && 'text-right')}>
-          {time}
-        </p>
+        <p className={cn('text-[10px] text-muted mt-1', isOwn && 'text-right')}>{time}</p>
       </div>
     </div>
   );

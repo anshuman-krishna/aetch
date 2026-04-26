@@ -78,10 +78,7 @@ export async function processTattooImage(input: Buffer): Promise<ProcessedImage>
 }
 
 // resize avatar to square
-export async function processAvatarImage(
-  input: Buffer,
-  size = 256,
-): Promise<Buffer> {
+export async function processAvatarImage(input: Buffer, size = 256): Promise<Buffer> {
   return sharp(input)
     .rotate()
     .resize(size, size, { fit: 'cover', position: 'centre' })

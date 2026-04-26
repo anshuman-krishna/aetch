@@ -36,9 +36,7 @@ export function TattooFilters({ filters, onChange, className }: TattooFiltersPro
   const [expanded, setExpanded] = useState(false);
 
   const activeCount =
-    filters.styles.length +
-    (filters.bodyPlacement ? 1 : 0) +
-    (filters.colorType ? 1 : 0);
+    filters.styles.length + (filters.bodyPlacement ? 1 : 0) + (filters.colorType ? 1 : 0);
 
   const toggleStyle = (style: string) => {
     const updated = filters.styles.includes(style)
@@ -105,7 +103,10 @@ export function TattooFilters({ filters, onChange, className }: TattooFiltersPro
                   <button
                     key={style}
                     onClick={() => toggleStyle(style)}
-                    className={cn(chipBase, filters.styles.includes(style) ? chipActive : chipInactive)}
+                    className={cn(
+                      chipBase,
+                      filters.styles.includes(style) ? chipActive : chipInactive,
+                    )}
                   >
                     {STYLE_LABELS[style]}
                   </button>
@@ -116,8 +117,13 @@ export function TattooFilters({ filters, onChange, className }: TattooFiltersPro
                 {BODY_PLACEMENTS.map((p) => (
                   <button
                     key={p}
-                    onClick={() => onChange({ ...filters, bodyPlacement: filters.bodyPlacement === p ? '' : p })}
-                    className={cn(chipBase, filters.bodyPlacement === p ? chipActive : chipInactive)}
+                    onClick={() =>
+                      onChange({ ...filters, bodyPlacement: filters.bodyPlacement === p ? '' : p })
+                    }
+                    className={cn(
+                      chipBase,
+                      filters.bodyPlacement === p ? chipActive : chipInactive,
+                    )}
                   >
                     {PLACEMENT_LABELS[p]}
                   </button>
@@ -128,10 +134,14 @@ export function TattooFilters({ filters, onChange, className }: TattooFiltersPro
                 {COLOR_TYPES.map((type) => (
                   <button
                     key={type}
-                    onClick={() => onChange({ ...filters, colorType: filters.colorType === type ? '' : type })}
+                    onClick={() =>
+                      onChange({ ...filters, colorType: filters.colorType === type ? '' : type })
+                    }
                     className={cn(chipBase, filters.colorType === type ? chipActive : chipInactive)}
                   >
-                    {type === 'BLACK_AND_GREY' ? 'Black & Grey' : type.charAt(0) + type.slice(1).toLowerCase()}
+                    {type === 'BLACK_AND_GREY'
+                      ? 'Black & Grey'
+                      : type.charAt(0) + type.slice(1).toLowerCase()}
                   </button>
                 ))}
               </FilterSection>

@@ -29,7 +29,9 @@ export default function ShopArtistsPage() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleAdd = async () => {
     if (!artistSlug.trim() || !shopId) return;
@@ -82,12 +84,7 @@ export default function ShopArtistsPage() {
             placeholder="Artist ID"
             className="flex-1"
           />
-          <GlassButton
-            variant="primary"
-            size="md"
-            onClick={handleAdd}
-            loading={adding}
-          >
+          <GlassButton variant="primary" size="md" onClick={handleAdd} loading={adding}>
             <UserPlus className="h-4 w-4" />
             Add
           </GlassButton>
@@ -107,11 +104,7 @@ export default function ShopArtistsPage() {
           description="Add artists to your shop to get started."
         />
       ) : (
-        <ShopArtistsList
-          artists={artists}
-          editable
-          onRemove={handleRemove}
-        />
+        <ShopArtistsList artists={artists} editable onRemove={handleRemove} />
       )}
     </div>
   );

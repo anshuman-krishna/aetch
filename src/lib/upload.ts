@@ -15,7 +15,9 @@ export interface ProcessedUploadResult {
 
 function validateImage(file: Buffer, contentType: string, maxSize: number) {
   if (!ALLOWED_IMAGE_TYPES.includes(contentType)) {
-    throw new Error(`Invalid file type: ${contentType}. Allowed: ${ALLOWED_IMAGE_TYPES.join(', ')}`);
+    throw new Error(
+      `Invalid file type: ${contentType}. Allowed: ${ALLOWED_IMAGE_TYPES.join(', ')}`,
+    );
   }
   if (file.byteLength > maxSize) {
     throw new Error(`File too large. Maximum size: ${Math.round(maxSize / 1024 / 1024)}MB`);

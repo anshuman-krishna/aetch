@@ -43,12 +43,11 @@ export function ShopArtistsList({ artists, editable = false, onRemove }: ShopArt
     <div className="space-y-3">
       {artists.map((sa) => (
         <GlassCard key={sa.id} padding="sm" className="flex items-center gap-3">
-          <Link href={`/app/artist/${sa.artist.slug}`} className="flex items-center gap-3 flex-1 min-w-0">
-            <GlassAvatar
-              src={sa.artist.user.image}
-              alt={sa.artist.displayName}
-              size="md"
-            />
+          <Link
+            href={`/app/artist/${sa.artist.slug}`}
+            className="flex items-center gap-3 flex-1 min-w-0"
+          >
+            <GlassAvatar src={sa.artist.user.image} alt={sa.artist.displayName} size="md" />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-foreground truncate">
@@ -67,11 +66,7 @@ export function ShopArtistsList({ artists, editable = false, onRemove }: ShopArt
           </Link>
 
           {editable && sa.role !== 'OWNER' && onRemove && (
-            <GlassButton
-              variant="ghost"
-              size="sm"
-              onClick={() => onRemove(sa.artist.id)}
-            >
+            <GlassButton variant="ghost" size="sm" onClick={() => onRemove(sa.artist.id)}>
               <Trash2 className="h-4 w-4" />
             </GlassButton>
           )}

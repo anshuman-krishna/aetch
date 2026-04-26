@@ -10,7 +10,7 @@ How we move schema changes from dev to production safely.
 
 ## Production deploy
 
-Migrations are applied *before* the app binary goes live.
+Migrations are applied _before_ the app binary goes live.
 
 **On Vercel** we run `prisma migrate deploy` in a dedicated step (either a GitHub Actions job before the Vercel deploy, or via a release phase script):
 
@@ -27,7 +27,7 @@ Migrations are applied *before* the app binary goes live.
 
 1. **Additive first.** New columns default to nullable or have defaults. Never drop or rename in the same migration as code that reads the old name.
 2. **Two-phase destructive changes.** Deploy code that writes both old and new. Backfill. Deploy code that reads only new. Drop old column in a later release.
-3. **No long-running migrations in the deploy step.** For big backfills, run them as a separate job (SQL or a script) *after* the migration that adds the column but *before* code depends on it.
+3. **No long-running migrations in the deploy step.** For big backfills, run them as a separate job (SQL or a script) _after_ the migration that adds the column but _before_ code depends on it.
 4. **Lock-sensitive operations** (e.g. `ALTER TABLE ... NOT NULL`, index creation on large tables) — prefer `CREATE INDEX CONCURRENTLY` and dual-phase constraint additions.
 
 ## Prisma + connection pooling
@@ -40,7 +40,7 @@ Migrations are applied *before* the app binary goes live.
 
 - We do not auto-rollback migrations. If a migration goes bad:
   1. Roll the app back to the previous deploy (Vercel instant rollback)
-  2. Write a *new* forward-only migration that reverses the damage
+  2. Write a _new_ forward-only migration that reverses the damage
   3. Never run `prisma migrate reset` in production
 
 ## Release checklist

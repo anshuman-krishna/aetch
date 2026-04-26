@@ -84,17 +84,28 @@ export default async function ShopProfilePage({ params, searchParams }: Props) {
               {/* contact links */}
               <div className="mt-4 flex flex-wrap gap-3 justify-center sm:justify-start">
                 {shop.website && (
-                  <a href={shop.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-primary hover:underline">
+                  <a
+                    href={shop.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-xs text-primary hover:underline"
+                  >
                     <Globe className="h-3.5 w-3.5" /> Website
                   </a>
                 )}
                 {shop.phone && (
-                  <a href={`tel:${shop.phone}`} className="flex items-center gap-1 text-xs text-primary hover:underline">
+                  <a
+                    href={`tel:${shop.phone}`}
+                    className="flex items-center gap-1 text-xs text-primary hover:underline"
+                  >
                     <Phone className="h-3.5 w-3.5" /> {shop.phone}
                   </a>
                 )}
                 {shop.email && (
-                  <a href={`mailto:${shop.email}`} className="flex items-center gap-1 text-xs text-primary hover:underline">
+                  <a
+                    href={`mailto:${shop.email}`}
+                    className="flex items-center gap-1 text-xs text-primary hover:underline"
+                  >
                     <Mail className="h-3.5 w-3.5" /> {shop.email}
                   </a>
                 )}

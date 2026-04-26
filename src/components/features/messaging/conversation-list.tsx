@@ -49,9 +49,7 @@ export function ConversationList({
     <div className="flex flex-col gap-1">
       {conversations.map((conv) => {
         // get other participant
-        const other = conv.participants.find(
-          (p) => p.user.id !== currentUserId,
-        )?.user;
+        const other = conv.participants.find((p) => p.user.id !== currentUserId)?.user;
 
         if (!other) return null;
 
@@ -67,24 +65,16 @@ export function ConversationList({
               activeId === conv.id && 'bg-white/15',
             )}
           >
-            <GlassAvatar
-              src={other.image}
-              alt={other.name ?? ''}
-              size="md"
-            />
+            <GlassAvatar src={other.image} alt={other.name ?? ''} size="md" />
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-foreground truncate">
                   {other.name ?? other.username}
                 </p>
-                <span className="text-[10px] text-muted shrink-0">
-                  {timeAgo}
-                </span>
+                <span className="text-[10px] text-muted shrink-0">{timeAgo}</span>
               </div>
               {conv.lastMessage && (
-                <p className="text-xs text-muted truncate mt-0.5">
-                  {conv.lastMessage}
-                </p>
+                <p className="text-xs text-muted truncate mt-0.5">{conv.lastMessage}</p>
               )}
             </div>
           </Link>

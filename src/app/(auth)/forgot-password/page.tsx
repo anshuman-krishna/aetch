@@ -30,10 +30,13 @@ export default function ForgotPasswordPage() {
       <GlassCard variant="strong" padding="lg" className="w-full max-w-md text-center">
         <h1 className="text-xl font-bold text-foreground">Check your email</h1>
         <p className="mt-2 text-sm text-muted">
-          If an account exists for <strong className="text-foreground">{email}</strong>,
-          we sent a sign-in link.
+          If an account exists for <strong className="text-foreground">{email}</strong>, we sent a
+          sign-in link.
         </p>
-        <Link href="/login" className="mt-4 inline-block text-sm font-medium text-primary hover:underline">
+        <Link
+          href="/login"
+          className="mt-4 inline-block text-sm font-medium text-primary hover:underline"
+        >
           Back to sign in
         </Link>
       </GlassCard>
@@ -43,9 +46,7 @@ export default function ForgotPasswordPage() {
   return (
     <GlassCard variant="strong" padding="lg" className="w-full max-w-md">
       <h1 className="text-2xl font-bold text-foreground">Reset access</h1>
-      <p className="mt-1 text-sm text-muted">
-        Enter your email and we&apos;ll send a sign-in link
-      </p>
+      <p className="mt-1 text-sm text-muted">Enter your email and we&apos;ll send a sign-in link</p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <GlassInput

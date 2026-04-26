@@ -7,9 +7,11 @@ import { ToastProvider } from '@/components/ui/glass-toast';
 
 interface ProvidersProps {
   children: ReactNode;
+  nonce?: string;
 }
 
-export function Providers({ children }: ProvidersProps) {
+// nonce is forwarded for any 3rd-party providers that emit inline scripts (csp)
+export function Providers({ children, nonce: _nonce }: ProvidersProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({

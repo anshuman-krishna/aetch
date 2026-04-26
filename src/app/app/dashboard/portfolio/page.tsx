@@ -40,7 +40,9 @@ export default async function PortfolioPage({ searchParams }: Props) {
           <p className="mt-1 text-muted">Manage your uploaded tattoos</p>
         </div>
         <Link href="/app/dashboard/upload">
-          <GlassButton variant="primary" size="md">Upload Tattoo</GlassButton>
+          <GlassButton variant="primary" size="md">
+            Upload Tattoo
+          </GlassButton>
         </Link>
       </div>
 
@@ -51,7 +53,9 @@ export default async function PortfolioPage({ searchParams }: Props) {
           description="Upload your first tattoo to start building your portfolio."
           action={
             <Link href="/app/dashboard/upload">
-              <GlassButton variant="primary" size="md">Upload Tattoo</GlassButton>
+              <GlassButton variant="primary" size="md">
+                Upload Tattoo
+              </GlassButton>
             </Link>
           }
         />

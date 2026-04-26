@@ -21,9 +21,5 @@ const gapClasses = {
 } as const;
 
 export function GridLayout({ children, cols = 3, gap = 'md', className }: GridLayoutProps) {
-  return (
-    <div className={cn('grid', colClasses[cols], gapClasses[gap], className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn('grid', colClasses[cols], gapClasses[gap], className)}>{children}</div>;
 }

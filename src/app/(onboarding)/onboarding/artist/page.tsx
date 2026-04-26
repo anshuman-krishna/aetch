@@ -11,9 +11,20 @@ import { slugify } from '@/utils/slugify';
 import { cn } from '@/utils/cn';
 
 const specialtyOptions = [
-  'Traditional', 'Neo-traditional', 'Japanese', 'Blackwork', 'Fine Line',
-  'Minimalist', 'Realism', 'Tribal', 'Watercolor', 'Geometric',
-  'Abstract', 'Dotwork', 'Biomechanical', 'Chicano',
+  'Traditional',
+  'Neo-traditional',
+  'Japanese',
+  'Blackwork',
+  'Fine Line',
+  'Minimalist',
+  'Realism',
+  'Tribal',
+  'Watercolor',
+  'Geometric',
+  'Abstract',
+  'Dotwork',
+  'Biomechanical',
+  'Chicano',
 ];
 
 export default function ArtistOnboardingPage() {
@@ -34,9 +45,7 @@ export default function ArtistOnboardingPage() {
   };
 
   const toggleSpecialty = (s: string) => {
-    setSpecialties((prev) =>
-      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
-    );
+    setSpecialties((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -14,12 +14,6 @@ const roundedClasses = {
 
 export function GlassSkeleton({ className, rounded = 'md' }: GlassSkeletonProps) {
   return (
-    <div
-      className={cn(
-        'animate-pulse bg-foreground/5',
-        roundedClasses[rounded],
-        className,
-      )}
-    />
+    <div className={cn('animate-pulse bg-foreground/5', roundedClasses[rounded], className)} />
   );
 }

@@ -1,5 +1,11 @@
 import { notFound } from 'next/navigation';
-import { getTattooBySlug, isLikedByUser, isSavedByUser, getRelatedTattoos, incrementViewCount } from '@/backend/services/tattoo-service';
+import {
+  getTattooBySlug,
+  isLikedByUser,
+  isSavedByUser,
+  getRelatedTattoos,
+  incrementViewCount,
+} from '@/backend/services/tattoo-service';
 import { auth } from '@/lib/auth';
 import { PageContainer } from '@/components/layouts/page-container';
 import { TattooDetailView } from '@/components/features/gallery/tattoo-detail-view';

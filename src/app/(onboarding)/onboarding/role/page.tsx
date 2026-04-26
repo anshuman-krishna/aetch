@@ -58,7 +58,9 @@ export default function RoleSelectionPage() {
             )}
           >
             <div className="flex items-start gap-4">
-              <span className="text-3xl" aria-hidden="true">{role.icon}</span>
+              <span className="text-3xl" aria-hidden="true">
+                {role.icon}
+              </span>
               <div>
                 <h3 className="text-lg font-semibold text-foreground">{role.title}</h3>
                 <p className="mt-0.5 text-sm text-muted">{role.description}</p>

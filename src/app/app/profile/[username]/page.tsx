@@ -29,9 +29,8 @@ export default async function ProfilePage({ params }: Props) {
 
   const session = await auth();
   const isOwnProfile = session?.user?.id === user.id;
-  const followingUser = session?.user && !isOwnProfile
-    ? await isFollowing(session.user.id, user.id)
-    : false;
+  const followingUser =
+    session?.user && !isOwnProfile ? await isFollowing(session.user.id, user.id) : false;
 
   const roleLabels: Record<string, string> = {
     USER: 'Enthusiast',
@@ -53,9 +52,7 @@ export default async function ProfilePage({ params }: Props) {
             className="mx-auto"
           />
           <h1 className="mt-4 text-h3 text-foreground">{user.name ?? user.username}</h1>
-          {user.username && (
-            <p className="text-sm text-muted">@{user.username}</p>
-          )}
+          {user.username && <p className="text-sm text-muted">@{user.username}</p>}
           <div className="mt-2 flex justify-center gap-2">
             <GlassBadge variant="primary">{roleLabel}</GlassBadge>
             {user.artist?.verified && <GlassBadge variant="success">Verified</GlassBadge>}

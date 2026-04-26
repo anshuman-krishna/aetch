@@ -25,9 +25,7 @@ export default async function TrendingPage() {
             </div>
             <h1 className="text-h2 text-foreground">Trending</h1>
           </div>
-          <p className="text-muted">
-            The most popular tattoos from the past 7 days.
-          </p>
+          <p className="text-muted">The most popular tattoos from the past 7 days.</p>
         </div>
 
         {tattoos.length === 0 ? (

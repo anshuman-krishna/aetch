@@ -41,7 +41,11 @@ export async function markAllAsRead(userId: string) {
 }
 
 // notify artist of booking
-export async function notifyBookingRequest(bookingId: string, artistUserId: string, clientName: string) {
+export async function notifyBookingRequest(
+  bookingId: string,
+  artistUserId: string,
+  clientName: string,
+) {
   return createNotification({
     userId: artistUserId,
     type: 'BOOKING_REQUEST',

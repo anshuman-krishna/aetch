@@ -99,13 +99,14 @@ export default function ShopBookingsPage() {
                   <p className="text-xs text-muted">
                     <Clock className="inline h-3 w-3 mr-1" />
                     {new Date(b.date).toLocaleDateString('en-US', {
-                      weekday: 'short', month: 'short', day: 'numeric',
-                      hour: 'numeric', minute: '2-digit',
+                      weekday: 'short',
+                      month: 'short',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit',
                     })}
                   </p>
-                  <p className="text-xs text-muted">
-                    Artist: {b.artist.displayName}
-                  </p>
+                  <p className="text-xs text-muted">Artist: {b.artist.displayName}</p>
                   {b.tattooIdea && (
                     <p className="text-sm text-muted line-clamp-2">{b.tattooIdea}</p>
                   )}

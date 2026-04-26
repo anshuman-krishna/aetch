@@ -9,7 +9,10 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { useToast } from '@/components/ui/glass-toast';
 import { BodyImageUploader } from '@/components/features/ar/body-image-uploader';
 import { TattooSelector } from '@/components/features/ar/tattoo-selector';
-import { TattooPreviewCanvas, type PreviewTransform } from '@/components/features/ar/tattoo-preview-canvas';
+import {
+  TattooPreviewCanvas,
+  type PreviewTransform,
+} from '@/components/features/ar/tattoo-preview-canvas';
 import { PreviewControls } from '@/components/features/ar/preview-controls';
 import { PreviewExportButton } from '@/components/features/ar/preview-export-button';
 import { History, ScanEye } from 'lucide-react';
@@ -145,17 +148,15 @@ export default function ARPreviewPage() {
               >
                 <option value="">Select placement</option>
                 {BODY_PLACEMENTS.map((p) => (
-                  <option key={p} value={p}>{PLACEMENT_LABELS[p]}</option>
+                  <option key={p} value={p}>
+                    {PLACEMENT_LABELS[p]}
+                  </option>
                 ))}
               </select>
             </GlassCard>
 
             {canPreview && (
-              <PreviewControls
-                transform={transform}
-                onChange={setTransform}
-                disabled={saving}
-              />
+              <PreviewControls transform={transform} onChange={setTransform} disabled={saving} />
             )}
           </div>
         </div>

@@ -1,13 +1,10 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
 import { getPreviewById, deletePreview } from '@/backend/services/ar-preview-service';
 
-export async function GET(
-  _req: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { session, error } = await authGuard();
   if (error) return error;
 
@@ -21,10 +18,7 @@ export async function GET(
   return NextResponse.json({ preview });
 }
 
-export async function DELETE(
-  _req: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { session, error } = await authGuard();
   if (error) return error;
 

@@ -12,14 +12,23 @@ export default function RootError({
 }) {
   useEffect(() => {
     console.error('[root-error]', error);
+    fetch('/api/_error', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        message: error.message,
+        digest: error.digest,
+        stack: error.stack,
+        url: typeof window !== 'undefined' ? window.location.href : undefined,
+      }),
+      keepalive: true,
+    }).catch(() => {});
   }, [error]);
 
   return (
     <div className="mx-auto max-w-md px-6 py-20">
       <GlassCard variant="strong" padding="lg" className="text-center">
-        <h2 className="text-h2 text-foreground mb-2">
-          Something went wrong
-        </h2>
+        <h2 className="text-h2 text-foreground mb-2">Something went wrong</h2>
         <p className="text-sm text-muted mb-6">
           An unexpected error occurred. Please try again or refresh the page.
         </p>
