@@ -88,9 +88,7 @@ export function estimatePrice(input: EstimateInput): EstimateBreakdown {
   }
   const baseHours = SIZE_HOURS[input.size];
   const colorMultiplier = COLOR_MULTIPLIER[input.colorType ?? 'BLACK_AND_GREY'];
-  const placementMultiplier = input.placement
-    ? (PLACEMENT_MULTIPLIER[input.placement] ?? 1)
-    : 1;
+  const placementMultiplier = input.placement ? (PLACEMENT_MULTIPLIER[input.placement] ?? 1) : 1;
   const complexityMultiplier = COMPLEXITY_MULTIPLIER[input.complexity ?? 'moderate'];
   const styleMultiplier = styleFactor(input.styles);
 

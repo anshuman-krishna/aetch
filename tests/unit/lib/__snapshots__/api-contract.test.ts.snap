@@ -2,11 +2,15 @@
 
 exports[`api contract — zod schema snapshots exposes the expected schema names: schema-names 1`] = `
 [
+  "addToCollectionSchema",
+  "aftercareSchema",
   "aiGenerateSchema",
   "availabilityBulkSchema",
   "availabilitySchema",
   "bookingRequestSchema",
   "bookingSchema",
+  "coverupSchema",
+  "createCollectionSchema",
   "createCommentSchema",
   "createConversationSchema",
   "createPostSchema",
@@ -16,7 +20,9 @@ exports[`api contract — zod schema snapshots exposes the expected schema names
   "feedFilterSchema",
   "loginSchema",
   "paginationSchema",
+  "priceEstimateSchema",
   "registerSchema",
+  "repostSchema",
   "reviewSchema",
   "savePreviewSchema",
   "sendMessageSchema",
@@ -26,7 +32,24 @@ exports[`api contract — zod schema snapshots exposes the expected schema names
   "updateBookingStatusSchema",
   "updateProfileSchema",
   "updateShopSchema",
+  "userSearchSchema",
 ]
+`;
+
+exports[`api contract — zod schema snapshots shape: addToCollectionSchema: addToCollectionSchema 1`] = `
+{
+  "note": "optional",
+  "postId": "optional",
+  "tattooId": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: aftercareSchema: aftercareSchema 1`] = `
+{
+  "bookingId": "optional",
+  "daysSinceTattoo": "optional",
+  "question": "string",
+}
 `;
 
 exports[`api contract — zod schema snapshots shape: aiGenerateSchema: aiGenerateSchema 1`] = `
@@ -74,6 +97,24 @@ exports[`api contract — zod schema snapshots shape: bookingSchema: bookingSche
   "duration": "optional",
   "reference": "optional",
   "shopId": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: coverupSchema: coverupSchema 1`] = `
+{
+  "desiredStyle": "optional",
+  "desiredSubject": "optional",
+  "existingDescription": "string",
+  "placement": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: createCollectionSchema: createCollectionSchema 1`] = `
+{
+  "description": "optional",
+  "isPublic": "default",
+  "name": "string",
+  "slug": "string",
 }
 `;
 
@@ -155,11 +196,30 @@ exports[`api contract — zod schema snapshots shape: paginationSchema: paginati
 }
 `;
 
+exports[`api contract — zod schema snapshots shape: priceEstimateSchema: priceEstimateSchema 1`] = `
+{
+  "artistId": "optional",
+  "colorType": "optional",
+  "complexity": "optional",
+  "hourlyRate": "optional",
+  "placement": "optional",
+  "size": "enum",
+  "styles": "optional",
+}
+`;
+
 exports[`api contract — zod schema snapshots shape: registerSchema: registerSchema 1`] = `
 {
   "email": "string",
   "name": "string",
   "username": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: repostSchema: repostSchema 1`] = `
+{
+  "caption": "optional",
+  "postId": "string",
 }
 `;
 
@@ -252,5 +312,12 @@ exports[`api contract — zod schema snapshots shape: updateShopSchema: updateSh
   "phone": "optional",
   "state": "optional",
   "website": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: userSearchSchema: userSearchSchema 1`] = `
+{
+  "limit": "default",
+  "q": "string",
 }
 `;

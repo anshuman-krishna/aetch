@@ -119,3 +119,61 @@ export async function getUserGenerations(userId: string, pagination: PaginationP
 export async function getGenerationById(id: string) {
   return prisma.aIGeneration.findUnique({ where: { id } });
 }
+
+// coverup variant — same dispatch path, different prompt
+interface CoverupGenInput {
+  userId: string;
+  existingDescription: string;
+  desiredSubject?: string;
+  desiredStyle?: string;
+  placement?: string;
+}
+
+export async function generateCoverupDesign(input: CoverupGenInput) {
+  if (!isFeatureEnabled('COVERUP_ENABLED')) {
+    throw new Error('Coverup finder is disabled');
+  }
+  const allowed = await checkDailyLimit(input.userId);
+  if (!allowed) throw new Error('Daily generation limit reached');
+
+  const { buildCoverupPrompt } = await import('@/utils/ai-prompt-builder');
+  const prompt = buildCoverupPrompt({
+    existingDescription: input.existingDescription,
+    desiredSubject: input.desiredSubject,
+    desiredStyle: input.desiredStyle,
+    placement: input.placement,
+  });
+
+  const generation = await prisma.aIGeneration.create({
+    data: {
+      userId: input.userId,
+      prompt,
+      style: input.desiredStyle,
+      placement: input.placement,
+      status: 'PENDING',
+    },
+  });
+
+  try {
+    const openai = getOpenAI();
+    const response = await openai.images.generate({
+      model: process.env.AI_IMAGE_MODEL ?? 'dall-e-3',
+      prompt,
+      n: 1,
+      size: '1024x1024',
+      quality: 'standard',
+    });
+    const imageUrl = response.data?.[0]?.url;
+    if (!imageUrl) throw new Error('No image generated');
+    return prisma.aIGeneration.update({
+      where: { id: generation.id },
+      data: { imageUrl, status: 'COMPLETED' },
+    });
+  } catch (err) {
+    await prisma.aIGeneration.update({
+      where: { id: generation.id },
+      data: { status: 'FAILED' },
+    });
+    throw err;
+  }
+}

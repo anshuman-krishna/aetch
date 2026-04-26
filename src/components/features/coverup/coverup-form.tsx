@@ -79,11 +79,7 @@ export function CoverupForm() {
       {result?.imageUrl && (
         <GlassCard padding="md">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={result.imageUrl}
-            alt="Generated coverup design"
-            className="w-full rounded-xl"
-          />
+          <img src={result.imageUrl} alt="Generated coverup design" className="w-full rounded-xl" />
         </GlassCard>
       )}
     </form>

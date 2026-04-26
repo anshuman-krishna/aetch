@@ -32,9 +32,10 @@ export async function askAftercare(input: AftercareInput): Promise<AftercareRepl
   }
 
   const openai = getOpenAI();
-  const userPrompt = input.daysSinceTattoo !== undefined
-    ? `Day ${input.daysSinceTattoo} of healing. ${input.question}`
-    : input.question;
+  const userPrompt =
+    input.daysSinceTattoo !== undefined
+      ? `Day ${input.daysSinceTattoo} of healing. ${input.question}`
+      : input.question;
 
   const completion = await openai.chat.completions.create({
     model: process.env.AFTERCARE_MODEL ?? 'gpt-4o-mini',
