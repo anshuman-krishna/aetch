@@ -34,9 +34,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="flex min-h-[300px] items-center justify-center p-8">
           <div className="glass-strong rounded-2xl p-8 text-center max-w-md">
-            <h2 className="text-h3 text-foreground mb-2">
-              Something went wrong
-            </h2>
+            <h2 className="text-h3 text-foreground mb-2">Something went wrong</h2>
             <p className="text-sm text-muted mb-4">
               An unexpected error occurred. Please try refreshing the page.
             </p>

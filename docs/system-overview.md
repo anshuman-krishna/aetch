@@ -49,34 +49,37 @@ src/
 
 ## Main Services
 
-| Service | Responsibility |
-|---------|---------------|
-| `tattoo-service` | CRUD, search, likes, saves, trending |
-| `post-service` | Social feed, posts, likes, trending |
-| `artist-service` | Profiles, search, availability, suggestions |
-| `shop-service` | Shop profiles, artist membership, gallery |
-| `booking-service` | Booking lifecycle, status transitions |
-| `message-service` | Conversations, messages, unread counts |
-| `notification-service` | Event notifications, mark-read |
-| `user-service` | Onboarding, roles, profile management |
-| `follow-service` | Follow/unfollow, follower lists |
-| `comment-service` | Post comments, replies |
-| `ai-service` | AI tattoo generation, history |
-| `ar-preview-service` | AR preview save/retrieve |
+| Service                | Responsibility                              |
+| ---------------------- | ------------------------------------------- |
+| `tattoo-service`       | CRUD, search, likes, saves, trending        |
+| `post-service`         | Social feed, posts, likes, trending         |
+| `artist-service`       | Profiles, search, availability, suggestions |
+| `shop-service`         | Shop profiles, artist membership, gallery   |
+| `booking-service`      | Booking lifecycle, status transitions       |
+| `message-service`      | Conversations, messages, unread counts      |
+| `notification-service` | Event notifications, mark-read              |
+| `user-service`         | Onboarding, roles, profile management       |
+| `follow-service`       | Follow/unfollow, follower lists             |
+| `comment-service`      | Post comments, replies                      |
+| `ai-service`           | AI tattoo generation, history               |
+| `ar-preview-service`   | AR preview save/retrieve                    |
 
 ## Data Flow
 
 ### Authentication
+
 ```
 Browser → NextAuth → Google OAuth / Magic Link → Session Cookie → Auth Guard
 ```
 
 ### API Request Pipeline
+
 ```
 Request → Rate Limiter → Auth Guard → Zod Validation → Service → Prisma → Response
 ```
 
 ### Image Upload Pipeline
+
 ```
 Upload → MIME Validation → Size Check → Sharp Processing → S3/R2 Storage
          ↓
@@ -84,6 +87,7 @@ Upload → MIME Validation → Size Check → Sharp Processing → S3/R2 Storage
 ```
 
 ### Notification Flow
+
 ```
 User Action → API Route → Service (main logic) → Notification Service (async, non-blocking)
 ```
@@ -126,6 +130,7 @@ See `.env.example` for all required variables. Key groups:
 PostgreSQL with 23 tables and 7 enums. See `docs/database-schema.md` for full schema documentation.
 
 Key relationships:
+
 - User → Artist (1:1 optional)
 - Artist → Tattoos (1:many)
 - Artist → Shop (many:1 optional)

@@ -7,10 +7,7 @@ export async function authGuard() {
   if (!session?.user) {
     return {
       session: null as null,
-      error: NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 },
-      ),
+      error: NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 }),
     };
   }
 

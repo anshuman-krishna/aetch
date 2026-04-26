@@ -1,13 +1,9 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { requireRole } from '@/backend/middleware/role-guard';
 import { authGuard } from '@/backend/middleware/auth-guard';
-import {
-  createTattoo,
-  getTattoos,
-  isTattooSlugTaken,
-} from '@/backend/services/tattoo-service';
+import { createTattoo, getTattoos, isTattooSlugTaken } from '@/backend/services/tattoo-service';
 import { createTattooSchema, tattooFilterSchema, paginationSchema } from '@/lib/validations';
 import { slugify, slugWithCounter } from '@/utils/slugify';
 import { getPaginationParams } from '@/utils/pagination';
@@ -31,9 +27,7 @@ export async function GET(req: NextRequest) {
     limit: searchParams.get('limit') ?? 20,
   });
 
-  const { page, limit } = paginationResult.success
-    ? paginationResult.data
-    : { page: 1, limit: 20 };
+  const { page, limit } = paginationResult.success ? paginationResult.data : { page: 1, limit: 20 };
 
   const pagination = getPaginationParams(page, limit);
 
@@ -90,19 +84,12 @@ export async function POST(req: NextRequest) {
   }
 
   if (!imageFile) {
-    return NextResponse.json(
-      { success: false, error: 'Image is required' },
-      { status: 400 },
-    );
+    return NextResponse.json({ success: false, error: 'Image is required' }, { status: 400 });
   }
 
   // process and upload image variants
   const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
-  const uploadResult = await uploadTattooImage(
-    imageBuffer,
-    imageFile.type,
-    authSession!.user.id,
-  );
+  const uploadResult = await uploadTattooImage(imageBuffer, imageFile.type, authSession!.user.id);
 
   // generate unique slug
   let slug = slugify(validation.data.title);

@@ -32,10 +32,7 @@ export function TattooGrid({ tattoos, loading = false, className }: TattooGridPr
 
   return (
     <motion.div
-      className={cn(
-        'columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4',
-        className,
-      )}
+      className={cn('columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4', className)}
       variants={staggerContainer}
       initial="initial"
       animate="animate"

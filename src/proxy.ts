@@ -1,7 +1,21 @@
 import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
-const protectedPaths = ['/onboarding', '/app/profile/edit', '/app/dashboard', '/app/settings', '/app/saved', '/app/book', '/app/shop-dashboard', '/app/feed', '/app/create-post', '/app/ai', '/app/ar-preview', '/app/messages'];
+const protectedPaths = [
+  '/onboarding',
+  '/app/profile/edit',
+  '/app/dashboard',
+  '/app/settings',
+  '/app/saved',
+  '/app/book',
+  '/app/shop-dashboard',
+  '/app/feed',
+  '/app/create-post',
+  '/app/ai',
+  '/app/ar-preview',
+  '/app/messages',
+  '/app/admin',
+];
 const authPaths = ['/login', '/register'];
 
 // security response headers
@@ -13,6 +27,31 @@ const securityHeaders = {
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=(self)',
   'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
 };
+
+const isProd = process.env.NODE_ENV === 'production';
+
+// per-request csp with nonce for inline next.js bootstrap scripts
+function buildCsp(nonce: string): string {
+  const scriptSrc = isProd
+    ? `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`
+    : `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'nonce-${nonce}'`;
+  const connectSrc = isProd
+    ? "connect-src 'self' https: wss:"
+    : "connect-src 'self' https: wss: ws:";
+  return [
+    "default-src 'self'",
+    scriptSrc,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data:",
+    connectSrc,
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "object-src 'none'",
+    ...(isProd ? ['upgrade-insecure-requests'] : []),
+  ].join('; ');
+}
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
@@ -40,11 +79,16 @@ export default auth((req) => {
     return NextResponse.redirect(new URL('/onboarding/role', req.url));
   }
 
-  // apply security headers
-  const response = NextResponse.next();
+  // generate per-request nonce for csp; expose to layout via request header
+  const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set('x-csp-nonce', nonce);
+
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
   for (const [key, value] of Object.entries(securityHeaders)) {
     response.headers.set(key, value);
   }
+  response.headers.set('Content-Security-Policy', buildCsp(nonce));
   return response;
 });
 

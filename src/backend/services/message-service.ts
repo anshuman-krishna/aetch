@@ -37,7 +37,9 @@ export async function findOrCreateConversation(
       bookingId: bookingId ?? null,
     },
     include: {
-      participants: { include: { user: { select: { id: true, name: true, image: true, username: true } } } },
+      participants: {
+        include: { user: { select: { id: true, name: true, image: true, username: true } } },
+      },
     },
   });
 
@@ -47,24 +49,19 @@ export async function findOrCreateConversation(
     data: {
       bookingId,
       participants: {
-        create: [
-          { userId },
-          { userId: participantId },
-        ],
+        create: [{ userId }, { userId: participantId }],
       },
     },
     include: {
-      participants: { include: { user: { select: { id: true, name: true, image: true, username: true } } } },
+      participants: {
+        include: { user: { select: { id: true, name: true, image: true, username: true } } },
+      },
     },
   });
 }
 
 // send message in conversation
-export async function sendMessage(
-  conversationId: string,
-  senderId: string,
-  content: string,
-) {
+export async function sendMessage(conversationId: string, senderId: string, content: string) {
   assertMessagingEnabled();
 
   // verify sender is participant
@@ -101,10 +98,7 @@ export async function sendMessage(
 }
 
 // get user conversations
-export async function getUserConversations(
-  userId: string,
-  pagination: PaginationParams,
-) {
+export async function getUserConversations(userId: string, pagination: PaginationParams) {
   assertMessagingEnabled();
 
   const where = {
@@ -186,10 +180,7 @@ export async function getMessages(
 }
 
 // mark messages as read
-export async function markConversationRead(
-  conversationId: string,
-  userId: string,
-) {
+export async function markConversationRead(conversationId: string, userId: string) {
   assertMessagingEnabled();
 
   await prisma.$transaction([
@@ -234,10 +225,7 @@ export async function getUnreadMessageCount(userId: string) {
 }
 
 // get conversation with details
-export async function getConversationById(
-  conversationId: string,
-  userId: string,
-) {
+export async function getConversationById(conversationId: string, userId: string) {
   const conversation = await prisma.conversation.findFirst({
     where: {
       id: conversationId,

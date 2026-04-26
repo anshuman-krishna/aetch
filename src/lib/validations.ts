@@ -27,12 +27,7 @@ export const registerSchema = z.object({
 // user profile
 
 export const updateProfileSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'Name must be at least 2 characters')
-    .max(100)
-    .trim()
-    .optional(),
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100).trim().optional(),
   username: z
     .string()
     .min(3)
@@ -101,11 +96,7 @@ export const availabilityBulkSchema = z.object({
 // posts
 
 export const createPostSchema = z.object({
-  caption: z
-    .string()
-    .max(2000, 'Caption must be at most 2000 characters')
-    .trim()
-    .optional(),
+  caption: z.string().max(2000, 'Caption must be at most 2000 characters').trim().optional(),
   imageUrl: z.string().url('Invalid image URL').optional(),
   tattooId: z.string().cuid('Invalid tattoo ID').optional(),
   tags: z.array(z.string().max(50)).max(10).optional(),
@@ -306,6 +297,15 @@ export const aiGenerateSchema = z.object({
   complexity: z.enum(AI_COMPLEXITIES).default('moderate'),
 });
 
+// coverup
+
+export const coverupSchema = z.object({
+  existingDescription: z.string().min(5, 'Describe the existing tattoo').max(500).trim(),
+  desiredSubject: z.string().max(200).trim().optional(),
+  desiredStyle: z.enum(TATTOO_STYLES).optional(),
+  placement: z.enum(BODY_PLACEMENTS).optional(),
+});
+
 // ar preview
 
 export const savePreviewSchema = z.object({
@@ -329,11 +329,7 @@ export const createConversationSchema = z.object({
 
 export const sendMessageSchema = z.object({
   conversationId: z.string().min(1, 'Conversation required'),
-  content: z
-    .string()
-    .min(1, 'Message cannot be empty')
-    .max(2000, 'Message too long')
-    .trim(),
+  content: z.string().min(1, 'Message cannot be empty').max(2000, 'Message too long').trim(),
 });
 
 // reports
@@ -358,6 +354,64 @@ export const feedFilterSchema = z.object({
 export const paginationSchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
+});
+
+// price estimator
+
+export const priceEstimateSchema = z.object({
+  artistId: z.string().cuid().optional(),
+  hourlyRate: z.number().positive().max(10000).optional(),
+  size: z.enum(['SMALL', 'MEDIUM', 'LARGE', 'EXTRA_LARGE']),
+  colorType: z.enum(['COLOR', 'BLACK_AND_GREY', 'MIXED']).optional(),
+  placement: z.enum(BODY_PLACEMENTS).optional(),
+  complexity: z.enum(AI_COMPLEXITIES).optional(),
+  styles: z.array(z.enum(TATTOO_STYLES)).max(5).optional(),
+});
+
+// repost (quote post)
+
+export const repostSchema = z.object({
+  postId: z.string().cuid(),
+  caption: z.string().max(2000).trim().optional(),
+});
+
+// collections
+
+export const createCollectionSchema = z.object({
+  name: z.string().min(2).max(80).trim(),
+  slug: z
+    .string()
+    .min(2)
+    .max(60)
+    .regex(/^[a-z0-9-]+$/, 'slug: lowercase + numbers + hyphens only')
+    .toLowerCase(),
+  description: z.string().max(500).trim().optional(),
+  isPublic: z.boolean().default(true),
+});
+
+export const addToCollectionSchema = z
+  .object({
+    tattooId: z.string().cuid().optional(),
+    postId: z.string().cuid().optional(),
+    note: z.string().max(280).trim().optional(),
+  })
+  .refine((v) => !!v.tattooId !== !!v.postId, {
+    message: 'provide tattooId xor postId',
+  });
+
+// aftercare ai
+
+export const aftercareSchema = z.object({
+  bookingId: z.string().cuid().optional(),
+  daysSinceTattoo: z.number().int().min(0).max(365).optional(),
+  question: z.string().min(5).max(500).trim(),
+});
+
+// mentions / user search
+
+export const userSearchSchema = z.object({
+  q: z.string().min(1).max(50),
+  limit: z.coerce.number().int().min(1).max(20).default(8),
 });
 
 // types

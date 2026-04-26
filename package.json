@@ -23,7 +23,9 @@
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install --with-deps chromium",
     "ci:check": "bash scripts/ci-check.sh",
-    "audit:prod": "npm audit --omit=dev --audit-level=high"
+    "audit:prod": "npm audit --omit=dev --audit-level=high",
+    "prepare": "husky || true",
+    "lint:staged": "lint-staged"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",

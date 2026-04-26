@@ -85,7 +85,10 @@ export function TattooDetailView({ tattoo, initialLiked, initialSaved }: TattooD
       {/* Image Column */}
       <div className="lg:col-span-3">
         <GlassCard variant="subtle" padding="sm" className="overflow-hidden">
-          <div className="relative w-full rounded-xl overflow-hidden" style={{ minHeight: '400px' }}>
+          <div
+            className="relative w-full rounded-xl overflow-hidden"
+            style={{ minHeight: '400px' }}
+          >
             <Image
               src={tattoo.imageUrl}
               alt={tattoo.title}
@@ -146,12 +149,8 @@ export function TattooDetailView({ tattoo, initialLiked, initialSaved }: TattooD
               />
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-foreground">
-                    {tattoo.artist.displayName}
-                  </span>
-                  {tattoo.artist.verified && (
-                    <BadgeCheck className="h-4 w-4 text-primary" />
-                  )}
+                  <span className="font-semibold text-foreground">{tattoo.artist.displayName}</span>
+                  {tattoo.artist.verified && <BadgeCheck className="h-4 w-4 text-primary" />}
                 </div>
                 {tattoo.artist.user.username && (
                   <p className="text-xs text-muted">@{tattoo.artist.user.username}</p>
@@ -212,4 +211,3 @@ export function TattooDetailView({ tattoo, initialLiked, initialSaved }: TattooD
     </div>
   );
 }
-

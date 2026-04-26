@@ -5,7 +5,8 @@ export function getRequestId(req: Request): string {
   return (
     req.headers.get('x-request-id') ??
     req.headers.get('x-correlation-id') ??
-    (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2))
+    globalThis.crypto?.randomUUID?.() ??
+    Math.random().toString(36).slice(2)
   );
 }
 

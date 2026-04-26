@@ -190,13 +190,7 @@ export function ShopBookingForm({ shopId, shopSlug, artists }: ShopBookingFormPr
         />
       </GlassCard>
 
-      <GlassButton
-        type="submit"
-        variant="primary"
-        size="lg"
-        className="w-full"
-        loading={loading}
-      >
+      <GlassButton type="submit" variant="primary" size="lg" className="w-full" loading={loading}>
         Submit Booking Request
       </GlassButton>
     </form>

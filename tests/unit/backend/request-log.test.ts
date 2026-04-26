@@ -4,7 +4,12 @@ jest.mock('@/lib/logger', () => {
   return { logger: { debug, child } };
 });
 
-import { getRequestId, logRequest, requestLogger, withRequestId } from '@/backend/middleware/request-log';
+import {
+  getRequestId,
+  logRequest,
+  requestLogger,
+  withRequestId,
+} from '@/backend/middleware/request-log';
 import { logger } from '@/lib/logger';
 
 beforeEach(() => {
@@ -32,10 +37,18 @@ describe('getRequestId', () => {
 
 describe('requestLogger', () => {
   it('creates a child logger with request context', () => {
-    const req = new Request('http://x/api/ping', { method: 'POST', headers: { 'x-request-id': 'rid' } });
+    const req = new Request('http://x/api/ping', {
+      method: 'POST',
+      headers: { 'x-request-id': 'rid' },
+    });
     requestLogger(req, { userId: 'u1' });
     expect((logger as unknown as { child: jest.Mock }).child).toHaveBeenCalledWith(
-      expect.objectContaining({ requestId: 'rid', method: 'POST', path: '/api/ping', userId: 'u1' }),
+      expect.objectContaining({
+        requestId: 'rid',
+        method: 'POST',
+        path: '/api/ping',
+        userId: 'u1',
+      }),
     );
   });
 });

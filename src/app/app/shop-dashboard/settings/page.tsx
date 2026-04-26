@@ -23,9 +23,15 @@ interface ShopForm {
 export default function ShopSettingsPage() {
   const { toast } = useToast();
   const [form, setForm] = useState<ShopForm>({
-    name: '', description: '', address: '',
-    city: '', state: '', country: '',
-    phone: '', email: '', website: '',
+    name: '',
+    description: '',
+    address: '',
+    city: '',
+    state: '',
+    country: '',
+    phone: '',
+    email: '',
+    website: '',
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -91,21 +97,58 @@ export default function ShopSettingsPage() {
       </div>
 
       <GlassCard variant="subtle" padding="md" className="space-y-4">
-        <GlassInput label="Shop Name" value={form.name} onChange={(e) => update('name', e.target.value)} />
-        <GlassTextarea label="Description" value={form.description} onChange={(e) => update('description', e.target.value)} rows={3} />
+        <GlassInput
+          label="Shop Name"
+          value={form.name}
+          onChange={(e) => update('name', e.target.value)}
+        />
+        <GlassTextarea
+          label="Description"
+          value={form.description}
+          onChange={(e) => update('description', e.target.value)}
+          rows={3}
+        />
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <GlassInput label="City" value={form.city} onChange={(e) => update('city', e.target.value)} />
-          <GlassInput label="State" value={form.state} onChange={(e) => update('state', e.target.value)} />
+          <GlassInput
+            label="City"
+            value={form.city}
+            onChange={(e) => update('city', e.target.value)}
+          />
+          <GlassInput
+            label="State"
+            value={form.state}
+            onChange={(e) => update('state', e.target.value)}
+          />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          <GlassInput label="Country" value={form.country} onChange={(e) => update('country', e.target.value)} />
-          <GlassInput label="Address" value={form.address} onChange={(e) => update('address', e.target.value)} />
+          <GlassInput
+            label="Country"
+            value={form.country}
+            onChange={(e) => update('country', e.target.value)}
+          />
+          <GlassInput
+            label="Address"
+            value={form.address}
+            onChange={(e) => update('address', e.target.value)}
+          />
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
-          <GlassInput label="Phone" value={form.phone} onChange={(e) => update('phone', e.target.value)} />
-          <GlassInput label="Email" value={form.email} onChange={(e) => update('email', e.target.value)} />
-          <GlassInput label="Website" value={form.website} onChange={(e) => update('website', e.target.value)} />
+          <GlassInput
+            label="Phone"
+            value={form.phone}
+            onChange={(e) => update('phone', e.target.value)}
+          />
+          <GlassInput
+            label="Email"
+            value={form.email}
+            onChange={(e) => update('email', e.target.value)}
+          />
+          <GlassInput
+            label="Website"
+            value={form.website}
+            onChange={(e) => update('website', e.target.value)}
+          />
         </div>
 
         <div className="flex justify-end pt-2">

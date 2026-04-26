@@ -1,15 +1,22 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
-import { createPost, getLatestPosts, getFollowingFeed, getTrendingPosts } from '@/backend/services/post-service';
+import { withErrorHandler } from '@/lib/api-error';
+import { withRequestId } from '@/backend/middleware/request-log';
+import {
+  createPost,
+  getLatestPosts,
+  getFollowingFeed,
+  getTrendingPosts,
+} from '@/backend/services/post-service';
 import { createPostSchema, feedFilterSchema, paginationSchema } from '@/lib/validations';
 import { getPaginationParams } from '@/utils/pagination';
 import { rateLimit } from '@/backend/middleware/rate-limit';
 
-export async function GET(req: Request) {
+export const GET = withErrorHandler(async (req: Request) => {
   const { session, error } = await authGuard();
-  if (error) return error;
+  if (error) return withRequestId(req, error);
 
   const { searchParams } = new URL(req.url);
 
@@ -30,7 +37,7 @@ export async function GET(req: Request) {
   let result;
   switch (feedType) {
     case 'following':
-      result = await getFollowingFeed(session!.user.id, pagination);
+      result = await getFollowingFeed(session.user.id, pagination);
       break;
     case 'trending':
       result = await getTrendingPosts(pagination);
@@ -39,29 +46,32 @@ export async function GET(req: Request) {
       result = await getLatestPosts(pagination);
   }
 
-  return NextResponse.json(result);
-}
+  return withRequestId(req, NextResponse.json(result));
+}, 'GET /api/posts');
 
-export async function POST(req: Request) {
+export const POST = withErrorHandler(async (req: Request) => {
   const { session, error } = await authGuard();
-  if (error) return error;
+  if (error) return withRequestId(req, error);
 
-  const rl = await rateLimit(session!.user.id, 'api');
-  if (!rl.success) return rl.error;
+  const rl = await rateLimit(session.user.id, 'api');
+  if (!rl.success) return withRequestId(req, rl.error);
 
   const body = await req.json();
   const parsed = createPostSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.issues[0]?.message ?? 'Invalid input' },
-      { status: 400 },
+    return withRequestId(
+      req,
+      NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? 'Invalid input' },
+        { status: 400 },
+      ),
     );
   }
 
   const post = await createPost({
-    authorId: session!.user.id,
+    authorId: session.user.id,
     ...parsed.data,
   });
 
-  return NextResponse.json({ post }, { status: 201 });
-}
+  return withRequestId(req, NextResponse.json({ post }, { status: 201 }));
+}, 'POST /api/posts');

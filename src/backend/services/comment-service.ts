@@ -52,6 +52,15 @@ export async function getPostComments(postId: string) {
   });
 }
 
+// fetch every reply for one parent (depth=1 fan-out)
+export async function getCommentReplies(parentId: string) {
+  return prisma.comment.findMany({
+    where: { parentId },
+    include: commentInclude,
+    orderBy: { createdAt: 'asc' },
+  });
+}
+
 export async function deleteComment(commentId: string, authorId: string) {
   const comment = await prisma.comment.findUnique({
     where: { id: commentId, authorId },

@@ -36,7 +36,11 @@ export function ShopCard({ shop }: ShopCardProps) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <h3 className="font-semibold text-foreground truncate">{shop.name}</h3>
-              {shop.verified && <GlassBadge variant="success" size="sm">Verified</GlassBadge>}
+              {shop.verified && (
+                <GlassBadge variant="success" size="sm">
+                  Verified
+                </GlassBadge>
+              )}
             </div>
 
             {location && (

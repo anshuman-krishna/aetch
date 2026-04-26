@@ -42,7 +42,13 @@ export function CommentInput({ postId, parentId, onCommentAdded }: CommentInputP
         className="flex-1"
         maxLength={1000}
       />
-      <GlassButton type="submit" variant="primary" size="sm" loading={loading} disabled={!content.trim()}>
+      <GlassButton
+        type="submit"
+        variant="primary"
+        size="sm"
+        loading={loading}
+        disabled={!content.trim()}
+      >
         <Send className="h-4 w-4" />
       </GlassButton>
     </form>

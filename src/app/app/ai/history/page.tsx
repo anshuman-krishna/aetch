@@ -20,12 +20,14 @@ export default function AIHistoryPage() {
     const data = await res.json();
     const items = data.generations ?? [];
 
-    setGenerations((prev) => reset ? items : [...prev, ...items]);
+    setGenerations((prev) => (reset ? items : [...prev, ...items]));
     setHasMore(data.pagination?.hasNext ?? false);
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchHistory(1, true); }, [fetchHistory]);
+  useEffect(() => {
+    fetchHistory(1, true);
+  }, [fetchHistory]);
 
   const loadMore = () => {
     const next = page + 1;
@@ -48,10 +50,7 @@ export default function AIHistoryPage() {
           </div>
         </div>
 
-        <AIGenerationGrid
-          generations={generations}
-          loading={loading && generations.length === 0}
-        />
+        <AIGenerationGrid generations={generations} loading={loading && generations.length === 0} />
 
         {!loading && hasMore && (
           <div className="flex justify-center pt-4">

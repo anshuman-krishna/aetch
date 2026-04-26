@@ -16,8 +16,7 @@ const variantClasses = {
   secondary:
     'bg-pastel-lavender/20 hover:bg-pastel-lavender/30 text-foreground backdrop-blur-md border border-pastel-lavender/30',
   ghost: 'hover:bg-white/10 text-foreground border-transparent',
-  danger:
-    'bg-danger/90 hover:bg-danger text-white backdrop-blur-md border border-danger/30',
+  danger: 'bg-danger/90 hover:bg-danger text-white backdrop-blur-md border border-danger/30',
 } as const;
 
 const sizeClasses = {
@@ -27,7 +26,10 @@ const sizeClasses = {
 } as const;
 
 export const GlassButton = forwardRef<HTMLButtonElement, GlassButtonProps>(
-  ({ variant = 'default', size = 'md', loading = false, className, children, disabled, ...props }, ref) => {
+  (
+    { variant = 'default', size = 'md', loading = false, className, children, disabled, ...props },
+    ref,
+  ) => {
     return (
       <button
         ref={ref}
@@ -45,8 +47,22 @@ export const GlassButton = forwardRef<HTMLButtonElement, GlassButtonProps>(
       >
         {loading && (
           <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="opacity-25" />
-            <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="opacity-75" />
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              className="opacity-25"
+            />
+            <path
+              d="M12 2a10 10 0 0 1 10 10"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              className="opacity-75"
+            />
           </svg>
         )}
         {children}

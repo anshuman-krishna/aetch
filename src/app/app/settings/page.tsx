@@ -104,21 +104,13 @@ export default function SettingsPage() {
         <h1 className="text-h2 text-foreground mb-8">Settings</h1>
 
         {error && <FormError message={error} className="mb-4" />}
-        {success && (
-          <div className="mb-4 rounded-xl glass p-3 text-sm text-success">
-            {success}
-          </div>
-        )}
+        {success && <div className="mb-4 rounded-xl glass p-3 text-sm text-success">{success}</div>}
 
         {/* avatar */}
         <GlassCard variant="strong" padding="lg" className="mb-6">
           <h2 className="text-h4 text-foreground mb-4">Profile Photo</h2>
           <div className="flex items-center gap-4">
-            <GlassAvatar
-              src={session.user.image}
-              alt={session.user.name ?? ''}
-              size="lg"
-            />
+            <GlassAvatar src={session.user.image} alt={session.user.name ?? ''} size="lg" />
             <div>
               <label className="cursor-pointer inline-flex rounded-xl glass px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-white/15">
                 {avatarUploading ? 'Uploading...' : 'Change photo'}
@@ -130,9 +122,7 @@ export default function SettingsPage() {
                   disabled={avatarUploading}
                 />
               </label>
-              <p className="mt-1 text-xs text-muted">
-                JPG, PNG, or WebP. Max 2MB.
-              </p>
+              <p className="mt-1 text-xs text-muted">JPG, PNG, or WebP. Max 2MB.</p>
             </div>
           </div>
         </GlassCard>
@@ -162,12 +152,7 @@ export default function SettingsPage() {
               placeholder="Tell us about yourself..."
               rows={3}
             />
-            <GlassButton
-              variant="primary"
-              type="submit"
-              loading={loading}
-              className="w-full"
-            >
+            <GlassButton variant="primary" type="submit" loading={loading} className="w-full">
               Save changes
             </GlassButton>
           </form>

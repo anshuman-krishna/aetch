@@ -57,12 +57,18 @@ function CommentItem({
         </Link>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <Link href={`/app/profile/${comment.author.username}`} className="text-sm font-medium text-foreground hover:underline">
+            <Link
+              href={`/app/profile/${comment.author.username}`}
+              className="text-sm font-medium text-foreground hover:underline"
+            >
               {comment.author.username ?? comment.author.name}
             </Link>
             <span className="text-xs text-muted">{timeAgo}</span>
             {currentUserId === comment.author.id && onDelete && (
-              <button onClick={() => onDelete(comment.id)} className="text-muted hover:text-red-400 ml-auto">
+              <button
+                onClick={() => onDelete(comment.id)}
+                className="text-muted hover:text-red-400 ml-auto"
+              >
                 <Trash2 className="h-3 w-3" />
               </button>
             )}

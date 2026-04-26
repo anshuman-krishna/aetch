@@ -14,10 +14,7 @@ export interface PaginationMeta {
 }
 
 // page/limit to skip/take
-export function getPaginationParams(
-  page = 1,
-  limit = 20,
-): PaginationParams {
+export function getPaginationParams(page = 1, limit = 20): PaginationParams {
   const safePage = Math.max(1, Math.floor(page));
   const safeLimit = Math.min(100, Math.max(1, Math.floor(limit)));
   return {
@@ -28,10 +25,7 @@ export function getPaginationParams(
 }
 
 // build pagination meta
-export function buildPaginationMeta(
-  total: number,
-  params: PaginationParams,
-): PaginationMeta {
+export function buildPaginationMeta(total: number, params: PaginationParams): PaginationMeta {
   const totalPages = Math.ceil(total / params.limit);
   return {
     page: params.page,

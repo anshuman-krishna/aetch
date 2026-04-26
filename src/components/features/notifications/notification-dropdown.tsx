@@ -33,7 +33,9 @@ export function NotificationDropdown() {
         const listData = await listRes.json();
         setNotifications(listData.notifications ?? []);
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }, [open]);
 
   useEffect(() => {
@@ -64,9 +66,7 @@ export function NotificationDropdown() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ notificationId: id }),
     });
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
-    );
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
     setUnread((prev) => Math.max(0, prev - 1));
   };
 
@@ -98,30 +98,20 @@ export function NotificationDropdown() {
       {open && (
         <>
           {/* backdrop */}
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setOpen(false)}
-          />
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
           {/* dropdown */}
           <div className="absolute right-0 top-full mt-2 z-50 w-80 rounded-2xl glass-strong overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b border-border/30">
-              <h3 className="text-sm font-semibold text-foreground">
-                Notifications
-              </h3>
+              <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
               {unread > 0 && (
-                <button
-                  onClick={markAllRead}
-                  className="text-xs text-primary hover:underline"
-                >
+                <button onClick={markAllRead} className="text-xs text-primary hover:underline">
                   Mark all read
                 </button>
               )}
             </div>
             <div className="max-h-80 overflow-y-auto">
               {notifications.length === 0 ? (
-                <p className="px-4 py-8 text-center text-sm text-muted">
-                  No notifications yet
-                </p>
+                <p className="px-4 py-8 text-center text-sm text-muted">No notifications yet</p>
               ) : (
                 notifications.map((n) => {
                   const content = (
@@ -136,12 +126,8 @@ export function NotificationDropdown() {
                       }}
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate">
-                          {n.title}
-                        </p>
-                        <p className="text-xs text-muted truncate">
-                          {n.message}
-                        </p>
+                        <p className="text-sm font-medium text-foreground truncate">{n.title}</p>
+                        <p className="text-xs text-muted truncate">{n.message}</p>
                       </div>
                       <span className="text-[10px] text-muted shrink-0">
                         {timeAgo(n.createdAt)}

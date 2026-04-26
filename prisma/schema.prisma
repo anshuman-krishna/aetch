@@ -60,6 +60,10 @@ model User {
   roles              UserRole[] @default([USER])
   onboardingComplete Boolean   @default(false)
   favoriteStyles     String[]
+  // totp 2fa fields
+  totpSecret         String?
+  totpEnabledAt      DateTime?
+  totpRecoveryCodes  String[]
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
@@ -80,6 +84,9 @@ model User {
   conversations    ConversationParticipant[]
   sentMessages     Message[]
   reports          Report[]
+  auditLogs        AdminAuditLog[]
+  uploadJobs       UploadJob[]
+  collections      Collection[]
 
   @@index([email])
   @@index([username])
@@ -259,8 +266,11 @@ model Post {
   tags          String[]
   authorId      String
   tattooId      String?
+  // repost / quote-tweet semantics
+  repostOfId    String?
   likesCount    Int      @default(0)
   commentsCount Int      @default(0)
+  repostsCount  Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -268,11 +278,15 @@ model Post {
   tattoo   Tattoo?   @relation(fields: [tattooId], references: [id])
   comments Comment[]
   likes    Like[]
+  repostOf Post?     @relation("Reposts", fields: [repostOfId], references: [id])
+  reposts  Post[]    @relation("Reposts")
 
   @@index([authorId])
   @@index([tattooId])
   @@index([createdAt])
   @@index([likesCount])
+  @@index([repostOfId])
+  @@index([tags])
 }
 
 model Comment {
@@ -328,6 +342,9 @@ model Booking {
   reference       String?
   status          BookingStatus @default(PENDING)
   price           Decimal?      @db.Decimal(10, 2)
+  // estimator output for training data
+  estimatedPrice  Decimal?      @db.Decimal(10, 2)
+  finalPrice      Decimal?      @db.Decimal(10, 2)
   currency        String        @default("USD")
   artistNotes     String?       @db.Text
   createdAt       DateTime      @default(now())
@@ -560,4 +577,103 @@ enum ReportStatus {
   REVIEWED
   RESOLVED
   DISMISSED
+}
+
+// admin audit log
+model AdminAuditLog {
+  id          String          @id @default(cuid())
+  actorId     String
+  action      AdminAuditAction
+  targetType  String?
+  targetId    String?
+  metadata    Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime        @default(now())
+
+  actor User @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([actorId])
+  @@index([action])
+  @@index([targetType, targetId])
+  @@index([createdAt])
+}
+
+enum AdminAuditAction {
+  USER_DISABLE
+  USER_ENABLE
+  USER_ROLE_CHANGE
+  POST_REMOVE
+  TATTOO_REMOVE
+  COMMENT_REMOVE
+  REPORT_RESOLVE
+  REPORT_DISMISS
+  ARTIST_VERIFY
+  SHOP_VERIFY
+  TOTP_ENROLL
+  TOTP_DISABLE
+}
+
+// upload audit + av scan tracking
+model UploadJob {
+  id           String          @id @default(cuid())
+  userId       String
+  bucket       String
+  key          String
+  contentType  String
+  sizeBytes    Int?
+  scanStatus   AvScanStatus    @default(PENDING)
+  scanResult   String?
+  scannedAt    DateTime?
+  createdAt    DateTime        @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([bucket, key])
+  @@index([userId])
+  @@index([scanStatus])
+  @@index([createdAt])
+}
+
+enum AvScanStatus {
+  PENDING
+  CLEAN
+  INFECTED
+  ERROR
+  SKIPPED
+}
+
+// pinterest-style boards
+model Collection {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String
+  description String?  @db.Text
+  coverImage  String?
+  isPublic    Boolean  @default(true)
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner       User                @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  items       CollectionItem[]
+
+  @@unique([ownerId, slug])
+  @@index([ownerId])
+  @@index([isPublic])
+}
+
+model CollectionItem {
+  id            String   @id @default(cuid())
+  collectionId  String
+  tattooId      String?
+  postId        String?
+  note          String?  @db.Text
+  createdAt     DateTime @default(now())
+
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@index([collectionId])
+  @@index([tattooId])
+  @@index([postId])
 }

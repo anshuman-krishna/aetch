@@ -28,12 +28,7 @@ export function PostGrid({ posts, currentUserId, loading = false, onDelete }: Po
   return (
     <div className="space-y-6 max-w-xl mx-auto">
       {posts.map((post) => (
-        <PostCard
-          key={post.id}
-          post={post}
-          currentUserId={currentUserId}
-          onDelete={onDelete}
-        />
+        <PostCard key={post.id} post={post} currentUserId={currentUserId} onDelete={onDelete} />
       ))}
     </div>
   );

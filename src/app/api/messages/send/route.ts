@@ -19,10 +19,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const parsed = sendMessageSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.issues[0]?.message },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: parsed.error.issues[0]?.message }, { status: 400 });
   }
 
   try {
@@ -33,20 +30,23 @@ export async function POST(req: Request) {
     );
 
     // notify recipient (non-blocking)
-    prisma.conversationParticipant.findMany({
-      where: {
-        conversationId: parsed.data.conversationId,
-        userId: { not: session.user.id },
-      },
-    }).then((participants) => {
-      for (const p of participants) {
-        notifyNewMessage(
-          p.userId,
-          session.user.name ?? 'Someone',
-          parsed.data.conversationId,
-        ).catch(() => {});
-      }
-    }).catch(() => {});
+    prisma.conversationParticipant
+      .findMany({
+        where: {
+          conversationId: parsed.data.conversationId,
+          userId: { not: session.user.id },
+        },
+      })
+      .then((participants) => {
+        for (const p of participants) {
+          notifyNewMessage(
+            p.userId,
+            session.user.name ?? 'Someone',
+            parsed.data.conversationId,
+          ).catch(() => {});
+        }
+      })
+      .catch(() => {});
 
     return NextResponse.json({ message }, { status: 201 });
   } catch (err) {

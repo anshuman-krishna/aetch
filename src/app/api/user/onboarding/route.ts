@@ -1,4 +1,4 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { auth } from '@/lib/auth';
@@ -34,7 +34,10 @@ export async function POST(request: NextRequest) {
 
   if (!/^[a-z0-9_-]+$/.test(username)) {
     return NextResponse.json(
-      { success: false, error: 'Username can only contain lowercase letters, numbers, hyphens, and underscores' },
+      {
+        success: false,
+        error: 'Username can only contain lowercase letters, numbers, hyphens, and underscores',
+      },
       { status: 400 },
     );
   }

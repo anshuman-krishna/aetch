@@ -94,6 +94,23 @@ export async function getFollowingFeed(userId: string, pagination: PaginationPar
   return { posts, pagination: buildPaginationMeta(total, pagination) };
 }
 
+// posts tagged with a specific hashtag (case-insensitive)
+export async function getPostsByTag(tag: string, pagination: PaginationParams) {
+  const normalized = tag.toLowerCase();
+  const where: Prisma.PostWhereInput = { tags: { has: normalized } };
+  const [posts, total] = await Promise.all([
+    prisma.post.findMany({
+      where,
+      include: postInclude,
+      orderBy: { createdAt: 'desc' },
+      skip: pagination.skip,
+      take: pagination.limit,
+    }),
+    prisma.post.count({ where }),
+  ]);
+  return { posts, pagination: buildPaginationMeta(total, pagination), tag: normalized };
+}
+
 // trending posts feed
 export async function getTrendingPosts(pagination: PaginationParams) {
   const sevenDaysAgo = new Date();
@@ -107,11 +124,7 @@ export async function getTrendingPosts(pagination: PaginationParams) {
     prisma.post.findMany({
       where,
       include: postInclude,
-      orderBy: [
-        { likesCount: 'desc' },
-        { commentsCount: 'desc' },
-        { createdAt: 'desc' },
-      ],
+      orderBy: [{ likesCount: 'desc' }, { commentsCount: 'desc' }, { createdAt: 'desc' }],
       skip: pagination.skip,
       take: pagination.limit,
     }),

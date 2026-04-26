@@ -37,10 +37,25 @@ const envSchema = z.object({
   FF_MESSAGING: z.string().optional(),
   FF_SOCIAL_FEED: z.string().optional(),
   FF_BOOKING: z.string().optional(),
+  FF_COVERUP: z.string().optional(),
+  FF_AFTERCARE: z.string().optional(),
+  FF_COLLECTIONS: z.string().optional(),
 
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).optional(),
   NODE_ENV: z.enum(['development', 'production', 'test']).optional(),
+
+  // observability
+  SENTRY_DSN: z.string().url().optional(),
+  SENTRY_RELEASE: z.string().optional(),
+  SENTRY_TRACES_SAMPLE_RATE: z.coerce.number().min(0).max(1).optional(),
+
+  // av scan webhook
+  AV_SCAN_WEBHOOK_URL: z.string().url().optional(),
+  AV_SCAN_WEBHOOK_TOKEN: z.string().optional(),
+
+  // 2fa enforcement
+  TOTP_ISSUER: z.string().default('AETCH'),
 });
 
 export type Env = z.infer<typeof envSchema>;

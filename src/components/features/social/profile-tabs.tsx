@@ -18,9 +18,7 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
 
   useEffect(() => {
     setLoading(true);
-    const endpoint = tab === 'posts'
-      ? `/api/users/${userId}/posts`
-      : `/api/users/${userId}/liked`;
+    const endpoint = tab === 'posts' ? `/api/users/${userId}/posts` : `/api/users/${userId}/liked`;
 
     fetch(endpoint)
       .then((r) => r.json())
@@ -31,10 +29,18 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
   return (
     <div className="space-y-4">
       <div className="flex gap-2">
-        <GlassButton variant={tab === 'posts' ? 'primary' : 'ghost'} size="sm" onClick={() => setTab('posts')}>
+        <GlassButton
+          variant={tab === 'posts' ? 'primary' : 'ghost'}
+          size="sm"
+          onClick={() => setTab('posts')}
+        >
           Posts
         </GlassButton>
-        <GlassButton variant={tab === 'liked' ? 'primary' : 'ghost'} size="sm" onClick={() => setTab('liked')}>
+        <GlassButton
+          variant={tab === 'liked' ? 'primary' : 'ghost'}
+          size="sm"
+          onClick={() => setTab('liked')}
+        >
           Liked
         </GlassButton>
       </div>

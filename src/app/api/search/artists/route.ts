@@ -28,10 +28,7 @@ export async function GET(req: Request) {
     page.success ? page.data.limit : 20,
   );
 
-  const result = await searchArtists(
-    { q, location, style, shopId },
-    pagination,
-  );
+  const result = await searchArtists({ q, location, style, shopId }, pagination);
 
   return NextResponse.json({ success: true, ...result });
 }

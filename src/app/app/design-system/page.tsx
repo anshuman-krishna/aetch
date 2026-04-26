@@ -67,7 +67,9 @@ export default function DesignSystemPage() {
               </div>
               <div>
                 <span className="text-caption text-muted uppercase tracking-wider">Caption</span>
-                <p className="text-caption text-muted mt-1">The quick brown fox jumps over the lazy dog</p>
+                <p className="text-caption text-muted mt-1">
+                  The quick brown fox jumps over the lazy dog
+                </p>
               </div>
             </div>
           </GlassCard>
@@ -108,15 +110,23 @@ export default function DesignSystemPage() {
                   <GlassButton variant="default">Default</GlassButton>
                   <GlassButton variant="primary">Primary</GlassButton>
                   <GlassButton variant="ghost">Ghost</GlassButton>
-                  <GlassButton variant="primary" disabled>Disabled</GlassButton>
+                  <GlassButton variant="primary" disabled>
+                    Disabled
+                  </GlassButton>
                 </div>
               </div>
               <div>
                 <p className="text-caption text-muted mb-3 uppercase tracking-wider">Sizes</p>
                 <div className="flex flex-wrap items-center gap-3">
-                  <GlassButton variant="primary" size="sm">Small</GlassButton>
-                  <GlassButton variant="primary" size="md">Medium</GlassButton>
-                  <GlassButton variant="primary" size="lg">Large</GlassButton>
+                  <GlassButton variant="primary" size="sm">
+                    Small
+                  </GlassButton>
+                  <GlassButton variant="primary" size="md">
+                    Medium
+                  </GlassButton>
+                  <GlassButton variant="primary" size="lg">
+                    Large
+                  </GlassButton>
                 </div>
               </div>
             </div>
@@ -178,7 +188,9 @@ export default function DesignSystemPage() {
               <GlassBadge variant="success">Success</GlassBadge>
               <GlassBadge variant="warning">Warning</GlassBadge>
               <GlassBadge variant="danger">Danger</GlassBadge>
-              <GlassBadge variant="primary" size="md">Medium</GlassBadge>
+              <GlassBadge variant="primary" size="md">
+                Medium
+              </GlassBadge>
             </div>
           </GlassCard>
         </SectionLayout>
@@ -243,13 +255,21 @@ export default function DesignSystemPage() {
           <GlassCard padding="lg">
             <div className="flex flex-wrap items-center gap-6">
               <GlassTooltip content="This is a tooltip">
-                <GlassButton variant="default" size="sm">Hover me (top)</GlassButton>
+                <GlassButton variant="default" size="sm">
+                  Hover me (top)
+                </GlassButton>
               </GlassTooltip>
               <GlassTooltip content="Bottom tooltip" side="bottom">
-                <GlassButton variant="default" size="sm">Hover me (bottom)</GlassButton>
+                <GlassButton variant="default" size="sm">
+                  Hover me (bottom)
+                </GlassButton>
               </GlassTooltip>
               <GlassDropdown
-                trigger={<GlassButton variant="default" size="sm">Dropdown</GlassButton>}
+                trigger={
+                  <GlassButton variant="default" size="sm">
+                    Dropdown
+                  </GlassButton>
+                }
                 items={[
                   { id: 'edit', label: 'Edit Profile' },
                   { id: 'settings', label: 'Settings' },

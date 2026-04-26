@@ -1,4 +1,4 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import { requireRole } from '@/backend/middleware/role-guard';
@@ -43,9 +43,7 @@ export async function GET() {
   ]);
 
   // map booking counts by status
-  const bookingMap = Object.fromEntries(
-    bookings.map((b) => [b.status.toLowerCase(), b._count.id]),
-  );
+  const bookingMap = Object.fromEntries(bookings.map((b) => [b.status.toLowerCase(), b._count.id]));
 
   return NextResponse.json({
     success: true,

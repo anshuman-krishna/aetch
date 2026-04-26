@@ -124,10 +124,7 @@ export async function getTrendingTattoos(limit = 20) {
       ...tattooInclude,
       _count: { select: { savedBy: true } },
     },
-    orderBy: [
-      { likesCount: 'desc' },
-      { viewsCount: 'desc' },
-    ],
+    orderBy: [{ likesCount: 'desc' }, { viewsCount: 'desc' }],
     take: limit * 2,
   });
 

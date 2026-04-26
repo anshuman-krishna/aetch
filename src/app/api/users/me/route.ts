@@ -2,14 +2,16 @@ export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
+import { withErrorHandler } from '@/lib/api-error';
+import { withRequestId } from '@/backend/middleware/request-log';
 import { rateLimit } from '@/backend/middleware/rate-limit';
 import { prisma } from '@/lib/prisma';
 import { updateProfileSchema } from '@/lib/validations';
 
 // get current user profile
-export async function GET() {
+export const GET = withErrorHandler(async (req: Request) => {
   const { session, error } = await authGuard();
-  if (error) return error;
+  if (error) return withRequestId(req, error);
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
@@ -23,26 +25,27 @@ export async function GET() {
       roles: true,
       favoriteStyles: true,
       createdAt: true,
+      totpEnabledAt: true,
     },
   });
 
-  return NextResponse.json({ success: true, user });
-}
+  return withRequestId(req, NextResponse.json({ success: true, user }));
+}, 'GET /api/users/me');
 
 // update current user profile
-export async function PATCH(req: Request) {
+export const PATCH = withErrorHandler(async (req: Request) => {
   const { session, error } = await authGuard();
-  if (error) return error;
+  if (error) return withRequestId(req, error);
 
   const rl = await rateLimit(session.user.id, 'api');
-  if (!rl.success) return rl.error;
+  if (!rl.success) return withRequestId(req, rl.error);
 
   const body = await req.json();
   const parsed = updateProfileSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { success: false, error: parsed.error.issues[0].message },
-      { status: 400 },
+    return withRequestId(
+      req,
+      NextResponse.json({ success: false, error: parsed.error.issues[0].message }, { status: 400 }),
     );
   }
 
@@ -56,9 +59,9 @@ export async function PATCH(req: Request) {
       select: { id: true },
     });
     if (existing) {
-      return NextResponse.json(
-        { success: false, error: 'Username is already taken' },
-        { status: 409 },
+      return withRequestId(
+        req,
+        NextResponse.json({ success: false, error: 'Username is already taken' }, { status: 409 }),
       );
     }
   }
@@ -75,5 +78,5 @@ export async function PATCH(req: Request) {
     },
   });
 
-  return NextResponse.json({ success: true, user });
-}
+  return withRequestId(req, NextResponse.json({ success: true, user }));
+}, 'PATCH /api/users/me');

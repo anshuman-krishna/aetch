@@ -28,8 +28,18 @@ export default async function DashboardOverviewPage() {
 
   const statCards = [
     { label: 'Tattoos', value: stats.totalTattoos, icon: Images, href: '/app/dashboard/portfolio' },
-    { label: 'Bookings', value: stats.totalBookings, icon: CalendarDays, href: '/app/dashboard/bookings' },
-    { label: 'Pending', value: stats.pendingBookings, icon: Clock, href: '/app/dashboard/bookings?status=PENDING' },
+    {
+      label: 'Bookings',
+      value: stats.totalBookings,
+      icon: CalendarDays,
+      href: '/app/dashboard/bookings',
+    },
+    {
+      label: 'Pending',
+      value: stats.pendingBookings,
+      icon: Clock,
+      href: '/app/dashboard/bookings?status=PENDING',
+    },
     { label: 'Reviews', value: stats.totalReviews, icon: Star, href: '#' },
   ];
 
@@ -64,7 +74,9 @@ export default async function DashboardOverviewPage() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-h4 text-foreground">Upcoming Bookings</h2>
           <Link href="/app/dashboard/bookings">
-            <GlassButton variant="ghost" size="sm">View all</GlassButton>
+            <GlassButton variant="ghost" size="sm">
+              View all
+            </GlassButton>
           </Link>
         </div>
 
@@ -89,7 +101,9 @@ export default async function DashboardOverviewPage() {
                   </p>
                 </div>
                 <Link href={`/app/dashboard/bookings`}>
-                  <GlassButton variant="ghost" size="sm">Details</GlassButton>
+                  <GlassButton variant="ghost" size="sm">
+                    Details
+                  </GlassButton>
                 </Link>
               </div>
             ))}

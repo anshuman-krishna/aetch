@@ -30,7 +30,9 @@ export default function ShopsPage() {
     setLoading(false);
   }, [page, search, city]);
 
-  useEffect(() => { fetchShops(); }, [fetchShops]);
+  useEffect(() => {
+    fetchShops();
+  }, [fetchShops]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

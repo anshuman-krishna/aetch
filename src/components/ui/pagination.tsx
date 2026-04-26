@@ -18,7 +18,9 @@ export function Pagination({ pagination, basePath, paramName = 'page' }: Paginat
     <div className="flex justify-center gap-2 mt-8">
       {pagination.hasPrev && (
         <Link href={href(pagination.page - 1)}>
-          <GlassButton variant="default" size="sm">Previous</GlassButton>
+          <GlassButton variant="default" size="sm">
+            Previous
+          </GlassButton>
         </Link>
       )}
       <span className="flex items-center px-3 text-sm text-muted">
@@ -26,7 +28,9 @@ export function Pagination({ pagination, basePath, paramName = 'page' }: Paginat
       </span>
       {pagination.hasNext && (
         <Link href={href(pagination.page + 1)}>
-          <GlassButton variant="default" size="sm">Next</GlassButton>
+          <GlassButton variant="default" size="sm">
+            Next
+          </GlassButton>
         </Link>
       )}
     </div>

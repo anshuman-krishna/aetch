@@ -49,18 +49,33 @@ export async function getShopByOwnerId(ownerId: string) {
   });
 }
 
+// list distinct cities — feeds /app/shops/[city] sitemap
+export async function listShopCities(limit = 200) {
+  const rows = await prisma.shop.findMany({
+    where: { city: { not: null } },
+    select: { city: true },
+    distinct: ['city'],
+    take: limit,
+  });
+  return rows
+    .map((r) => r.city as string)
+    .filter(Boolean)
+    .sort();
+}
+
 export async function getShops(
   pagination: PaginationParams,
   filters?: { city?: string; search?: string; sort?: string },
 ) {
   const where = {
     ...(filters?.city ? { city: { contains: filters.city, mode: 'insensitive' as const } } : {}),
-    ...(filters?.search ? { name: { contains: filters.search, mode: 'insensitive' as const } } : {}),
+    ...(filters?.search
+      ? { name: { contains: filters.search, mode: 'insensitive' as const } }
+      : {}),
   };
 
-  const orderBy = filters?.sort === 'name'
-    ? { name: 'asc' as const }
-    : { createdAt: 'desc' as const };
+  const orderBy =
+    filters?.sort === 'name' ? { name: 'asc' as const } : { createdAt: 'desc' as const };
 
   const [shops, total] = await Promise.all([
     prisma.shop.findMany({
@@ -165,7 +180,11 @@ export async function getShopDashboardStats(shopId: string) {
 }
 
 // shop bookings
-export async function getShopBookings(shopId: string, pagination: PaginationParams, status?: string) {
+export async function getShopBookings(
+  shopId: string,
+  pagination: PaginationParams,
+  status?: string,
+) {
   const where = {
     shopId,
     ...(status ? { status: status as never } : {}),

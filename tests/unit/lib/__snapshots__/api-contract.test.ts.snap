@@ -1,0 +1,256 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`api contract — zod schema snapshots exposes the expected schema names: schema-names 1`] = `
+[
+  "aiGenerateSchema",
+  "availabilityBulkSchema",
+  "availabilitySchema",
+  "bookingRequestSchema",
+  "bookingSchema",
+  "createCommentSchema",
+  "createConversationSchema",
+  "createPostSchema",
+  "createReportSchema",
+  "createShopSchema",
+  "createTattooSchema",
+  "feedFilterSchema",
+  "loginSchema",
+  "paginationSchema",
+  "registerSchema",
+  "reviewSchema",
+  "savePreviewSchema",
+  "sendMessageSchema",
+  "shopFilterSchema",
+  "tattooFilterSchema",
+  "updateArtistSchema",
+  "updateBookingStatusSchema",
+  "updateProfileSchema",
+  "updateShopSchema",
+]
+`;
+
+exports[`api contract — zod schema snapshots shape: aiGenerateSchema: aiGenerateSchema 1`] = `
+{
+  "colorType": "optional",
+  "complexity": "default",
+  "idea": "string",
+  "placement": "optional",
+  "style": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: availabilityBulkSchema: availabilityBulkSchema 1`] = `
+{
+  "slots": "array",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: availabilitySchema: availabilitySchema 1`] = `
+{
+  "dayOfWeek": "number",
+  "endTime": "string",
+  "startTime": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: bookingRequestSchema: bookingRequestSchema 1`] = `
+{
+  "artistId": "string",
+  "date": "string",
+  "description": "optional",
+  "duration": "optional",
+  "placement": "optional",
+  "reference": "optional",
+  "size": "optional",
+  "tattooIdea": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: bookingSchema: bookingSchema 1`] = `
+{
+  "artistId": "string",
+  "date": "string",
+  "description": "optional",
+  "duration": "optional",
+  "reference": "optional",
+  "shopId": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: createCommentSchema: createCommentSchema 1`] = `
+{
+  "content": "string",
+  "parentId": "optional",
+  "postId": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: createConversationSchema: createConversationSchema 1`] = `
+{
+  "bookingId": "optional",
+  "participantId": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: createPostSchema: createPostSchema 1`] = `
+{
+  "caption": "optional",
+  "imageUrl": "optional",
+  "tags": "optional",
+  "tattooId": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: createReportSchema: createReportSchema 1`] = `
+{
+  "reason": "string",
+  "targetId": "string",
+  "targetType": "enum",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: createShopSchema: createShopSchema 1`] = `
+{
+  "address": "optional",
+  "city": "optional",
+  "country": "optional",
+  "description": "optional",
+  "email": "optional",
+  "name": "string",
+  "phone": "optional",
+  "slug": "string",
+  "state": "optional",
+  "website": "optional",
+  "zipCode": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: createTattooSchema: createTattooSchema 1`] = `
+{
+  "bodyPlacement": "optional",
+  "colorType": "default",
+  "description": "optional",
+  "styles": "array",
+  "title": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: feedFilterSchema: feedFilterSchema 1`] = `
+{
+  "tag": "optional",
+  "type": "default",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: loginSchema: loginSchema 1`] = `
+{
+  "email": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: paginationSchema: paginationSchema 1`] = `
+{
+  "limit": "default",
+  "page": "default",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: registerSchema: registerSchema 1`] = `
+{
+  "email": "string",
+  "name": "string",
+  "username": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: reviewSchema: reviewSchema 1`] = `
+{
+  "artistId": "optional",
+  "content": "optional",
+  "rating": "number",
+  "shopId": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: savePreviewSchema: savePreviewSchema 1`] = `
+{
+  "bodyImageUrl": "string",
+  "opacity": "default",
+  "placement": "optional",
+  "positionX": "default",
+  "positionY": "default",
+  "previewImageUrl": "optional",
+  "rotation": "default",
+  "scale": "default",
+  "tattooImageUrl": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: sendMessageSchema: sendMessageSchema 1`] = `
+{
+  "content": "string",
+  "conversationId": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: shopFilterSchema: shopFilterSchema 1`] = `
+{
+  "city": "optional",
+  "search": "optional",
+  "sort": "default",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: tattooFilterSchema: tattooFilterSchema 1`] = `
+{
+  "bodyPlacement": "optional",
+  "colorType": "optional",
+  "search": "optional",
+  "sort": "default",
+  "styles": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: updateArtistSchema: updateArtistSchema 1`] = `
+{
+  "bio": "optional",
+  "currency": "optional",
+  "displayName": "optional",
+  "hourlyRate": "optional",
+  "instagram": "optional",
+  "location": "optional",
+  "specialties": "optional",
+  "website": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: updateBookingStatusSchema: updateBookingStatusSchema 1`] = `
+{
+  "artistNotes": "optional",
+  "price": "optional",
+  "status": "enum",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: updateProfileSchema: updateProfileSchema 1`] = `
+{
+  "bio": "optional",
+  "image": "optional",
+  "name": "optional",
+  "username": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: updateShopSchema: updateShopSchema 1`] = `
+{
+  "address": "optional",
+  "city": "optional",
+  "country": "optional",
+  "description": "optional",
+  "email": "optional",
+  "name": "optional",
+  "phone": "optional",
+  "state": "optional",
+  "website": "optional",
+}
+`;

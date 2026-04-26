@@ -1,4 +1,4 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { authGuard } from '@/backend/middleware/auth-guard';
@@ -16,9 +16,7 @@ export async function GET(req: NextRequest) {
     limit: searchParams.get('limit') ?? 20,
   });
 
-  const { page, limit } = paginationResult.success
-    ? paginationResult.data
-    : { page: 1, limit: 20 };
+  const { page, limit } = paginationResult.success ? paginationResult.data : { page: 1, limit: 20 };
 
   const pagination = getPaginationParams(page, limit);
   const result = await getSavedTattoos(session!.user.id, pagination);

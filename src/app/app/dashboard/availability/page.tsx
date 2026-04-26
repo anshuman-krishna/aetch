@@ -37,7 +37,7 @@ export default function AvailabilityPage() {
   };
 
   const updateSlot = (dayOfWeek: number, field: 'startTime' | 'endTime', value: string) => {
-    setSlots(slots.map((s) => s.dayOfWeek === dayOfWeek ? { ...s, [field]: value } : s));
+    setSlots(slots.map((s) => (s.dayOfWeek === dayOfWeek ? { ...s, [field]: value } : s)));
   };
 
   const save = async () => {

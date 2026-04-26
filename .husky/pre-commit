@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# block secrets in staged content
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact --config .gitleaks.toml || {
+    echo "✗ gitleaks found possible secret. Stash or amend, then commit."
+    exit 1
+  }
+else
+  echo "(gitleaks not installed — skipping local secret scan; CI still runs it)"
+fi
+
+# format + lint only changed files
+npx lint-staged

@@ -52,6 +52,52 @@ jobs:
       - name: npm audit (prod deps)
         run: npm run audit:prod
 
+  e2e:
+    runs-on: ubuntu-latest
+    needs: verify
+    env:
+      DATABASE_URL: postgresql://test:test@localhost:5432/aetch_test
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: test-secret-32-chars-minimum-abcdef
+      GOOGLE_CLIENT_ID: test
+      GOOGLE_CLIENT_SECRET: test
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx prisma generate
+      - run: npm run build
+      - name: playwright (smoke + guards, not visual)
+        run: npx playwright test --grep-invert "visual regression"
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: verify
+    if: github.event_name == 'pull_request'
+    env:
+      DATABASE_URL: postgresql://test:test@localhost:5432/aetch_test
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: test-secret-32-chars-minimum-abcdef
+      GOOGLE_CLIENT_ID: test
+      GOOGLE_CLIENT_SECRET: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: lighthouse ci
+        run: |
+          npm install --no-save @lhci/cli@0.13
+          npx lhci autorun --config=./lighthouserc.json || echo "lighthouse warnings only"
+
   gitleaks:
     runs-on: ubuntu-latest
     steps:

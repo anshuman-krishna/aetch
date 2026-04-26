@@ -30,7 +30,10 @@ function fitImage(img: HTMLImageElement, max = MAX_CANVAS_SIZE): { w: number; h:
 }
 
 export const TattooPreviewCanvas = forwardRef<HTMLCanvasElement, TattooPreviewCanvasProps>(
-  function TattooPreviewCanvas({ bodyImageUrl, tattooImageUrl, transform, onTransformChange, className }, ref) {
+  function TattooPreviewCanvas(
+    { bodyImageUrl, tattooImageUrl, transform, onTransformChange, className },
+    ref,
+  ) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const bodyImgRef = useRef<HTMLImageElement | null>(null);
     const tattooImgRef = useRef<HTMLImageElement | null>(null);
@@ -43,7 +46,10 @@ export const TattooPreviewCanvas = forwardRef<HTMLCanvasElement, TattooPreviewCa
 
     // load body image
     useEffect(() => {
-      if (!bodyImageUrl) { bodyImgRef.current = null; return; }
+      if (!bodyImageUrl) {
+        bodyImgRef.current = null;
+        return;
+      }
       const img = new Image();
       img.crossOrigin = 'anonymous';
       img.onload = () => {
@@ -56,10 +62,15 @@ export const TattooPreviewCanvas = forwardRef<HTMLCanvasElement, TattooPreviewCa
 
     // load tattoo image
     useEffect(() => {
-      if (!tattooImageUrl) { tattooImgRef.current = null; return; }
+      if (!tattooImageUrl) {
+        tattooImgRef.current = null;
+        return;
+      }
       const img = new Image();
       img.crossOrigin = 'anonymous';
-      img.onload = () => { tattooImgRef.current = img; };
+      img.onload = () => {
+        tattooImgRef.current = img;
+      };
       img.src = tattooImageUrl;
     }, [tattooImageUrl]);
 
@@ -134,7 +145,9 @@ export const TattooPreviewCanvas = forwardRef<HTMLCanvasElement, TattooPreviewCa
       });
     };
 
-    const handlePointerUp = () => { dragging.current = false; };
+    const handlePointerUp = () => {
+      dragging.current = false;
+    };
 
     return (
       <canvas

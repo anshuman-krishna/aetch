@@ -48,15 +48,18 @@ const STATUS_INDEX: Record<BookingStatus, number> = {
 // determine step visual state
 function stepState(idx: number, activeIdx: number, status: BookingStatus) {
   if (idx < activeIdx) return 'completed';
-  if (idx === activeIdx)
-    return (status === 'CANCELLED' || status === 'NO_SHOW') ? 'error' : 'active';
+  if (idx === activeIdx) return status === 'CANCELLED' || status === 'NO_SHOW' ? 'error' : 'active';
   return 'upcoming';
 }
 
 // format timestamp for display
 function formatTime(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', {
-    month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
   });
 }
 
@@ -76,28 +79,34 @@ export function BookingTimeline({ status, createdAt, updatedAt }: BookingTimelin
           <div key={step.key} className="flex gap-3">
             {/* icon and connector line */}
             <div className="flex flex-col items-center">
-              <div className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-full shrink-0',
-                state === 'completed' && 'bg-emerald-500/20 text-emerald-400',
-                state === 'active' && 'bg-sky-500/20 text-sky-400 ring-2 ring-sky-400/40',
-                state === 'error' && 'bg-red-500/20 text-red-400 ring-2 ring-red-400/40',
-                state === 'upcoming' && 'bg-white/5 text-white/30',
-              )}>
+              <div
+                className={cn(
+                  'flex h-8 w-8 items-center justify-center rounded-full shrink-0',
+                  state === 'completed' && 'bg-emerald-500/20 text-emerald-400',
+                  state === 'active' && 'bg-sky-500/20 text-sky-400 ring-2 ring-sky-400/40',
+                  state === 'error' && 'bg-red-500/20 text-red-400 ring-2 ring-red-400/40',
+                  state === 'upcoming' && 'bg-white/5 text-white/30',
+                )}
+              >
                 <Icon className="h-4 w-4" />
               </div>
               {!isLast && (
-                <div className={cn(
-                  'w-px flex-1 min-h-[24px]',
-                  idx < activeIdx ? 'bg-emerald-500/40' : 'bg-white/10',
-                )} />
+                <div
+                  className={cn(
+                    'w-px flex-1 min-h-[24px]',
+                    idx < activeIdx ? 'bg-emerald-500/40' : 'bg-white/10',
+                  )}
+                />
               )}
             </div>
             <div className={cn('pb-6', isLast && 'pb-0')}>
-              <p className={cn(
-                'text-sm font-medium leading-8',
-                state === 'upcoming' ? 'text-white/30' : 'text-foreground/90',
-                state === 'error' && 'text-red-400',
-              )}>
+              <p
+                className={cn(
+                  'text-sm font-medium leading-8',
+                  state === 'upcoming' ? 'text-white/30' : 'text-foreground/90',
+                  state === 'error' && 'text-red-400',
+                )}
+              >
                 {step.label}
               </p>
               {timestamp && (

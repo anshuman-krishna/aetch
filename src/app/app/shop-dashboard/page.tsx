@@ -21,9 +21,24 @@ export default async function ShopDashboardPage() {
   const stats = await getShopDashboardStats(shop.id);
 
   const statCards = [
-    { label: 'Artists', value: stats.artistCount, icon: Users, href: '/app/shop-dashboard/artists' },
-    { label: 'Bookings', value: stats.bookingCount, icon: CalendarDays, href: '/app/shop-dashboard/bookings' },
-    { label: 'Pending', value: stats.pendingCount, icon: Clock, href: '/app/shop-dashboard/bookings' },
+    {
+      label: 'Artists',
+      value: stats.artistCount,
+      icon: Users,
+      href: '/app/shop-dashboard/artists',
+    },
+    {
+      label: 'Bookings',
+      value: stats.bookingCount,
+      icon: CalendarDays,
+      href: '/app/shop-dashboard/bookings',
+    },
+    {
+      label: 'Pending',
+      value: stats.pendingCount,
+      icon: Clock,
+      href: '/app/shop-dashboard/bookings',
+    },
     { label: 'Reviews', value: stats.reviewCount, icon: Star, href: '#' },
   ];
 
@@ -56,13 +71,22 @@ export default async function ShopDashboardPage() {
       <GlassCard variant="subtle" padding="md">
         <h2 className="text-h4 text-foreground mb-3">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
-          <Link href={`/app/shop/${shop.slug}`} className="rounded-xl glass px-4 py-2 text-sm text-foreground hover:bg-white/15 transition-colors">
+          <Link
+            href={`/app/shop/${shop.slug}`}
+            className="rounded-xl glass px-4 py-2 text-sm text-foreground hover:bg-white/15 transition-colors"
+          >
             View public profile
           </Link>
-          <Link href="/app/shop-dashboard/artists" className="rounded-xl glass px-4 py-2 text-sm text-foreground hover:bg-white/15 transition-colors">
+          <Link
+            href="/app/shop-dashboard/artists"
+            className="rounded-xl glass px-4 py-2 text-sm text-foreground hover:bg-white/15 transition-colors"
+          >
             Manage artists
           </Link>
-          <Link href="/app/shop-dashboard/settings" className="rounded-xl glass px-4 py-2 text-sm text-foreground hover:bg-white/15 transition-colors">
+          <Link
+            href="/app/shop-dashboard/settings"
+            className="rounded-xl glass px-4 py-2 text-sm text-foreground hover:bg-white/15 transition-colors"
+          >
             Edit shop info
           </Link>
         </div>

@@ -3,11 +3,7 @@ import { auth } from '@/lib/auth';
 import { PageContainer } from '@/components/layouts/page-container';
 import { ShopDashboardSidebar } from '@/components/features/shops/shop-dashboard-sidebar';
 
-export default async function ShopDashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function ShopDashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
 
   if (!session?.user) {

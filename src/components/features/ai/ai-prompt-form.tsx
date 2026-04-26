@@ -152,13 +152,7 @@ export function AIPromptForm({ onGenerate }: AIPromptFormProps) {
         </div>
       </GlassCard>
 
-      <GlassButton
-        type="submit"
-        variant="primary"
-        size="lg"
-        className="w-full"
-        loading={loading}
-      >
+      <GlassButton type="submit" variant="primary" size="lg" className="w-full" loading={loading}>
         <Sparkles className="h-4 w-4" /> Generate Tattoo Design
       </GlassButton>
     </form>

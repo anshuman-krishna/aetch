@@ -93,9 +93,7 @@ export function TattooSelector({ onSelect, selectedUrl }: TattooSelectorProps) {
       {tab === 'ai' && (
         <div className="glass rounded-xl p-6 text-center">
           <Sparkles className="h-6 w-6 text-muted mx-auto mb-2" />
-          <p className="text-xs text-muted">
-            Generate a tattoo design first, then use it here
-          </p>
+          <p className="text-xs text-muted">Generate a tattoo design first, then use it here</p>
           <a href="/app/ai">
             <GlassButton variant="ghost" size="sm" className="mt-2">
               Go to AI Generator

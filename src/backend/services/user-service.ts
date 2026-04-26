@@ -9,9 +9,7 @@ export async function addUserRole(userId: string, role: UserRole) {
   });
   if (!user) throw new Error('User not found');
 
-  const roles = user.roles.includes(role)
-    ? user.roles
-    : [...user.roles, role];
+  const roles = user.roles.includes(role) ? user.roles : [...user.roles, role];
 
   return prisma.user.update({
     where: { id: userId },

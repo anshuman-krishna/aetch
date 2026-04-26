@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ─── AETCH Theme Tokens ─── */
 :root {
@@ -93,7 +93,11 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), system-ui, -apple-system, sans-serif;
+  font-family:
+    var(--font-body),
+    system-ui,
+    -apple-system,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -159,10 +163,18 @@ body {
 
 /* Responsive typography */
 @media (max-width: 768px) {
-  .text-display { font-size: 2.5rem; }
-  .text-h1 { font-size: 2rem; }
-  .text-h2 { font-size: 1.5rem; }
-  .text-h3 { font-size: 1.25rem; }
+  .text-display {
+    font-size: 2.5rem;
+  }
+  .text-h1 {
+    font-size: 2rem;
+  }
+  .text-h2 {
+    font-size: 1.5rem;
+  }
+  .text-h3 {
+    font-size: 1.25rem;
+  }
 }
 
 /* ─── Glass Utilities ─── */
@@ -199,12 +211,7 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--glass-highlight),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
   border-radius: inherit;
 }
 
@@ -222,8 +229,7 @@ body {
   background:
     radial-gradient(at 20% 20%, var(--pastel-sky) 0%, transparent 50%),
     radial-gradient(at 80% 20%, var(--pastel-lavender) 0%, transparent 50%),
-    radial-gradient(at 50% 80%, var(--pastel-coral) 0%, transparent 50%),
-    var(--background);
+    radial-gradient(at 50% 80%, var(--pastel-coral) 0%, transparent 50%), var(--background);
 }
 
 .gradient-brand {

@@ -41,11 +41,7 @@ export default async function ArtistProfilePage({ params, searchParams }: Props)
       <div className="py-12">
         <GlassCard variant="strong" padding="lg">
           <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left sm:gap-6">
-            <GlassAvatar
-              src={artist.user.image}
-              alt={artist.displayName}
-              size="xl"
-            />
+            <GlassAvatar src={artist.user.image} alt={artist.displayName} size="xl" />
             <div className="mt-4 sm:mt-0">
               <div className="flex items-center gap-2 justify-center sm:justify-start">
                 <h1 className="text-h3 text-foreground">{artist.displayName}</h1>
@@ -54,17 +50,15 @@ export default async function ArtistProfilePage({ params, searchParams }: Props)
               {artist.user.username && (
                 <p className="text-sm text-muted">@{artist.user.username}</p>
               )}
-              {artist.location && (
-                <p className="mt-1 text-sm text-muted">{artist.location}</p>
-              )}
-              {artist.bio && (
-                <p className="mt-3 text-sm text-muted max-w-lg">{artist.bio}</p>
-              )}
+              {artist.location && <p className="mt-1 text-sm text-muted">{artist.location}</p>}
+              {artist.bio && <p className="mt-3 text-sm text-muted max-w-lg">{artist.bio}</p>}
 
               {/* actions */}
               <div className="mt-4">
                 <Link href={`/app/book/${artistSlug}`}>
-                  <GlassButton variant="primary" size="md">Book Now</GlassButton>
+                  <GlassButton variant="primary" size="md">
+                    Book Now
+                  </GlassButton>
                 </Link>
               </div>
 
@@ -80,9 +74,7 @@ export default async function ArtistProfilePage({ params, searchParams }: Props)
                 </div>
                 {artist.hourlyRate && (
                   <div>
-                    <span className="font-bold text-foreground">
-                      ${Number(artist.hourlyRate)}
-                    </span>
+                    <span className="font-bold text-foreground">${Number(artist.hourlyRate)}</span>
                     <span className="ml-1 text-xs text-muted">/hr</span>
                   </div>
                 )}
@@ -97,7 +89,9 @@ export default async function ArtistProfilePage({ params, searchParams }: Props)
             <h2 className="text-h4 text-foreground mb-3">Specialties</h2>
             <div className="flex flex-wrap gap-2">
               {artist.specialties.map((s) => (
-                <GlassBadge key={s} variant="primary">{s}</GlassBadge>
+                <GlassBadge key={s} variant="primary">
+                  {s}
+                </GlassBadge>
               ))}
             </div>
           </GlassCard>
@@ -110,7 +104,10 @@ export default async function ArtistProfilePage({ params, searchParams }: Props)
           {portfolio.tattoos.length > 0 ? (
             <>
               <TattooGrid tattoos={portfolio.tattoos} />
-              <Pagination pagination={portfolio.pagination} basePath={`/app/artist/${artistSlug}`} />
+              <Pagination
+                pagination={portfolio.pagination}
+                basePath={`/app/artist/${artistSlug}`}
+              />
             </>
           ) : (
             <GlassCard padding="lg" className="text-center">

@@ -1,10 +1,13 @@
 const flags = {
   AI_GENERATION_ENABLED: env('FF_AI_GENERATION', false),
   AR_PREVIEW_ENABLED: env('FF_AR_PREVIEW', false),
-  PRICE_ESTIMATOR_ENABLED: env('FF_PRICE_ESTIMATOR', false),
+  PRICE_ESTIMATOR_ENABLED: env('FF_PRICE_ESTIMATOR', true),
   MESSAGING_ENABLED: env('FF_MESSAGING', false),
   SOCIAL_FEED_ENABLED: env('FF_SOCIAL_FEED', true),
   BOOKING_ENABLED: env('FF_BOOKING', true),
+  COVERUP_ENABLED: env('FF_COVERUP', false),
+  AFTERCARE_AI_ENABLED: env('FF_AFTERCARE', false),
+  COLLECTIONS_ENABLED: env('FF_COLLECTIONS', true),
 } as const;
 
 function env(key: string, defaultValue: boolean): boolean {

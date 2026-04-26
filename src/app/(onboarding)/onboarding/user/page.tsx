@@ -10,9 +10,18 @@ import { FormError } from '@/components/forms/form-error';
 import { cn } from '@/utils/cn';
 
 const tattooStyles = [
-  'Traditional', 'Neo-traditional', 'Japanese', 'Blackwork', 'Fine Line',
-  'Minimalist', 'Realism', 'Tribal', 'Watercolor', 'Geometric',
-  'Abstract', 'Dotwork',
+  'Traditional',
+  'Neo-traditional',
+  'Japanese',
+  'Blackwork',
+  'Fine Line',
+  'Minimalist',
+  'Realism',
+  'Tribal',
+  'Watercolor',
+  'Geometric',
+  'Abstract',
+  'Dotwork',
 ];
 
 export default function UserOnboardingPage() {

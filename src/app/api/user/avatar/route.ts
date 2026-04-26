@@ -1,4 +1,4 @@
-export const runtime = "nodejs";
+export const runtime = 'nodejs';
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { auth } from '@/lib/auth';
@@ -20,10 +20,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get('avatar');
 
     if (!file || !(file instanceof File)) {
-      return NextResponse.json(
-        { success: false, error: 'No file provided' },
-        { status: 400 },
-      );
+      return NextResponse.json({ success: false, error: 'No file provided' }, { status: 400 });
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -33,9 +30,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, data: { url: result.url } });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Upload failed';
-    return NextResponse.json(
-      { success: false, error: message },
-      { status: 400 },
-    );
+    return NextResponse.json({ success: false, error: message }, { status: 400 });
   }
 }

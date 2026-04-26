@@ -25,17 +25,20 @@ export default function FeedPage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchPosts = useCallback(async (pageNum: number, reset = false) => {
-    setLoading(true);
-    const params = new URLSearchParams({ type: feedType, page: String(pageNum) });
-    const res = await fetch(`/api/posts?${params}`);
-    const data = await res.json();
-    const newPosts = data.posts ?? [];
+  const fetchPosts = useCallback(
+    async (pageNum: number, reset = false) => {
+      setLoading(true);
+      const params = new URLSearchParams({ type: feedType, page: String(pageNum) });
+      const res = await fetch(`/api/posts?${params}`);
+      const data = await res.json();
+      const newPosts = data.posts ?? [];
 
-    setPosts((prev) => reset ? newPosts : [...prev, ...newPosts]);
-    setHasMore(data.pagination?.hasNext ?? false);
-    setLoading(false);
-  }, [feedType]);
+      setPosts((prev) => (reset ? newPosts : [...prev, ...newPosts]));
+      setHasMore(data.pagination?.hasNext ?? false);
+      setLoading(false);
+    },
+    [feedType],
+  );
 
   useEffect(() => {
     setPage(1);

@@ -60,13 +60,19 @@ export function PostCard({ post, currentUserId, initialLiked = false, onDelete }
           <GlassAvatar src={post.author.image} alt={post.author.name ?? ''} size="sm" />
         </Link>
         <div className="flex-1 min-w-0">
-          <Link href={`/app/profile/${post.author.username}`} className="text-sm font-medium text-foreground hover:underline">
+          <Link
+            href={`/app/profile/${post.author.username}`}
+            className="text-sm font-medium text-foreground hover:underline"
+          >
             {post.author.name ?? post.author.username}
           </Link>
           <p className="text-xs text-muted">{timeAgo}</p>
         </div>
         {currentUserId === post.author.id && onDelete && (
-          <button onClick={() => onDelete(post.id)} className="text-muted hover:text-red-400 transition-colors">
+          <button
+            onClick={() => onDelete(post.id)}
+            className="text-muted hover:text-red-400 transition-colors"
+          >
             <Trash2 className="h-4 w-4" />
           </button>
         )}
@@ -88,7 +94,12 @@ export function PostCard({ post, currentUserId, initialLiked = false, onDelete }
       {/* actions */}
       <div className="px-4 pt-3 flex items-center gap-4">
         <button onClick={handleLike} className="flex items-center gap-1.5 group">
-          <Heart className={cn('h-5 w-5 transition-colors', liked ? 'fill-red-400 text-red-400' : 'text-muted group-hover:text-foreground')} />
+          <Heart
+            className={cn(
+              'h-5 w-5 transition-colors',
+              liked ? 'fill-red-400 text-red-400' : 'text-muted group-hover:text-foreground',
+            )}
+          />
           <span className="text-sm text-muted">{likes}</span>
         </button>
         <Link href={`/app/post/${post.id}`} className="flex items-center gap-1.5 group">
@@ -101,7 +112,10 @@ export function PostCard({ post, currentUserId, initialLiked = false, onDelete }
       {post.caption && (
         <div className="px-4 pt-2">
           <p className="text-sm text-foreground">
-            <Link href={`/app/profile/${post.author.username}`} className="font-medium hover:underline mr-1">
+            <Link
+              href={`/app/profile/${post.author.username}`}
+              className="font-medium hover:underline mr-1"
+            >
               {post.author.username}
             </Link>
             {post.caption}
@@ -113,7 +127,9 @@ export function PostCard({ post, currentUserId, initialLiked = false, onDelete }
       {post.tags.length > 0 && (
         <div className="px-4 pt-2 flex flex-wrap gap-1">
           {post.tags.map((tag) => (
-            <GlassBadge key={tag} size="sm">#{tag}</GlassBadge>
+            <GlassBadge key={tag} size="sm">
+              #{tag}
+            </GlassBadge>
           ))}
         </div>
       )}

@@ -5,9 +5,7 @@ export default function AppNotFound() {
   return (
     <div className="mx-auto max-w-md px-6 py-20">
       <GlassCard variant="strong" padding="lg" className="text-center">
-        <h2 className="text-h2 text-foreground mb-2">
-          Page Not Found
-        </h2>
+        <h2 className="text-h2 text-foreground mb-2">Page Not Found</h2>
         <p className="text-sm text-muted mb-6">
           The page you&apos;re looking for doesn&apos;t exist.
         </p>
