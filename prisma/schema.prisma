@@ -125,12 +125,31 @@ model Artist {
   reviews       Review[]
   availability  ArtistAvailability[]
   shopArtists   ShopArtist[]
+  styleDna      ArtistStyleDna?
 
   @@index([userId])
   @@index([slug])
   @@index([shopId])
   @@index([location])
   @@index([verified])
+}
+
+// per-artist style fingerprint, recomputed weekly from portfolio tattoos
+model ArtistStyleDna {
+  id           String   @id @default(cuid())
+  artistId     String   @unique
+  // style weights as { TRADITIONAL: 0.6, JAPANESE: 0.25, ... } summing to ~1
+  weights      Json
+  // optional aggregate embedding vector for similarity search.
+  // stored as float[] until pgvector migration lands.
+  embedding    Float[]
+  sampleSize   Int      @default(0)
+  computedAt   DateTime @default(now())
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@index([artistId])
+  @@index([computedAt])
 }
 
 model Shop {
@@ -676,4 +695,77 @@ model CollectionItem {
   @@index([collectionId])
   @@index([tattooId])
   @@index([postId])
+}
+
+// tattoo conventions / events
+model Event {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?  @db.Text
+  venue       String?
+  city        String?
+  country     String?
+  latitude    Float?
+  longitude   Float?
+  startsAt    DateTime
+  endsAt      DateTime
+  websiteUrl  String?
+  coverImage  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  attendees EventAttendance[]
+
+  @@index([slug])
+  @@index([startsAt])
+  @@index([city])
+}
+
+model EventAttendance {
+  id        String              @id @default(cuid())
+  eventId   String
+  userId    String
+  status    EventAttendanceStatus @default(GOING)
+  createdAt DateTime            @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+enum EventAttendanceStatus {
+  GOING
+  INTERESTED
+  NOT_GOING
+}
+
+// web push subscriptions (vapid)
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String
+  authKey   String
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// cached og/oembed link previews (rich previews on posts)
+model LinkPreview {
+  id           String   @id @default(cuid())
+  url          String   @unique
+  canonicalUrl String?
+  title        String?
+  description  String?
+  image        String?
+  siteName     String?
+  fetchedAt    DateTime @default(now())
+  expiresAt    DateTime
+
+  @@index([expiresAt])
 }

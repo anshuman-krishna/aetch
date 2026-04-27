@@ -8,6 +8,13 @@ const flags = {
   COVERUP_ENABLED: env('FF_COVERUP', false),
   AFTERCARE_AI_ENABLED: env('FF_AFTERCARE', false),
   COLLECTIONS_ENABLED: env('FF_COLLECTIONS', true),
+  LONGEVITY_ENABLED: env('FF_LONGEVITY', false),
+  STYLE_DNA_ENABLED: env('FF_STYLE_DNA', false),
+  EVENTS_ENABLED: env('FF_EVENTS', true),
+  LEARN_ENABLED: env('FF_LEARN', true),
+  MAP_ENABLED: env('FF_MAP', true),
+  WEB_PUSH_ENABLED: env('FF_WEB_PUSH', false),
+  LINK_PREVIEWS_ENABLED: env('FF_LINK_PREVIEWS', true),
 } as const;
 
 function env(key: string, defaultValue: boolean): boolean {

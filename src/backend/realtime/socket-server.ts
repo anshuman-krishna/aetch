@@ -1,5 +1,6 @@
 import { Server as HttpServer } from 'http';
 import { Server, Socket } from 'socket.io';
+import { verifySocketToken } from '@/lib/socket-jwt';
 
 export const runtime = 'nodejs';
 
@@ -44,6 +45,25 @@ export interface NotificationEvent {
 // user id to socket mapping
 const userSockets = new Map<string, Set<string>>();
 
+// prefer short-lived jwt; fall back to legacy `userId` only when SOCKET_JWT_SECRET
+// is unset (dev-only convenience). production should always require a token.
+function resolveUserId(socket: Socket): string | null {
+  const token = (socket.handshake.auth.token ?? socket.handshake.query.token) as
+    | string
+    | undefined;
+  if (token) {
+    try {
+      const payload = verifySocketToken(token);
+      return payload?.sub ?? null;
+    } catch {
+      return null;
+    }
+  }
+  if (process.env.SOCKET_JWT_SECRET) return null;
+  const userId = socket.handshake.auth.userId as string | undefined;
+  return userId ?? null;
+}
+
 // initialize socket server
 export function initSocketServer(httpServer: HttpServer): Server {
   if (io) return io;
@@ -58,7 +78,7 @@ export function initSocketServer(httpServer: HttpServer): Server {
   });
 
   io.on('connection', (socket: Socket) => {
-    const userId = socket.handshake.auth.userId as string;
+    const userId = resolveUserId(socket);
 
     if (!userId) {
       socket.disconnect();

@@ -13,14 +13,19 @@ exports[`api contract — zod schema snapshots exposes the expected schema names
   "createCollectionSchema",
   "createCommentSchema",
   "createConversationSchema",
+  "createEventSchema",
   "createPostSchema",
   "createReportSchema",
   "createShopSchema",
   "createTattooSchema",
+  "eventRsvpSchema",
   "feedFilterSchema",
+  "linkPreviewSchema",
   "loginSchema",
+  "longevitySchema",
   "paginationSchema",
   "priceEstimateSchema",
+  "pushSubscribeSchema",
   "registerSchema",
   "repostSchema",
   "reviewSchema",
@@ -133,6 +138,23 @@ exports[`api contract — zod schema snapshots shape: createConversationSchema: 
 }
 `;
 
+exports[`api contract — zod schema snapshots shape: createEventSchema: createEventSchema 1`] = `
+{
+  "city": "optional",
+  "country": "optional",
+  "coverImage": "optional",
+  "description": "optional",
+  "endsAt": "string",
+  "latitude": "optional",
+  "longitude": "optional",
+  "name": "string",
+  "slug": "string",
+  "startsAt": "string",
+  "venue": "optional",
+  "websiteUrl": "optional",
+}
+`;
+
 exports[`api contract — zod schema snapshots shape: createPostSchema: createPostSchema 1`] = `
 {
   "caption": "optional",
@@ -176,6 +198,12 @@ exports[`api contract — zod schema snapshots shape: createTattooSchema: create
 }
 `;
 
+exports[`api contract — zod schema snapshots shape: eventRsvpSchema: eventRsvpSchema 1`] = `
+{
+  "status": "enum",
+}
+`;
+
 exports[`api contract — zod schema snapshots shape: feedFilterSchema: feedFilterSchema 1`] = `
 {
   "tag": "optional",
@@ -183,9 +211,25 @@ exports[`api contract — zod schema snapshots shape: feedFilterSchema: feedFilt
 }
 `;
 
+exports[`api contract — zod schema snapshots shape: linkPreviewSchema: linkPreviewSchema 1`] = `
+{
+  "url": "string",
+}
+`;
+
 exports[`api contract — zod schema snapshots shape: loginSchema: loginSchema 1`] = `
 {
   "email": "string",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: longevitySchema: longevitySchema 1`] = `
+{
+  "colorPalette": "optional",
+  "imageUrl": "string",
+  "lineThickness": "optional",
+  "placement": "optional",
+  "style": "optional",
 }
 `;
 
@@ -205,6 +249,17 @@ exports[`api contract — zod schema snapshots shape: priceEstimateSchema: price
   "placement": "optional",
   "size": "enum",
   "styles": "optional",
+}
+`;
+
+exports[`api contract — zod schema snapshots shape: pushSubscribeSchema: pushSubscribeSchema 1`] = `
+{
+  "endpoint": "string",
+  "keys": {
+    "auth": "string",
+    "p256dh": "string",
+  },
+  "userAgent": "optional",
 }
 `;
 

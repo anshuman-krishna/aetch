@@ -18,6 +18,7 @@ import { PreviewExportButton } from '@/components/features/ar/preview-export-but
 import { History, ScanEye } from 'lucide-react';
 import Link from 'next/link';
 import { BODY_PLACEMENTS, PLACEMENT_LABELS } from '@/lib/validations';
+import { PriceEstimateWidget } from '@/components/features/pricing/price-estimate-widget';
 
 const DEFAULT_TRANSFORM: PreviewTransform = {
   positionX: 50,
@@ -157,6 +158,13 @@ export default function ARPreviewPage() {
 
             {canPreview && (
               <PreviewControls transform={transform} onChange={setTransform} disabled={saving} />
+            )}
+
+            {placement && (
+              <PriceEstimateWidget
+                size={transform.scale > 1.5 ? 'LARGE' : transform.scale > 0.8 ? 'MEDIUM' : 'SMALL'}
+                placement={placement}
+              />
             )}
           </div>
         </div>

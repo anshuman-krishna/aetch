@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getArtistBySlug } from '@/backend/services/artist-service';
 import { getArtistTattoos } from '@/backend/services/tattoo-service';
+import { getStyleDna } from '@/backend/services/style-dna-service';
+import { isFeatureEnabled } from '@/lib/feature-flags';
 import { getPaginationParams } from '@/utils/pagination';
 import { GlassCard } from '@/components/ui/glass-card';
 import { GlassAvatar } from '@/components/ui/glass-avatar';
@@ -9,6 +11,7 @@ import { GlassButton } from '@/components/ui/glass-button';
 import { PageContainer } from '@/components/layouts/page-container';
 import { TattooGrid } from '@/components/features/gallery/tattoo-grid';
 import { Pagination } from '@/components/ui/pagination';
+import { StyleDnaChart } from '@/components/features/artists/style-dna-chart';
 import Link from 'next/link';
 
 interface Props {
@@ -34,7 +37,10 @@ export default async function ArtistProfilePage({ params, searchParams }: Props)
 
   const page = Number(resolvedSearchParams.page ?? '1');
   const pagination = getPaginationParams(page, 12);
-  const portfolio = await getArtistTattoos(artist.id, pagination);
+  const [portfolio, dna] = await Promise.all([
+    getArtistTattoos(artist.id, pagination),
+    isFeatureEnabled('STYLE_DNA_ENABLED') ? getStyleDna(artist.id) : Promise.resolve(null),
+  ]);
 
   return (
     <PageContainer animate={false}>
@@ -82,6 +88,16 @@ export default async function ArtistProfilePage({ params, searchParams }: Props)
             </div>
           </div>
         </GlassCard>
+
+        {/* Style DNA */}
+        {dna && (
+          <div className="mt-6">
+            <StyleDnaChart
+              weights={dna.weights as Record<string, number>}
+              sampleSize={dna.sampleSize}
+            />
+          </div>
+        )}
 
         {/* Specialties */}
         {artist.specialties.length > 0 && (

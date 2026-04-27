@@ -40,6 +40,13 @@ const envSchema = z.object({
   FF_COVERUP: z.string().optional(),
   FF_AFTERCARE: z.string().optional(),
   FF_COLLECTIONS: z.string().optional(),
+  FF_LONGEVITY: z.string().optional(),
+  FF_STYLE_DNA: z.string().optional(),
+  FF_EVENTS: z.string().optional(),
+  FF_LEARN: z.string().optional(),
+  FF_MAP: z.string().optional(),
+  FF_WEB_PUSH: z.string().optional(),
+  FF_LINK_PREVIEWS: z.string().optional(),
 
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).optional(),
@@ -56,6 +63,29 @@ const envSchema = z.object({
 
   // 2fa enforcement
   TOTP_ISSUER: z.string().default('AETCH'),
+
+  // cron auth (vercel + manual triggers)
+  CRON_SECRET: z.string().optional(),
+
+  // direct (non-pooled) database url for prisma migrate / cron / long-running jobs
+  DATABASE_URL_DIRECT: z.string().optional(),
+
+  // socket auth jwt — short-lived bearer for horizontal scale
+  SOCKET_JWT_SECRET: z.string().optional(),
+
+  // web push (vapid)
+  VAPID_PUBLIC_KEY: z.string().optional(),
+  VAPID_PRIVATE_KEY: z.string().optional(),
+  VAPID_SUBJECT: z.string().optional(),
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: z.string().optional(),
+
+  // map provider (maplibre uses no key by default; mapbox optional)
+  NEXT_PUBLIC_MAP_STYLE_URL: z.string().optional(),
+  NEXT_PUBLIC_MAPBOX_TOKEN: z.string().optional(),
+
+  // replicate (for clip embeddings + longevity)
+  REPLICATE_API_TOKEN: z.string().optional(),
+  REPLICATE_CLIP_MODEL: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

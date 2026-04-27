@@ -8,6 +8,7 @@ import { prisma } from '@/lib/prisma';
 import { paginationSchema } from '@/lib/validations';
 import { getPaginationParams, buildPaginationMeta } from '@/utils/pagination';
 import { recordAuditEvent, clientContext } from '@/backend/services/audit-log-service';
+import { rotateUserSessions } from '@/lib/session-rotate';
 
 // list users (admin only)
 export const GET = withErrorHandler(async (req: Request) => {
@@ -69,12 +70,13 @@ export const PATCH = withErrorHandler(async (req: Request) => {
     );
   }
 
-  // remove all roles to disable
+  // remove all roles to disable + rotate sessions so the user is forced to re-auth
   if (disabled) {
     await prisma.user.update({
       where: { id: userId },
       data: { roles: [] },
     });
+    await rotateUserSessions(userId);
   }
 
   await recordAuditEvent({
