@@ -49,6 +49,28 @@ export async function getShopByOwnerId(ownerId: string) {
   });
 }
 
+// shops with lat/lng for the global map. caps at 5000 to stay light on the wire.
+export async function listShopsForMap() {
+  return prisma.shop.findMany({
+    where: {
+      latitude: { not: null },
+      longitude: { not: null },
+    },
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+      city: true,
+      country: true,
+      latitude: true,
+      longitude: true,
+      image: true,
+      verified: true,
+    },
+    take: 5000,
+  });
+}
+
 // list distinct cities — feeds /app/shops/[city] sitemap
 export async function listShopCities(limit = 200) {
   const rows = await prisma.shop.findMany({

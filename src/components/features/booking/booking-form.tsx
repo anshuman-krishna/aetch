@@ -9,6 +9,7 @@ import { GlassTextarea } from '@/components/ui/glass-textarea';
 import { FormError } from '@/components/forms/form-error';
 import { cn } from '@/utils/cn';
 import { BODY_PLACEMENTS, PLACEMENT_LABELS } from '@/lib/validations';
+import { PriceEstimateWidget } from '@/components/features/pricing/price-estimate-widget';
 
 const SIZES = [
   { value: 'SMALL', label: 'Small (< 3")' },
@@ -142,6 +143,12 @@ export function BookingForm({ artistId, artistSlug }: BookingFormProps) {
           ))}
         </div>
       </GlassCard>
+
+      <PriceEstimateWidget
+        artistId={artistId}
+        size={size || undefined}
+        placement={placement || undefined}
+      />
 
       <GlassCard variant="subtle" padding="md">
         <GlassTextarea

@@ -1,5 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import type { NotificationType } from '@prisma/client';
+import { isFeatureEnabled } from '@/lib/feature-flags';
+import { sendPushTickle, vapidConfigured } from '@/lib/web-push';
+import { logger } from '@/lib/logger';
 
 export async function createNotification(data: {
   userId: string;
@@ -9,7 +12,28 @@ export async function createNotification(data: {
   bookingId?: string;
   link?: string;
 }) {
-  return prisma.notification.create({ data });
+  const notification = await prisma.notification.create({ data });
+  if (isFeatureEnabled('WEB_PUSH_ENABLED') && vapidConfigured()) {
+    pushFanout(data.userId).catch((err) =>
+      logger.warn({ err, userId: data.userId }, 'web push fanout failed'),
+    );
+  }
+  return notification;
+}
+
+async function pushFanout(userId: string): Promise<void> {
+  const subs = await prisma.pushSubscription.findMany({ where: { userId } });
+  for (const sub of subs) {
+    const ok = await sendPushTickle({
+      endpoint: sub.endpoint,
+      p256dh: sub.p256dh,
+      authKey: sub.authKey,
+    });
+    if (!ok) {
+      // dead subscription — purge so we stop pushing to it
+      await prisma.pushSubscription.deleteMany({ where: { endpoint: sub.endpoint } });
+    }
+  }
 }
 
 export async function getUserNotifications(userId: string, limit = 20) {

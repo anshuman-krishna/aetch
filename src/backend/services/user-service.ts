@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import type { UserRole } from '@prisma/client';
+import { rotateUserSessions } from '@/lib/session-rotate';
 
-// add role to user
+// add role to user — rotates sessions so new role takes effect immediately
 export async function addUserRole(userId: string, role: UserRole) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -9,15 +10,20 @@ export async function addUserRole(userId: string, role: UserRole) {
   });
   if (!user) throw new Error('User not found');
 
-  const roles = user.roles.includes(role) ? user.roles : [...user.roles, role];
+  if (user.roles.includes(role)) {
+    return prisma.user.update({ where: { id: userId }, data: {} });
+  }
 
-  return prisma.user.update({
+  const roles = [...user.roles, role];
+  const updated = await prisma.user.update({
     where: { id: userId },
     data: { roles },
   });
+  await rotateUserSessions(userId);
+  return updated;
 }
 
-// remove role from user
+// remove role from user — rotates sessions so revoked role drops immediately
 export async function removeUserRole(userId: string, role: UserRole) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -25,10 +31,16 @@ export async function removeUserRole(userId: string, role: UserRole) {
   });
   if (!user) throw new Error('User not found');
 
-  return prisma.user.update({
+  if (!user.roles.includes(role)) {
+    return prisma.user.update({ where: { id: userId }, data: {} });
+  }
+
+  const updated = await prisma.user.update({
     where: { id: userId },
     data: { roles: user.roles.filter((r) => r !== role) },
   });
+  await rotateUserSessions(userId);
+  return updated;
 }
 
 export async function completeUserOnboarding(

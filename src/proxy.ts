@@ -30,20 +30,23 @@ const securityHeaders = {
 
 const isProd = process.env.NODE_ENV === 'production';
 
-// per-request csp with nonce for inline next.js bootstrap scripts
+// per-request csp with nonce for inline next.js bootstrap scripts.
+// strict-dynamic in prod lets nonce'd scripts pull in transitively-loaded
+// libs (maplibre, mapbox), which works without enumerating every CDN host.
 function buildCsp(nonce: string): string {
   const scriptSrc = isProd
     ? `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`
-    : `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'nonce-${nonce}'`;
+    : `script-src 'self' 'unsafe-inline' 'unsafe-eval' 'nonce-${nonce}' https://unpkg.com`;
   const connectSrc = isProd
     ? "connect-src 'self' https: wss:"
     : "connect-src 'self' https: wss: ws:";
   return [
     "default-src 'self'",
     scriptSrc,
-    "style-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' https://unpkg.com",
     "img-src 'self' data: blob: https:",
-    "font-src 'self' data:",
+    "worker-src 'self' blob:",
+    "font-src 'self' data: https://unpkg.com",
     connectSrc,
     "frame-ancestors 'none'",
     "base-uri 'self'",

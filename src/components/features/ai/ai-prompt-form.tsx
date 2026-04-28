@@ -10,6 +10,14 @@ import { AIPlacementSelector } from './ai-placement-selector';
 import { COLOR_TYPES, AI_COMPLEXITIES } from '@/lib/validations';
 import { cn } from '@/utils/cn';
 import { Sparkles } from 'lucide-react';
+import { PriceEstimateWidget } from '@/components/features/pricing/price-estimate-widget';
+
+const COMPLEXITY_TO_SIZE: Record<string, 'SMALL' | 'MEDIUM' | 'LARGE' | 'EXTRA_LARGE'> = {
+  simple: 'SMALL',
+  moderate: 'MEDIUM',
+  detailed: 'LARGE',
+  complex: 'EXTRA_LARGE',
+};
 
 const COLOR_LABELS: Record<string, string> = {
   COLOR: 'Full Color',
@@ -151,6 +159,14 @@ export function AIPromptForm({ onGenerate }: AIPromptFormProps) {
           ))}
         </div>
       </GlassCard>
+
+      <PriceEstimateWidget
+        size={COMPLEXITY_TO_SIZE[complexity]}
+        colorType={colorType || undefined}
+        placement={placement || undefined}
+        complexity={complexity}
+        styles={style ? [style] : undefined}
+      />
 
       <GlassButton type="submit" variant="primary" size="lg" className="w-full" loading={loading}>
         <Sparkles className="h-4 w-4" /> Generate Tattoo Design

@@ -43,9 +43,16 @@ describe('feature-flags', () => {
         'BOOKING_ENABLED',
         'COLLECTIONS_ENABLED',
         'COVERUP_ENABLED',
+        'EVENTS_ENABLED',
+        'LEARN_ENABLED',
+        'LINK_PREVIEWS_ENABLED',
+        'LONGEVITY_ENABLED',
+        'MAP_ENABLED',
         'MESSAGING_ENABLED',
         'PRICE_ESTIMATOR_ENABLED',
         'SOCIAL_FEED_ENABLED',
+        'STYLE_DNA_ENABLED',
+        'WEB_PUSH_ENABLED',
       ].sort(),
     );
   });

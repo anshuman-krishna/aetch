@@ -414,6 +414,59 @@ export const userSearchSchema = z.object({
   limit: z.coerce.number().int().min(1).max(20).default(8),
 });
 
+// longevity simulator
+
+export const longevitySchema = z.object({
+  imageUrl: z.string().url(),
+  lineThickness: z.enum(['fine', 'medium', 'bold']).optional(),
+  colorPalette: z.enum(['COLOR', 'BLACK_AND_GREY', 'MIXED']).optional(),
+  placement: z.enum(BODY_PLACEMENTS).optional(),
+  style: z.enum(TATTOO_STYLES).optional(),
+});
+
+// events
+
+export const createEventSchema = z.object({
+  name: z.string().min(2).max(120).trim(),
+  slug: z
+    .string()
+    .min(2)
+    .max(80)
+    .regex(/^[a-z0-9-]+$/)
+    .toLowerCase(),
+  description: z.string().max(2000).trim().optional(),
+  venue: z.string().max(200).trim().optional(),
+  city: z.string().max(100).trim().optional(),
+  country: z.string().max(100).trim().optional(),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
+  startsAt: z.string().datetime(),
+  endsAt: z.string().datetime(),
+  websiteUrl: z.string().url().optional(),
+  coverImage: z.string().url().optional(),
+});
+
+export const eventRsvpSchema = z.object({
+  status: z.enum(['GOING', 'INTERESTED', 'NOT_GOING']),
+});
+
+// link previews
+
+export const linkPreviewSchema = z.object({
+  url: z.string().url(),
+});
+
+// web push
+
+export const pushSubscribeSchema = z.object({
+  endpoint: z.string().url(),
+  keys: z.object({
+    p256dh: z.string().min(1),
+    auth: z.string().min(1),
+  }),
+  userAgent: z.string().max(300).optional(),
+});
+
 // types
 
 export type LoginInput = z.infer<typeof loginSchema>;
