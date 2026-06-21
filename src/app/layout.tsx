@@ -37,6 +37,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${bebasNeue.variable} ${sora.variable} antialiased`}>
+        {/* no-flash theme bootstrap — key matches theme-provider STORAGE_KEY */}
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('aetch-theme');if(t&&t!=='system')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
+          }}
+        />
         <Providers nonce={nonce}>{children}</Providers>
       </body>
     </html>
